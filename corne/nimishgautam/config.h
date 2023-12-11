@@ -16,6 +16,9 @@
 
 // combo
 #define EXTRA_SHORT_COMBOS
+#define COMBO_TERM 30
+#define COMBO_STRICT_TIMER
+
 
 //Tapping values
 //#define QUICK_TAP_TERM 0
