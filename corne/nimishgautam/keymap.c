@@ -57,8 +57,12 @@ enum {
 #define DEL_WORD_TERMINAL LALT(KC_BSPC) // delete one word back on terminal ... does not work if .inputrc is set to use vim bindings!
 
 // I believe these only exist in linux. Send current window to one monitor left or right
-#define SEND_WINDOW_LEFT RSFT(LGUI(KC_LEFT))
-#define SEND_WINDOW_RIGHT RSFT(LGUI(KC_RIGHT))
+// Note that they are actually LGUI, but because I've defined Linux as 'swapped' ctrl/gui,
+// I have to define them 'swapped' so they become GUI when entered. This constraint doesn't exist for keycodes that 
+// are directly entered via tap_16
+
+#define SEND_WINDOW_LEFT RSFT(LCTL(KC_LEFT))
+#define SEND_WINDOW_RIGHT RSFT(LCTL(KC_RIGHT))
 
 enum custom_layers {
     _BASE,
