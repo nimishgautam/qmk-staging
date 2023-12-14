@@ -18,6 +18,7 @@ enum custom_key_codes {
     PASTE_NOSTYLE, // paste without formatting
     MOVE_BEGIN_LINE_TERMINAL, // move to the beginning of the line in the terminal
     MOVE_END_LINE_TERMINAL, // move to the end of the line in the terminal
+    OPEN_TERMINAL_HERE, //open terminal at current location in finder
     /* macros */
     PASTE_VIM, // paste in vim from system register
     ACIRCLE, // å
@@ -51,6 +52,9 @@ enum {
 #define APP_LEFT		LGUI(KC_TAB)
 #define APP_RIGHT		RSFT(LGUI(KC_TAB))
 #define CALCULATOR      RSFT(LGUI(LCTL(KC_SLASH))) // arbitrary shortcut
+#define ZOOM_IN         LALT(LGUI(KC_EQL)) // mac code zoom in
+#define ZOOM_OUT        LALT(LGUI(KC_MINUS)) // mac code zoom out
+#define SWITCH_APP_WINDOWS LCTL(KC_GRAVE) //mac code
 
 #define MOVE_LEFT_TERMINAL LALT(KC_LEFT) //move cursor one word left on the terminal... does not work if .inputrc is set to use vim bindings!
 #define MOVE_RIGHT_TERMINAL LALT(KC_RIGHT) //move cursor one word left on the terminal... does not work if .inputrc is set to use vim bindings!
@@ -63,6 +67,14 @@ enum {
 
 #define SEND_WINDOW_LEFT RSFT(LCTL(KC_LEFT))
 #define SEND_WINDOW_RIGHT RSFT(LCTL(KC_RIGHT))
+
+// Window control, also only in linux
+// maximize window, vertical only or horizontal only
+// toggle window maximization state after maximizing it
+
+#define MAX_VERTICAL LCTL(LGUI(RSFT(KC_F8)))
+#define MAX_HORIZONTAL LCTL(LGUI(RSFT(KC_F6)))
+#define TOG_WINDOW_STATE LALT(KC_F10)
 
 enum custom_layers {
     _BASE,
@@ -207,13 +219,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * 
    */
   //,-----------------------------------------------------.                                                                   ,-----------------------------------------------------.
-     KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                           TD(TD_MOVE_END_LINE), KC_F7,    KC_F8,    KC_F9,    KC_F11, KC_PSCR,
+     KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, TOG_WINDOW_STATE, KC_TRANSPARENT, KC_TRANSPARENT,                           TD(TD_MOVE_END_LINE), KC_F7,    KC_F8,    KC_F9,    KC_F11, KC_PSCR,
   //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                                          KC_TRANSPARENT, KC_F4,    KC_F5,  KC_F6,  KC_F12, KC_SCRL,
+      TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                                          MAX_VERTICAL, KC_F4,    KC_F5,  KC_F6,  KC_F12, KC_SCRL,
   //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                         KC_TRANSPARENT, KC_F1,    KC_F2,  KC_F3, KC_TRANSPARENT, SEND_WINDOW_RIGHT,
+      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                         MAX_HORIZONTAL, KC_F1,    KC_F2,  KC_F3, KC_TRANSPARENT, SEND_WINDOW_RIGHT,
   //|--------+--------+--------+--------+--------+--------+--------|                                                   |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT ,                             KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_F10
+                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT ,                             ZOOM_IN  ,  ZOOM_OUT, KC_F10
                                       //`--------------------------'                                                   `--------------------------'
   ),
 
@@ -224,7 +236,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * Curly braces on same hand
   */
   //,-----------------------------------------------------.                                                           ,-----------------------------------------------------.
-      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, MOVE_BEGIN_LINE_TERMINAL, KC_TRANSPARENT, TD(TD_MOVE_BEGIN_LINE),                           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, MOVE_BEGIN_LINE_TERMINAL, KC_TRANSPARENT, TD(TD_MOVE_BEGIN_LINE),                           KC_TRANSPARENT, KC_TRANSPARENT, OPEN_TERMINAL_HERE, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       TO(_BASE), SELECT_LEFT_WD, MOVE_LEFT_TERMINAL, MOVE_END_LINE_TERMINAL, MOVE_RIGHT_TERMINAL,SELECT_RIGHT_WD,                                            KC_TRANSPARENT, KC_RGUI, KC_RSFT, KC_RALT,KC_RCTL, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
@@ -316,6 +328,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case ODOT:
     case COMPOSE_MACRO:
     case SCREENSHOT:
+    case OPEN_TERMINAL_HERE:
+
 
         if(record->event.pressed) {
             keymap_config.raw = eeconfig_read_keymap();
@@ -437,6 +451,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         tap_code16(KC_PSCR);
                     } else { //osx
                         tap_code16(LGUI(LSFT(KC_4)));
+                    }
+                break;
+                case OPEN_TERMINAL_HERE:
+                    if(keymap_config.swap_lctl_lgui){ //Linux
+                        tap_code16(LCTL(KC_F10));
+                        tap_code16(KC_E);
+                    } else { //osx
+                        tap_code16(LCTL(KC_F10));
                     }
                 break;
             }
