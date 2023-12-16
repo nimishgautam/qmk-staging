@@ -206,7 +206,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       TO(_BASE), SELECT_LEFT_LINE, KC_LEFT, KC_DOWN, KC_RIGHT,KC_END,                                            KC_TRANSPARENT, KC_RGUI, KC_RSFT, KC_RALT,KC_RCTL, KC_CAPS,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      KC_INSERT, KC_DELETE, KC_GRAVE, KC_TILD, PASTE_NOSTYLE, KC_HOME,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, TO(_ADJUST),
+      KC_INSERT, KC_DELETE, KC_TILD, KC_GRAVE, PASTE_NOSTYLE, KC_HOME,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, TO(_ADJUST),
   //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
                                           KC_PAGE_UP,  DEL_WORD, KC_PAGE_DOWN ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
                                       //`--------------------------'                                              `--------------------------'
