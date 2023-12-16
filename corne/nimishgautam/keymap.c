@@ -455,7 +455,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 break;
                 case OPEN_TERMINAL_HERE:
                     if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(LCTL(KC_F10));
+                        tap_code16(LSFT(KC_F10));
                         tap_code16(KC_E);
                     } else { //osx
                         tap_code16(LCTL(KC_F10));
