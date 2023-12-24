@@ -104,13 +104,13 @@ const uint16_t PROGMEM vim_paste_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM calculator_combo[] = {LT(_FN_KEYS,KC_LPRN),  LT(_TERMINAL,KC_RPRN), COMBO_END};
 
 // combo - press combo+ a to get å
-const uint16_t PROGMEM acircle_combo[] = { KC_BSPC, KC_SPACE, MT(MOD_LCTL, KC_A),COMBO_END};
+const uint16_t PROGMEM acircle_combo[] = { KC_BSPC, KC_SPACE, LCTL_T(KC_A),COMBO_END};
 
 // combo - press combo+ l to get ä
-const uint16_t PROGMEM adot_combo[] = {KC_BSPC, KC_SPACE, MT(MOD_RALT,KC_L), COMBO_END};
+const uint16_t PROGMEM adot_combo[] = {KC_BSPC, KC_SPACE, RALT_T(KC_L), COMBO_END};
 
 // combo - press combo+ ; to get ö
-const uint16_t PROGMEM odot_combo[] = {KC_BSPC, KC_SPACE, MT(MOD_LCTL,KC_SCLN),COMBO_END};
+const uint16_t PROGMEM odot_combo[] = {KC_BSPC, KC_SPACE, RCTL_T(KC_SCLN),COMBO_END};
 
 // combo - press top row (index and middle) to get a +
 const uint16_t PROGMEM plus_combo[] = {KC_U, KC_I,COMBO_END};
@@ -122,7 +122,7 @@ const uint16_t PROGMEM equals_combo[] = {KC_I, KC_O,COMBO_END};
 const uint16_t PROGMEM ampersand_combo[] = {KC_G, KC_H,COMBO_END};
 
 // combo - press right middle + space to get underscore
-const uint16_t PROGMEM underscore_combo[] = {KC_SPACE, MT(MOD_RSFT,KC_K),COMBO_END};
+const uint16_t PROGMEM underscore_combo[] = {KC_SPACE, RSFT_T(KC_K),COMBO_END};
 
 // combo - press left top row (middle and ring) to scroll up
 const uint16_t PROGMEM scrollup_combo[] = {KC_W, KC_E,COMBO_END};
@@ -131,10 +131,10 @@ const uint16_t PROGMEM scrollup_combo[] = {KC_W, KC_E,COMBO_END};
 const uint16_t PROGMEM scrolldown_combo[] = {KC_X, KC_C,COMBO_END};;
 
 // combo - press left middle and ring to scroll left
-const uint16_t PROGMEM scrollleft_combo[] = {MT(MOD_LALT,KC_S),MT(MOD_LSFT,KC_D),COMBO_END};
+const uint16_t PROGMEM scrollleft_combo[] = {LALT_T(KC_S),LSFT_T(KC_D),COMBO_END};
 
 // combo - press left index and middle to scroll right
-const uint16_t PROGMEM scrollright_combo[] = {MT(MOD_LSFT,KC_D), MT(MOD_LGUI, KC_F),COMBO_END};
+const uint16_t PROGMEM scrollright_combo[] = {LSFT_T(KC_D), LGUI_T(KC_F),COMBO_END};
 
 // combo - press both middle finger up to get emoji keyboard
 const uint16_t PROGMEM emoji_combo[] = {KC_E, KC_I,COMBO_END};
@@ -162,16 +162,15 @@ combo_t key_combos[] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT(  //basic -- RIGHT HAND BACKWARDS!!!
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,     KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                    KC_MINUS, KC_P, KC_O, KC_I, KC_U, KC_Y,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_ESCAPE, MT(MOD_LCTL, KC_A),    MT(MOD_LALT,KC_S),    MT(MOD_LSFT,KC_D),    MT(MOD_LGUI, KC_F),    KC_G,                    KC_QUOT, MT(MOD_LCTL,KC_SCLN), MT(MOD_RALT,KC_L), MT(MOD_RSFT,KC_K), MT(MOD_RGUI,KC_J), KC_H,
-      
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      LT(0, SHOW_WIN_LEFT), KC_Z, KC_X,  KC_C, KC_V,  KC_B,                 LT(0, NUMERIC_WIN_RIGHT), KC_SLASH,  KC_DOT, KC_COMM,  KC_M,  KC_N,
-  //|--------+--------+--------+--------+--------+--------+--------|                 |--------+--------+--------+--------+--------+--------+--------|
-                                         LT(_FN_KEYS,KC_LPRN), KC_BSPC,  LT(_NUMS, KC_ENTER),         LT(_TERMINAL,KC_RPRN) , KC_SPACE, LT(_TEXT_NAV, KC_PAST)
-                                      //`--------------------------'                    `--------------------------'
+    //,-------------------------------------------------------------------------.                    ,-------------------------------------------------------------------------.
+      KC_TAB,    KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                      KC_MINUS, KC_P,         KC_O,         KC_I,         KC_U,             KC_Y,
+  //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
+      KC_ESCAPE, LCTL_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LGUI_T(KC_F), KC_G,                      KC_QUOT, RCTL_T(KC_SCLN), RALT_T(KC_L), RSFT_T(KC_K), RGUI_T(KC_J), KC_H,
+  //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
+      LT(0, SHOW_WIN_LEFT),  KC_Z, KC_X,     KC_C,        KC_V,          KC_B,                      LT(0, NUMERIC_WIN_RIGHT), KC_SLASH,     KC_DOT, KC_COMM,     KC_M,  KC_N,
+  //|-----------------------+-----+---------+------------+-------------+------|                    |-----+------------+--------+--------+----------+-------------------------|
+                                LT(_FN_KEYS,KC_LPRN),     KC_BSPC,       LT(_NUMS, KC_ENTER),       LT(_TERMINAL,KC_RPRN) , KC_SPACE, LT(_TEXT_NAV, KC_PAST)
+                               //`--------------------------------------------------------------'   `----------------------------------------------------------'
 
   ),
 
@@ -517,8 +516,8 @@ tap_dance_action_t tap_dance_actions[] = {
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case MT(MOD_LSFT,KC_D): // for modtap shift, otherwise lots of mis-firings
-        case MT(MOD_RSFT,KC_K):
+        case LSFT_T(KC_D): // for modtap shift, otherwise lots of mis-firings
+        case RSFT_T(KC_K):
             // Immediately select the hold action when another key is tapped.
             return true;
         default:
