@@ -1,0 +1,78 @@
+;; Only including the internal keyboard, other plugged-in devices will work normally
+
+(defcfg
+  input (iokit-name "Apple Internal Keyboard / Trackpad")
+  output (kext)
+  fallthrough true
+)
+
+;; Only remapping the following keys
+;; NB: doesn't correspond to any meaningful order, just means
+;; "The key in the first position in the layers corresponds to the following target keys"
+;; so if the first key listed in src is 'esc', subsequent layers will list the desired behavior of
+;; esc first
+;;
+;; Also means you can leave out keys you don't care about
+
+;; IMPORTANT::
+;; The § key had no corresponding Linux code
+;; it was , ((0x7,0x64), KeyNonUSBackslash)
+;; in src/KMonad/Keyboard/IO/Mac/Types.hs (and commented out)
+;; I mapped it to f13 in source, otherwise the app crashed (meaning kmonad thinks it's a native f13 key)
+
+(defsrc
+  esc f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12 
+  f13  q    w    e    r
+  caps a    s    d    f    g    h    j    k    l    ;
+                                          ,    .
+  fn lctl lalt lmet    rmet ralt
+)
+
+;; Aliases to help readability
+
+(defalias
+    ctl_a (tap-hold-next-release 250 a lctl)
+    alt_s (tap-hold-next-release 250 s lalt)
+    sft_d (tap-hold-next-release 250 d lsft)
+    met_f (tap-hold-next-release 250 f lmet)
+
+    met_j (tap-hold-next-release 250 j rmet)
+    sft_k (tap-hold-next-release 250 k rsft)
+    alt_l (tap-hold-next-release 250 l lalt)
+    ctl_; (tap-hold-next-release 250 ; rctl)
+
+    esc_q (multi-tap 200 esc C-M-q) ;; note the last argument in multi-tap has no delay before it
+    
+    fn (around (layer-toggle function) fn) ;; actually sends fn key
+
+    nav_c (tap-hold 200 , (layer-toggle nav))
+)
+
+;; default layer, uses above aliases with 'h@' in corresponding positions
+
+;; note I use the 'f13' key (aka §) as compose
+
+(deflayer default
+  @esc_q f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12 
+  f13 q         w          e        r
+  esc @ctl_a    @alt_s    @sft_d    @met_f    g    h    @met_j    @sft_k    @alt_l    @ctl_;
+                                                        @nav_c    .
+  @fn lctl lalt bspc    ent ralt
+)
+
+(deflayer function
+  _    brdn brup lp   mctl bldn blup prev pp   next mute vold volu
+  _    _  _  _  _
+  _    _  _  _  _  _  _  _  _  _  _
+                         _  _
+  _    _  _  _  _  _
+)
+
+(deflayer nav
+  _    _  _  _  _  _ _ _ _ _ _ _ _
+  _    _  _  up  _
+  _    _  left  down  right  _  _  _  _  _  _
+                      _  _
+  _    _  _  _  _  _
+)
+
