@@ -58,7 +58,7 @@ enum {
 
 #define MOVE_LEFT_TERMINAL LALT(KC_LEFT) //move cursor one word left on the terminal... does not work if .inputrc is set to use vim bindings!
 #define MOVE_RIGHT_TERMINAL LALT(KC_RIGHT) //move cursor one word left on the terminal... does not work if .inputrc is set to use vim bindings!
-#define DEL_WORD_TERMINAL LALT(KC_BSPC) // delete one word back on terminal ... does not work if .inputrc is set to use vim bindings!
+#define DEL_WORD_TERMINAL LCTL(KC_W) // delete one word back on terminal ... does not work if .inputrc is set to use vim bindings!
 
 // I believe these only exist in linux. Send current window to one monitor left or right
 // Note that they are actually LGUI, but because I've defined Linux as 'swapped' ctrl/gui,
@@ -92,7 +92,7 @@ enum custom_layers {
 const uint16_t PROGMEM compose_combo[] = {KC_BSPC, KC_SPACE, COMBO_END};
 
 // combo - press the 2 larger keys on the inner part of the corne to get the search window ('finder' as I'm calling it)
-const uint16_t PROGMEM search_combo[] = {LT(_NUMS, KC_ENTER),LT(_TEXT_NAV, KC_PAST), COMBO_END};
+const uint16_t PROGMEM search_combo[] = {LT(_NUMS, KC_ENTER),LT(_TEXT_NAV, KC_TAB), COMBO_END};
 
 // combo - press ,. to paste in vim
 const uint16_t PROGMEM vim_paste_combo[] = {KC_COMM, KC_DOT, COMBO_END};
@@ -121,20 +121,26 @@ const uint16_t PROGMEM ampersand_combo[] = {KC_G, KC_H,COMBO_END};
 // combo - press right middle + space to get underscore
 const uint16_t PROGMEM underscore_combo[] = {KC_SPACE, RSFT_T(KC_K),COMBO_END};
 
-// combo - press left top row (middle and ring) to scroll up
-const uint16_t PROGMEM scrollup_combo[] = {KC_W, KC_E,COMBO_END};
+// combo - press left top row (middle and ring) for up
+const uint16_t PROGMEM up_combo[] = {KC_W, KC_E,COMBO_END};
 
-// combo - press left bottom row (middle and ring) to scroll down
-const uint16_t PROGMEM scrolldown_combo[] = {KC_X, KC_C,COMBO_END};;
+// combo - press left bottom row (middle and ring) for down
+const uint16_t PROGMEM down_combo[] = {KC_X, KC_C,COMBO_END};;
 
-// combo - press left middle and ring to scroll left
-const uint16_t PROGMEM scrollleft_combo[] = {LALT_T(KC_S),LSFT_T(KC_D),COMBO_END};
+// combo - press left middle and ring for left
+const uint16_t PROGMEM left_combo[] = {LALT_T(KC_S),LSFT_T(KC_D),COMBO_END};
 
-// combo - press left index and middle to scroll right
-const uint16_t PROGMEM scrollright_combo[] = {LSFT_T(KC_D), LGUI_T(KC_F),COMBO_END};
+// combo - press left index and middle for right
+const uint16_t PROGMEM right_combo[] = {LSFT_T(KC_D), LGUI_T(KC_F),COMBO_END};
 
 // combo - press both middle finger up to get emoji keyboard
 const uint16_t PROGMEM emoji_combo[] = {KC_E, KC_I,COMBO_END};
+
+// combo - press both index fingers to scroll down
+const uint16_t PROGMEM scrolldown_combo[] = {LGUI_T(KC_F), RGUI_T(KC_J),COMBO_END};
+
+// combo - press both middle fingers to scroll up
+const uint16_t PROGMEM scrollup_combo[] = {LSFT_T(KC_D), RSFT_T(KC_K),COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(compose_combo, COMPOSE_MACRO),
@@ -150,11 +156,13 @@ combo_t key_combos[] = {
     COMBO(equals_combo, KC_EQL),
     COMBO(ampersand_combo, KC_AMPERSAND),
     COMBO(underscore_combo, KC_UNDS),
-    COMBO(scrollup_combo, KC_MS_WH_UP),
-    COMBO(scrolldown_combo, KC_MS_WH_DOWN),
-    COMBO(scrollleft_combo, KC_MS_WH_LEFT),
-    COMBO(scrollright_combo, KC_MS_WH_RIGHT),
+    COMBO(up_combo, KC_UP),
+    COMBO(down_combo, KC_DOWN),
+    COMBO(left_combo, KC_LEFT),
+    COMBO(right_combo, KC_RIGHT),
     COMBO(emoji_combo, EMOJI_KBD),
+    COMBO(scrolldown_combo, KC_MS_WH_DOWN),
+    COMBO(scrollup_combo, KC_MS_WH_UP),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -166,7 +174,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
       LT(0, SHOW_WIN_LEFT),  KC_Z, KC_X,     KC_C,        KC_V,          KC_B,                      KC_N, KC_M,         KC_COMM, KC_DOT,  KC_SLASH,  LT(0, NUMERIC_WIN_RIGHT),
   //|-----------------------+-----+---------+------------+-------------+------|                    |-----+------------+--------+--------+----------+-------------------------|
-                                LT(_FN_KEYS,KC_LPRN),     KC_BSPC,       LT(_NUMS, KC_ENTER),       LT(_TEXT_NAV, KC_PAST),     KC_SPACE, LT(_TERMINAL,KC_RPRN)
+                                LT(_FN_KEYS,KC_LPRN),     KC_BSPC,       LT(_NUMS, KC_ENTER),       LT(_TEXT_NAV, KC_TAB),     KC_SPACE, LT(_TERMINAL,KC_RPRN)
                                //`--------------------------------------------------------------'   `----------------------------------------------------------'
 
   ),
@@ -191,7 +199,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                    |--------+--------+--------+--------+--------+--------|
       LOCK_SCREEN, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,          TD(TD_PERIOD_COMMA), KC_1,  KC_2,  KC_3, KC_SLASH, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------+--------|                                    |--------+--------+--------+--------+-C```-------+--------+--------|
-                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_ENTER                 , KC_HASH  ,  KC_UNDS, KC_0
+                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_ENTER                 , KC_HASH  ,  KC_ASTR, KC_0
                                       //`--------------------------'                                      `--------------------------'
   ),
 
@@ -206,7 +214,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       TO(_BASE), SELECT_LEFT_LINE, KC_LEFT, KC_DOWN, KC_RIGHT,KC_END,                                            KC_TRANSPARENT, KC_RGUI, KC_RSFT, KC_RALT,KC_RCTL, KC_NUM,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      KC_INSERT, KC_DELETE, KC_TILD, KC_GRAVE, PASTE_NOSTYLE, KC_HOME,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, TO(_ADJUST),
+      KC_INSERT, KC_DELETE, KC_TILD, KC_GRAVE, PASTE_NOSTYLE, KC_HOME,                                 KC_TRANSPARENT, KC_MS_WH_LEFT, KC_MS_WH_RIGHT, KC_TRANSPARENT,KC_TRANSPARENT, TO(_ADJUST),
   //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
                                           KC_PAGE_UP,  DEL_WORD, KC_PAGE_DOWN ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
                                       //`--------------------------'                                              `--------------------------'

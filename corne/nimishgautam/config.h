@@ -88,6 +88,5 @@
 // oled font (for logo etc)
 #define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
 
-// mouse keys go at a constant speed instead of accelerating
-#define MK_3_SPEED
-#define MK_MOMENTARY_ACCEL
+// mouse keys go at an inertial speed
+#define MK_KINETIC_SPEED
