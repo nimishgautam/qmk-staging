@@ -3,6 +3,13 @@
 
 #include QMK_KEYBOARD_H
 
+uint8_t magic_case_state = 0;
+
+#define MAGIC_CASE_OFF 0
+#define MAGIC_CASE_SNAKE 1
+#define MAGIC_CASE_CAMEL 2
+#define MAGIC_CASE_KEBAB 3 
+
 enum custom_key_codes {
     SHOW_WIN_LEFT = SAFE_RANGE, // show windows on tap, move active window left on hold
     NUMERIC_WIN_RIGHT, // lock to numeric layer on press, move active window right on hold
@@ -26,6 +33,7 @@ enum custom_key_codes {
     ODOT, // ö
     COMPOSE_MACRO, // compose key for mac or linux
     SCREENSHOT, // This is theoretically reprogrammable on Linux, but Gui(Shift(4)) or Gui(4) is reserved for '4th item on favorite menu' and doesn't remap so well
+    MAGIC_CASING, // magic casing -- snake_case by default, shift = camelCase, alt = kebab-case
 };
 
 //Tap Dance Declarations
@@ -168,7 +176,7 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_split_3x6_3(  //basic
   //,-------------------------------------------------------------------------.                    ,-------------------------------------------------------------------------.
-      KC_TAB,    KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                      KC_Y, KC_U,         KC_I,         KC_O,         KC_P,             KC_MINUS,
+      MAGIC_CASING,    KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                      KC_Y, KC_U,         KC_I,         KC_O,         KC_P,             KC_MINUS,
   //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
       KC_ESCAPE, LCTL_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LGUI_T(KC_F), KC_G,                      KC_H, RGUI_T(KC_J), RSFT_T(KC_K), RALT_T(KC_L), RCTL_T(KC_SCLN), KC_QUOT,
   //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
@@ -270,10 +278,54 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // right side mostly no-op so I can play with the visualization
 };
 
+// attempt to shrink firmware size -- this is for magic replacement of keys (not mods)
+uint16_t keycode_config(uint16_t keycode) {
+    return keycode;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
   switch (keycode) {
+
+    case MAGIC_CASING:
+        if(record->event.pressed){
+            if(magic_case_state ){
+                // was on, turned it off
+                magic_case_state = MAGIC_CASE_OFF;
+            }
+            else {
+                //pressed, set case
+                if(get_mods() == 0){
+                    magic_case_state = MAGIC_CASE_SNAKE;
+                }
+                if(get_mods() & MOD_MASK_SHIFT){
+                    magic_case_state = MAGIC_CASE_CAMEL;
+                } 
+                if (get_mods() & MOD_MASK_ALT){
+                    magic_case_state = MAGIC_CASE_KEBAB;
+                }
+            }
+        }
+        return false;
+    break;
+    case KC_SPACE:
+        if(magic_case_state){
+            if(record->event.pressed){
+                if (magic_case_state == MAGIC_CASE_SNAKE){
+                    tap_code16(KC_UNDS);
+                }
+                if (magic_case_state == MAGIC_CASE_KEBAB){
+                    tap_code16(KC_MINUS);
+                }
+                if (magic_case_state == MAGIC_CASE_CAMEL){
+                    add_oneshot_mods(MOD_LSFT);
+                }
+            }
+            return false; // do not process space any more
+        }
+    return true; // just return out otherwise
+    break;
 
     // as of this writing, you can't do a layer tap (LT)
     // and also send a shifted code, like left parens
@@ -652,6 +704,9 @@ void oled_render_layer_mod_state(void) {
     }
     oled_write_ln_P(PSTR(" "), false);
     // mods
+    if(magic_case_state){
+        oled_write_ln_P(PSTR("magic"), false);
+    } 
     if(get_mods() & MOD_MASK_SHIFT){
         oled_write_ln_P(PSTR("SHIFT"), false);
     }

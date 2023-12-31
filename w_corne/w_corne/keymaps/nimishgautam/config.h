@@ -27,7 +27,7 @@
 #define PERMISSIVE_HOLD_PER_KEY
 
 // Try to save some memory
-#define NO_ACTION_ONESHOT
+//#define NO_ACTION_ONESHOT
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
 #define LAYER_STATE_8BIT  //8 layers max

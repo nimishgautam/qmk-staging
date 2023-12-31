@@ -5,6 +5,13 @@
 
 #include "w_corne.h"
 
+uint8_t magic_case_state = 0;
+
+#define MAGIC_CASE_OFF 0
+#define MAGIC_CASE_SNAKE 1
+#define MAGIC_CASE_CAMEL 2
+#define MAGIC_CASE_KEBAB 3 
+
 enum custom_key_codes {
     SHOW_WIN_LEFT = SAFE_RANGE, // show windows on tap, move active window left on hold
     NUMERIC_WIN_RIGHT, // lock to numeric layer on press, move active window right on hold
@@ -29,6 +36,7 @@ enum custom_key_codes {
     COMPOSE_MACRO, // compose key for mac or linux
     SCREENSHOT, // This is theoretically reprogrammable on Linux, but Gui(Shift(4)) or Gui(4) is reserved for '4th item on favorite menu' and doesn't remap so well
     SHOW_OS, // to let you know what the toggle os setting is
+    MAGIC_CASING, // magic casing -- snake_case by default, shift = camelCase, alt = kebab-case
 };
 
 //Tap Dance Declarations
@@ -171,7 +179,7 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT(  //basic -- RIGHT HAND BACKWARDS!!!
     //,-------------------------------------------------------------------------.                    ,-------------------------------------------------------------------------.
-      KC_TAB,    KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                      KC_MINUS, KC_P,         KC_O,         KC_I,         KC_U,             KC_Y,
+      MAGIC_CASING,    KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                      KC_MINUS, KC_P,         KC_O,         KC_I,         KC_U,             KC_Y,
   //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
       KC_ESCAPE, LCTL_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LGUI_T(KC_F), KC_G,                      KC_QUOT, RCTL_T(KC_SCLN), RALT_T(KC_L), RSFT_T(KC_K), RGUI_T(KC_J), KC_H,
   //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
@@ -275,9 +283,45 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-
   switch (keycode) {
-
+    case MAGIC_CASING:
+        if(record->event.pressed){
+            if(magic_case_state ){
+                // was on, turned it off
+                magic_case_state = MAGIC_CASE_OFF;
+            }
+            else {
+                //pressed, set case
+                if(get_mods() == 0){
+                    magic_case_state = MAGIC_CASE_SNAKE;
+                }
+                if(get_mods() & MOD_MASK_SHIFT){
+                    magic_case_state = MAGIC_CASE_CAMEL;
+                } 
+                if (get_mods() & MOD_MASK_ALT){
+                    magic_case_state = MAGIC_CASE_KEBAB;
+                }
+            }
+        }
+        return false;
+    break;
+    case KC_SPACE:
+        if(magic_case_state){
+            if(record->event.pressed){
+                if (magic_case_state == MAGIC_CASE_SNAKE){
+                    tap_code16(KC_UNDS);
+                }
+                if (magic_case_state == MAGIC_CASE_KEBAB){
+                    tap_code16(KC_MINUS);
+                }
+                if (magic_case_state == MAGIC_CASE_CAMEL){
+                    add_oneshot_mods(MOD_LSFT);
+                }
+            }
+            return false; // do not process space any more
+        }
+    return true; // just return out otherwise
+    break;
     // as of this writing, you can't do a layer tap (LT)
     // and also send a shifted code, like left parens
     // If you call such a function, it'll do the layer shift but
