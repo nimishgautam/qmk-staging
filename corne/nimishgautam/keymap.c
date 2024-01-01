@@ -23,8 +23,6 @@ enum custom_key_codes {
     MOVE_LEFT_LINE, // move to beginning of line
     MOVE_RIGHT_LINE, // move to end of line
     PASTE_NOSTYLE, // paste without formatting
-    MOVE_BEGIN_LINE_TERMINAL, // move to the beginning of the line in the terminal
-    MOVE_END_LINE_TERMINAL, // move to the end of the line in the terminal
     OPEN_TERMINAL_HERE, //open terminal at current location in finder
     /* macros */
     PASTE_VIM, // paste in vim from system register
@@ -34,6 +32,12 @@ enum custom_key_codes {
     COMPOSE_MACRO, // compose key for mac or linux
     SCREENSHOT, // This is theoretically reprogrammable on Linux, but Gui(Shift(4)) or Gui(4) is reserved for '4th item on favorite menu' and doesn't remap so well
     MAGIC_CASING, // magic casing -- snake_case by default, shift = camelCase, alt = kebab-case
+    /* tmux */
+    TMUX_CLOSE_PANE,
+    TMUX_SPLIT_VERT,
+    TMUX_SPLIT_HORIZ,
+    TMUX_NEXT_PANE,
+    TMUX_PREV_PANE,
 };
 
 //Tap Dance Declarations
@@ -46,35 +50,43 @@ enum {
 // Mac-specific definitions of these functions
 // I've changed Linux to accept these defaults
 
-#define FINDER          LGUI(LALT(KC_SPACE)) //open the search bar for finding apps, docs in-computer, etc
+#define FINDER         LGUI(LALT(KC_SPACE)) //open the search bar for finding apps, docs in-computer, etc
 #define COMPOSE_KEY    KC_SCRL //manually set on linux, to create chars via .Xcompose ()
-#define COMPOSE_MAC     KC_F13 //manually set on mac using some tricks
-#define X_COMPOSE_KEY    X_SCROLL_LOCK //for use with macros
-#define SHOW_WINDOWS    LCTL(KC_UP) //'Expose' on Mac, overview on linux. Just all the windows
-#define WINDOW_LEFT LCTL(LGUI(LSFT(KC_LEFT))) //custom shortcut for this feature -- make window take up 50% left screen (using gui and ctl to make it os agnostic)
-#define WINDOW_RIGHT LCTL(LGUI(LSFT(KC_RIGHT))) //custom shortcut for this feature -- make window take up 50% right screen (using gui and ctl to make it os agnostic)/fully custom shortcut, using ctl and gui keys so will need them both irrespective of os
+#define COMPOSE_MAC    KC_F13 //manually set on mac using some tricks
+#define X_COMPOSE_KEY  X_SCROLL_LOCK //for use with macros
+#define SHOW_WINDOWS   LCTL(KC_UP) //'Expose' on Mac, overview on linux. Just all the windows
+#define WINDOW_LEFT    LCTL(LGUI(LSFT(KC_LEFT))) //custom shortcut for this feature -- make window take up 50% left screen (using gui and ctl to make it os agnostic)
+#define WINDOW_RIGHT   LCTL(LGUI(LSFT(KC_RIGHT))) //custom shortcut for this feature -- make window take up 50% right screen (using gui and ctl to make it os agnostic)/fully custom shortcut, using ctl and gui keys so will need them both irrespective of os
 #define SHOW_APP_WINDOWS LCTL(KC_DOWN)
-#define LOCK_SCREEN     LCTL(LGUI(KC_Q)) //manually set this on linux to match osx default
-#define EURO            LALT(LSFT(KC_2))
-#define EMOJI_KBD       LCTL(LGUI(KC_SPACE)) //manually set this on linux to match osx default, with 'emote' on linux and a custom shortcut (probably better to use compose feature)
-#define APP_LEFT		LGUI(KC_TAB)
-#define APP_RIGHT		RSFT(LGUI(KC_TAB))
-#define CALCULATOR      RSFT(LGUI(LCTL(KC_SLASH))) // arbitrary shortcut
-#define ZOOM_IN         LALT(LGUI(KC_EQL)) // mac code zoom in
-#define ZOOM_OUT        LALT(LGUI(KC_MINUS)) // mac code zoom out
+#define LOCK_SCREEN    LCTL(LGUI(KC_Q)) //manually set this on linux to match osx default
+#define EURO           LALT(LSFT(KC_2))
+#define EMOJI_KBD      LCTL(LGUI(KC_SPACE)) //manually set this on linux to match osx default, with 'emote' on linux and a custom shortcut (probably better to use compose feature)
+#define APP_LEFT	   LGUI(KC_TAB)
+#define APP_RIGHT	   RSFT(LGUI(KC_TAB))
+#define CALCULATOR     RSFT(LGUI(LCTL(KC_SLASH))) // arbitrary shortcut
+#define ZOOM_IN        LALT(LGUI(KC_EQL)) // mac code zoom in
+#define ZOOM_OUT       LALT(LGUI(KC_MINUS)) // mac code zoom out
 #define SWITCH_APP_WINDOWS LCTL(KC_GRAVE) //mac code
 
-#define MOVE_LEFT_TERMINAL LALT(KC_LEFT) //move cursor one word left on the terminal... does not work if .inputrc is set to use vim bindings!
+// All of these are now using readline bindings
+// Will not work if .inputrc set to vim bindings
+// Also some caution around tmux/screen command keys
+// Note heavy use of 'control'... if LEGACY_MAGIC_HANDLING gets taken out
+// then these will no longer work right on linux
+
+#define MOVE_LEFT_TERMINAL  LALT(KC_LEFT) //move cursor one word left on the terminal... does not work if .inputrc is set to use vim bindings!
 #define MOVE_RIGHT_TERMINAL LALT(KC_RIGHT) //move cursor one word left on the terminal... does not work if .inputrc is set to use vim bindings!
-#define DEL_WORD_TERMINAL LCTL(KC_W) // delete one word back on terminal ... does not work if .inputrc is set to use vim bindings!
+#define DEL_WORD_TERMINAL   LCTL(KC_W) // delete one word back on terminal ... does not work if .inputrc is set to use vim bindings!
+#define MOVE_BEGIN_LINE_TERMINAL LCTL(KC_A) // move to the beginning of the line in the terminal
+#define MOVE_END_LINE_TERMINAL LCTL(KC_E) // move to the end of the line in the terminal
+#define DEL_TO_END_TERMINAL LCTL(KC_U) // delete everything from cursor to beginning of line
 
 // I believe these only exist in linux. Send current window to one monitor left or right
-// Note that they are actually LGUI, but because I've defined Linux as 'swapped' ctrl/gui,
-// I have to define them 'swapped' so they become GUI when entered. This constraint doesn't exist for keycodes that 
-// are directly entered via tap_16
+// Note that this requires LEGACY_MAGIC_HANDLING or it won't work 
+// This constraint doesn't exist for keycodes that are directly entered via tap_16
 
-#define SEND_WINDOW_LEFT RSFT(LCTL(KC_LEFT))
-#define SEND_WINDOW_RIGHT RSFT(LCTL(KC_RIGHT))
+#define SEND_WINDOW_LEFT  RSFT(LGUI(KC_LEFT))
+#define SEND_WINDOW_RIGHT RSFT(LGUI(KC_RIGHT))
 
 // Window control, also only in linux
 // maximize window, vertical only or horizontal only
@@ -252,13 +264,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * Curly braces on same hand
   */
   //,-----------------------------------------------------.                                                           ,-----------------------------------------------------.
-      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, MOVE_BEGIN_LINE_TERMINAL, KC_TRANSPARENT, TD(TD_MOVE_BEGIN_LINE),                           KC_TRANSPARENT, KC_TRANSPARENT, OPEN_TERMINAL_HERE, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+      KC_TRANSPARENT, KC_TRANSPARENT, TMUX_PREV_PANE, MOVE_BEGIN_LINE_TERMINAL, TMUX_NEXT_PANE, TD(TD_MOVE_BEGIN_LINE),                           KC_TRANSPARENT, KC_TRANSPARENT, OPEN_TERMINAL_HERE, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       TO(_BASE), SELECT_LEFT_WD, MOVE_LEFT_TERMINAL, MOVE_END_LINE_TERMINAL, MOVE_RIGHT_TERMINAL,SELECT_RIGHT_WD,                                            KC_TRANSPARENT, KC_RGUI, KC_RSFT, KC_RALT,KC_RCTL, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      SEND_WINDOW_LEFT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT,
+      SEND_WINDOW_LEFT, KC_TRANSPARENT, TMUX_SPLIT_VERT, TMUX_CLOSE_PANE, TMUX_SPLIT_HORIZ, KC_TRANSPARENT,                                       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRANSPARENT,  DEL_WORD_TERMINAL, KC_TRANSPARENT ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
+                                          DEL_TO_END_TERMINAL,  DEL_WORD_TERMINAL, KC_TRANSPARENT ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
                                       //`--------------------------'                                              `--------------------------'
   ),
 
@@ -280,14 +292,57 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // attempt to shrink firmware size -- this is for magic replacement of keys (not mods)
 uint16_t keycode_config(uint16_t keycode) {
+    switch (keycode) {
+        case KC_LEFT_CTRL:
+            if (keymap_config.swap_lctl_lgui) {
+                return KC_LEFT_GUI;
+            }
+        break;
+        case KC_LEFT_GUI:
+            if (keymap_config.swap_lctl_lgui) {
+                return KC_LEFT_CTRL;
+            }
+        break;
+        case KC_RIGHT_CTRL:
+            if (keymap_config.swap_rctl_rgui) {
+                return KC_RIGHT_GUI;
+            }
+        break;
+        case KC_RIGHT_GUI:
+            if (keymap_config.swap_rctl_rgui) {
+                return KC_RIGHT_CTRL;
+            }
+        break;
+    }
     return keycode;
+}
+
+//shrink further, replacing mods
+uint8_t mod_config(uint8_t mod) {
+    /**
+     * Note: This function is for the 5-bit packed mods, NOT the full 8-bit mods.
+     * More info about the mods can be seen in modifiers.h.
+     */
+
+    if (keymap_config.swap_lctl_lgui) {
+        /* left mods ANDed with right-hand values to check for right hand bit */
+        if (((mod & MOD_RCTL) == MOD_LCTL) ^ ((mod & MOD_RGUI) == MOD_LGUI)) {
+            mod ^= (MOD_LCTL | MOD_LGUI);
+        }
+    }
+    if (keymap_config.swap_rctl_rgui) {
+        if (((mod & MOD_RCTL) == MOD_RCTL) ^ ((mod & MOD_RGUI) == MOD_RGUI)) {
+            /* lefthand values to preserve the right hand bit */
+            mod ^= (MOD_LCTL | MOD_LGUI);
+        }
+    }
+    return mod;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-
   switch (keycode) {
-
+    /* MAGIC CASING */
     case MAGIC_CASING:
         if(record->event.pressed){
             if(magic_case_state ){
@@ -325,7 +380,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false; // do not process space any more
         }
     return true; // just return out otherwise
-    break;
+    //break;
+
+
+    /* LAYER TAPS */
 
     // as of this writing, you can't do a layer tap (LT)
     // and also send a shifted code, like left parens
@@ -345,6 +403,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     break;
 
+    /* SPECIAL MOVEMENT FUNCTIONS */
     case LT(0,SHOW_WIN_LEFT):
             if (record->tap.count && record->event.pressed) {
                 tap_code16(SHOW_WINDOWS); // Intercept tap function
@@ -352,7 +411,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code16(WINDOW_LEFT); // Intercept hold function
             }
         return false;
-        break;
+    //break;
 
     case LT(0, NUMERIC_WIN_RIGHT):
             if (record->tap.count && record->event.pressed) {
@@ -361,14 +420,50 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code16(WINDOW_RIGHT); // Intercept hold function
             }
         return false;
-        break;
+    //break;
 
+    /* MISC */
     case PASTE_VIM:
         if (record->event.pressed){
             SEND_STRING(SS_TAP(X_ESCAPE)"\"+pi");
         }
         return false;
-        break;
+    //break;
+
+ /* TMUX */
+
+    case TMUX_CLOSE_PANE:
+    case TMUX_SPLIT_VERT:
+    case TMUX_SPLIT_HORIZ:
+    case TMUX_NEXT_PANE:
+    case TMUX_PREV_PANE:
+        if(record->event.pressed){
+            tap_code16(C(KC_B)); //tmux escape key
+            switch(keycode){
+                    case TMUX_CLOSE_PANE:
+                        tap_code16(KC_X);
+                        break;
+                    case TMUX_SPLIT_VERT:
+                        // create a vertical line, split "horizontal"
+                        tap_code16(KC_PERCENT);
+                        break;
+                    case TMUX_SPLIT_HORIZ:
+                        // create a horizontal line, split "vertical"
+                        tap_code16(KC_DQUO);
+                        break;                
+                    case TMUX_NEXT_PANE:
+                        tap_code16(KC_O);
+                        break;
+                    case TMUX_PREV_PANE:
+                        tap_code16(KC_SCLN);
+                        break;
+            }
+        }
+        return false;
+    //break;
+
+
+    /* OS-DEPENDENT FUNCTIONS */
 
     //only read the keymap config if it's one of the below cases (instead of every time)
     case DEL_WORD:
@@ -381,15 +476,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case MOVE_LEFT_LINE:
     case MOVE_RIGHT_LINE:
     case PASTE_NOSTYLE:
-    case MOVE_BEGIN_LINE_TERMINAL:
-    case MOVE_END_LINE_TERMINAL:
     case ACIRCLE:
     case ADOT:
     case ODOT:
     case COMPOSE_MACRO:
     case SCREENSHOT:
     case OPEN_TERMINAL_HERE:
-
 
         if(record->event.pressed) {
             keymap_config.raw = eeconfig_read_keymap();
@@ -464,20 +556,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         tap_code16(LGUI(LALT(LSFT(KC_V))));
                     }
                 break;
-                case MOVE_BEGIN_LINE_TERMINAL:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(KC_HOME);
-                    } else { //osx
-                        tap_code16(LSFT(KC_HOME));
-                    }
-                break;
-                case MOVE_END_LINE_TERMINAL:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(KC_END);
-                    } else { //osx
-                        tap_code16(LSFT(KC_END));
-                    }
-                break;
                 case ACIRCLE: // å
                     if(keymap_config.swap_lctl_lgui){ //Linux
                         SEND_STRING(SS_TAP(X_COMPOSE_KEY)"aa");
@@ -525,8 +603,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
 
     return false;
-    break;
-
+    //break;
   }
   return true;
 }

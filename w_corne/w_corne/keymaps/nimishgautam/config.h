@@ -77,3 +77,7 @@
 
 // mouse keys go at an inertia speed
 #define MK_KINETIC_SPEED
+
+// If I have a keypress in my defines, I want it to consistently send what it says
+// eg #define END_PROCESS C(KC_C) should sent ctl-c and NOT G(KC_C) even when ctl and gui are swapped
+#define LEGACY_MAGIC_HANDLING
