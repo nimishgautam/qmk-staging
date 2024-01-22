@@ -7,6 +7,7 @@ EXTRAKEY_ENABLE = no
 GRAVE_ESC_ENABLE = no
 SPACE_CADET_ENABLE = no
 AVR_USE_MINIMAL_PRINTF = yes
+CONVERT_TO = stemcell
 #WPM_ENABLE = yes
 #CAPS_WORD_ENABLE = yes # if you hold down both shifts, you get lshift enabled for 1 word, but only works with KC shift, not MOD shift :(
 #AUTO_SHIFT_ENABLE = yes
