@@ -325,14 +325,14 @@ uint8_t mod_config(uint8_t mod) {
      */
 
     if (keymap_config.swap_lctl_lgui) {
-        /* left mods ANDed with right-hand values to check for right hand bit */
+        // left mods ANDed with right-hand values to check for right hand bit 
         if (((mod & MOD_RCTL) == MOD_LCTL) ^ ((mod & MOD_RGUI) == MOD_LGUI)) {
             mod ^= (MOD_LCTL | MOD_LGUI);
         }
     }
     if (keymap_config.swap_rctl_rgui) {
         if (((mod & MOD_RCTL) == MOD_RCTL) ^ ((mod & MOD_RGUI) == MOD_RGUI)) {
-            /* lefthand values to preserve the right hand bit */
+            //lefthand values to preserve the right hand bit
             mod ^= (MOD_LCTL | MOD_LGUI);
         }
     }
