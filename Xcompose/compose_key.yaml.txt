@@ -1,0 +1,58 @@
+# Mac:
+# gen-compose compose_key.yaml.txt > DefaultKeyBinding.dict
+# (Manually change from § to F13 for Mac)
+# mv DefaultKeyBinding.dict ~/Library/KeyBindings/DefaultKeyBinding.dict
+# Linux:
+# gen-compose-export compose_key.yaml.txt > XCompose
+
+
+# punctuation
+->: →
+<-: ←
+?!: ‽
+so: §
+# scandinavia
+e-: €
+aa: å
+AA: Å
+'a"': ä
+'o"': ö
+'A"': Ä
+'O"': Ö
+AE: Æ
+ae: æ
+o/: ø
+O/: Ø
+# emojis!
+":D": 😀
+":)": 🙂
+"(:": 🙃
+":|": 😐
+":P": 😛
+":+": 👍🏼
+":/": 😕
+lol: 😂
+rofl: 🤣
+hm: 🤔
+look: 🧐
+sus: 🤨
+boom: 🤯
+wha: 😳
+sick: 🤮
+thx: 🙌🏼
+wave: 👋🏼
+fu: 🖕🏼
+VV: 🤞🏼
+doh: 🤦🏾‍♂️
+shrug: 🤷🏾‍♂️
+llap: 🖖🏼
+party: 🎉
+
+#flags
+sv: 🇸🇪
+np: 🇳🇵
+dk: 🇩🇰
+us: 🇺🇸
+
+
+
