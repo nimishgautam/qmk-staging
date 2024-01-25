@@ -11,13 +11,13 @@ const uint16_t PROGMEM vim_paste_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM calculator_combo[] = {LT(_FN_KEYS,KC_LPRN),  LT(_TERMINAL,KC_RPRN), COMBO_END};
 
 // combo - press combo+ a to get å
-const uint16_t PROGMEM acircle_combo[] = { KC_BSPC, KC_SPACE, LCTL_T(KC_A),COMBO_END};
+const uint16_t PROGMEM acircle_combo[] = { KC_BSPC, LCTL_T(KC_A),COMBO_END};
 
 // combo - press combo+ l to get ä
-const uint16_t PROGMEM adot_combo[] = {KC_BSPC, KC_SPACE, RALT_T(KC_L), COMBO_END};
+const uint16_t PROGMEM adot_combo[] = {KC_SPACE, RALT_T(KC_L), COMBO_END};
 
 // combo - press combo+ ; to get ö
-const uint16_t PROGMEM odot_combo[] = {KC_BSPC, KC_SPACE, RCTL_T(KC_SCLN),COMBO_END};
+const uint16_t PROGMEM odot_combo[] = {KC_SPACE, RCTL_T(KC_SCLN),COMBO_END};
 
 // combo - press top row (index and middle) to get a +
 const uint16_t PROGMEM plus_combo[] = {KC_U, KC_I,COMBO_END};
@@ -52,6 +52,12 @@ const uint16_t PROGMEM scrolldown_combo[] = {LGUI_T(KC_F), RGUI_T(KC_J),COMBO_EN
 // combo - press both middle fingers to scroll up
 const uint16_t PROGMEM scrollup_combo[] = {LSFT_T(KC_D), RSFT_T(KC_K),COMBO_END};
 
+// combo - smiley face 🙂
+const uint16_t PROGMEM smiley_combo[] = {KC_R, KC_U ,COMBO_END};
+
+//combo - thumbs up 👍️
+const uint16_t PROGMEM thumbsup_combo[] = {KC_W, KC_O ,COMBO_END};
+
 combo_t key_combos[] = {
     COMBO(compose_combo, COMPOSE_MACRO),
     COMBO(search_combo, FINDER),
@@ -73,4 +79,6 @@ combo_t key_combos[] = {
     COMBO(emoji_combo, EMOJI_KBD),
     COMBO(scrolldown_combo, KC_MS_WH_DOWN),
     COMBO(scrollup_combo, KC_MS_WH_UP),
+    COMBO(smiley_combo, SMILEY),
+    COMBO(thumbsup_combo, THUMBS_UP)
 };
