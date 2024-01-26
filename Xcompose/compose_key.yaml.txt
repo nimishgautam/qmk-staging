@@ -6,30 +6,49 @@
 # gen-compose-export compose_key.yaml.txt > XCompose
 
 
-# punctuation
+# punctuation / symbols
+
 ->: →
+=>: ⇒
+<=: ⇐
 <-: ←
 ?!: ‽
 so: §
+tm: ™
+co: ©
+...: …
+.: •
+--: —
+inf: ∞
+/=: ≠
+
 # scandinavia
+
 e-: €
+e=: €
 aa: å
 AA: Å
 'a"': ä
+'a:': ä
 'o"': ö
+'o:': ö
 'A"': Ä
+'A:': Ä
 'O"': Ö
+'O:': Ö
 AE: Æ
 ae: æ
 o/: ø
 O/: Ø
+
 # emojis!
+
 ":D": 😀
 ":)": 🙂
 "(:": 🙃
 ":|": 😐
 ":P": 😛
-":+": 👍🏼
+":+": 👍🏽
 ":/": 😕
 lol: 😂
 rofl: 🤣
@@ -39,20 +58,40 @@ sus: 🤨
 boom: 🤯
 wha: 😳
 sick: 🤮
-thx: 🙌🏼
-wave: 👋🏼
-fu: 🖕🏼
-VV: 🤞🏼
-doh: 🤦🏾‍♂️
-shrug: 🤷🏾‍♂️
-llap: 🖖🏼
+thx: 🙌🏽
+wave: 👋🏽
+fu: 🖕🏽
+maybe: 🤞🏽
+doh: 🤦🏽‍♂️
+shrug: 🤷🏽‍♂️
+llap: 🖖🏽
 party: 🎉
+shh: 🤫
+fine: 🫠
+oboy: 🙄
+<3: ❤️
+f<3: ❤️‍🔥
+h<3: 🫶🏽
+strong: 💪🏽
 
 #flags
+
 sv: 🇸🇪
 np: 🇳🇵
 dk: 🇩🇰
 us: 🇺🇸
+eu: 🇪🇺
+
+# longer strings for fun
+
+o_o: ಠ_ಠ
+dunno: ¯\_(ツ)_/¯
+
+# Devnagari
+om: ॐ
+
+# problematic for yaml reader, manually add
+#on: ⏻
 
 
 

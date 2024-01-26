@@ -1,22 +1,58 @@
 {"\UF710" = {
-  "u" = {
-    "s" = ("insertText:", "🇺🇸");
+  "o" = {
+    "m" = ("insertText:", "ॐ");
+    "_" = {
+      "o" = ("insertText:", "ಠ_ಠ");
+    };
+    "b" = {
+      "o" = {
+        "y" = ("insertText:", "🙄");
+      };
+    };
+    "/" = ("insertText:", "ø");
+    ":" = ("insertText:", "ö");
+    "\"" = ("insertText:", "ö");
   };
   "d" = {
+    "u" = {
+      "n" = {
+        "n" = {
+          "o" = ("insertText:", "¯\\_(ツ)_/¯");
+        };
+      };
+    };
     "k" = ("insertText:", "🇩🇰");
     "o" = {
-      "h" = ("insertText:", "🤦🏾‍♂️");
+      "h" = ("insertText:", "🤦🏽‍♂️");
     };
+  };
+  "e" = {
+    "u" = ("insertText:", "🇪🇺");
+    "=" = ("insertText:", "€");
+    "-" = ("insertText:", "€");
+  };
+  "u" = {
+    "s" = ("insertText:", "🇺🇸");
   };
   "n" = {
     "p" = ("insertText:", "🇳🇵");
   };
   "s" = {
     "v" = ("insertText:", "🇸🇪");
+    "t" = {
+      "r" = {
+        "o" = {
+          "n" = {
+            "g" = ("insertText:", "💪🏽");
+          };
+        };
+      };
+    };
     "h" = {
+      "h" = ("insertText:", "🤫");
       "r" = {
         "u" = {
-          "g" = ("insertText:", "🤷🏾‍♂️");
+          "g" = ("insertText:", "🤷🏽‍♂️");
         };
       };
     };
@@ -30,6 +66,28 @@
     };
     "o" = ("insertText:", "§");
   };
+  "h" = {
+    "<" = {
+      "3" = ("insertText:", "🫶🏽");
+    };
+    "m" = ("insertText:", "🤔");
+  };
+  "f" = {
+    "<" = {
+      "3" = ("insertText:", "❤️‍🔥");
+    };
+    "i" = {
+      "n" = {
+        "e" = ("insertText:", "🫠");
+      };
+    };
+    "u" = ("insertText:", "🖕🏽");
+  };
+  "<" = {
+    "3" = ("insertText:", "❤️");
+    "-" = ("insertText:", "←");
+    "=" = ("insertText:", "⇐");
+  };
   "p" = {
     "a" = {
       "r" = {
@@ -42,7 +100,7 @@
   "l" = {
     "l" = {
       "a" = {
-        "p" = ("insertText:", "🖖🏼");
+        "p" = ("insertText:", "🖖🏽");
       };
     };
     "o" = {
@@ -52,16 +110,19 @@
       "l" = ("insertText:", "😂");
     };
   };
-  "V" = {
-    "V" = ("insertText:", "🤞🏼");
-  };
-  "f" = {
-    "u" = ("insertText:", "🖕🏼");
+  "m" = {
+    "a" = {
+      "y" = {
+        "b" = {
+          "e" = ("insertText:", "🤞🏽");
+        };
+      };
+    };
   };
   "w" = {
     "a" = {
       "v" = {
-        "e" = ("insertText:", "👋🏼");
+        "e" = ("insertText:", "👋🏽");
       };
     };
     "h" = {
@@ -70,8 +131,9 @@
   };
   "t" = {
     "h" = {
-      "x" = ("insertText:", "🙌🏼");
+      "x" = ("insertText:", "🙌🏽");
     };
+    "m" = ("insertText:", "™");
   };
   "b" = {
     "o" = {
@@ -79,9 +141,6 @@
         "m" = ("insertText:", "🤯");
       };
     };
-  };
-  "h" = {
-    "m" = ("insertText:", "🤔");
   };
   "r" = {
     "o" = {
@@ -92,7 +151,7 @@
   };
   ":" = {
     "/" = ("insertText:", "😕");
-    "+" = ("insertText:", "👍🏼");
+    "+" = ("insertText:", "👍🏽");
     "P" = ("insertText:", "😛");
     "|" = ("insertText:", "😐");
     ")" = ("insertText:", "🙂");
@@ -103,32 +162,48 @@
   };
   "O" = {
     "/" = ("insertText:", "Ø");
+    ":" = ("insertText:", "Ö");
     "\"" = ("insertText:", "Ö");
-  };
-  "o" = {
-    "/" = ("insertText:", "ø");
-    "\"" = ("insertText:", "ö");
   };
   "a" = {
     "e" = ("insertText:", "æ");
+    ":" = ("insertText:", "ä");
     "\"" = ("insertText:", "ä");
     "a" = ("insertText:", "å");
   };
   "A" = {
     "E" = ("insertText:", "Æ");
+    ":" = ("insertText:", "Ä");
     "\"" = ("insertText:", "Ä");
     "A" = ("insertText:", "Å");
   };
-  "e" = {
-    "-" = ("insertText:", "€");
+  "T" = {
+    "r" = {
+      "u" = {
+        "e" = ("insertText:", "⏻");
+      };
+    };
+  };
+  "/" = {
+    "=" = ("insertText:", "≠");
+  };
+  "i" = {
+    "n" = {
+      "f" = ("insertText:", "∞");
+    };
+  };
+  "-" = {
+    "-" = ("insertText:", "—");
+    ">" = ("insertText:", "→");
+  };
+  "." = ("insertText:", "•");
+  "c" = {
+    "o" = ("insertText:", "©");
   };
   "?" = {
     "!" = ("insertText:", "‽");
   };
-  "<" = {
-    "-" = ("insertText:", "←");
-  };
-  "-" = {
-    ">" = ("insertText:", "→");
+  "=" = {
+    ">" = ("insertText:", "⇒");
   };
 };}
