@@ -1,7 +1,7 @@
 # Mac:
 # gen-compose compose_key.yaml.txt > DefaultKeyBinding.dict
 # (Manually change from § to F13 for Mac)
-# cp DefaultKeyBindings.dict ~/Library/KeyBindings/DefaultKeyBindings.dict
+# cp DefaultKeyBinding.dict ~/Library/KeyBindings/DefaultKeyBinding.dict
 # Linux:
 # gen-compose-export compose_key.yaml.txt > XCompose
 
