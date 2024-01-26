@@ -149,6 +149,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case SCREENSHOT:
     case OPEN_TERMINAL_HERE:
     case SHOW_OS:
+    case SMILEY:
+    case THUMBS_UP:
 
         if(record->event.pressed) {
             keymap_config.raw = eeconfig_read_keymap();
@@ -273,6 +275,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         SEND_STRING("Mac");
                     }
                 break;
+                case SMILEY:
+                    if(keymap_config.swap_lctl_lgui){ //Linux
+                        SEND_STRING(SS_TAP(X_COMPOSE_KEY)":)");
+                    } else { //osx
+                        SEND_STRING(SS_TAP(X_COMPOSE_MAC)":)");
+                    }
+                break;
+                case THUMBS_UP:
+                    if(keymap_config.swap_lctl_lgui){ //Linux
+                        SEND_STRING(SS_TAP(X_COMPOSE_KEY)":+");
+                    } else { //osx
+                        SEND_STRING(SS_TAP(X_COMPOSE_MAC)":+");
+                    }
+                break;
+
             }
         }
 
