@@ -12,7 +12,7 @@
 // #define EE_HANDS
 
 //for split
-#    define RGB_MATRIX_SPLIT \
+#define RGB_MATRIX_SPLIT \
         { 27, 27 }
 #define SPLIT_TRANSPORT_MIRROR
 
@@ -138,6 +138,88 @@
 #define MK_KINETIC_SPEED
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 
+#define RGB_MOUSE_MODE RGB_MATRIX_RAINBOW_PINWHEELS
+
 // If I have a keypress in my defines, I want it to consistently send what it says
 // eg #define END_PROCESS C(KC_C) should sent ctl-c and NOT G(KC_C) even when ctl and gui are swapped
 #define LEGACY_MAGIC_HANDLING
+
+// music
+
+#define TO_BOLDLY_GO \
+  W__NOTE(_BF3 ), \
+  Q__NOTE(_EF4 ), \
+  WD_NOTE(_AF4 ), \
+  W__NOTE(_REST), \
+  H__NOTE(_G4  ), \
+  Q__NOTE(_EF4 ), \
+  H__NOTE(_C4  ), \
+  W__NOTE(_REST), \
+  QD_NOTE(_F4  ), \
+  M__NOTE(_BF4, 128),
+
+#define MARIO_THEME \
+    Q__NOTE(_E5), \
+    H__NOTE(_E5), \
+    H__NOTE(_E5), \
+    Q__NOTE(_C5), \
+    H__NOTE(_E5), \
+    W__NOTE(_G5), \
+    Q__NOTE(_G4),
+
+#define MARIO_MUSHROOM \
+    S__NOTE(_C5 ), \
+    S__NOTE(_G4 ), \
+    S__NOTE(_C5 ), \
+    S__NOTE(_E5 ), \
+    S__NOTE(_G5 ), \
+    S__NOTE(_C6 ), \
+    S__NOTE(_G5 ), \
+    S__NOTE(_GS4), \
+    S__NOTE(_C5 ), \
+    S__NOTE(_DS5), \
+    S__NOTE(_GS5), \
+    S__NOTE(_DS5), \
+    S__NOTE(_GS5), \
+    S__NOTE(_C6 ), \
+    S__NOTE(_DS6), \
+    S__NOTE(_GS6), \
+    S__NOTE(_DS6), \
+    S__NOTE(_AS4), \
+    S__NOTE(_D5 ), \
+    S__NOTE(_F5 ), \
+    S__NOTE(_AS5), \
+    S__NOTE(_D6 ), \
+    S__NOTE(_F6 ), \
+    S__NOTE(_AS6), \
+    S__NOTE(_F6 )
+
+#define MARIO_GAMEOVER \
+    HD_NOTE(_C5 ), \
+    HD_NOTE(_G4 ), \
+    H__NOTE(_E4 ), \
+    H__NOTE(_A4 ), \
+    H__NOTE(_B4 ), \
+    H__NOTE(_A4 ), \
+    H__NOTE(_AF4), \
+    H__NOTE(_BF4), \
+    H__NOTE(_AF4), \
+    WD_NOTE(_G4 ),
+
+#define ONE_UP_SOUND \
+    Q__NOTE(_E6  ),  \
+    Q__NOTE(_G6  ),  \
+    Q__NOTE(_E7  ),  \
+    Q__NOTE(_C7  ),  \
+    Q__NOTE(_D7  ),  \
+    Q__NOTE(_G7  ),
+
+#define COIN_SOUND \
+    E__NOTE(_A5  ),      \
+    HD_NOTE(_E6  ),
+
+#undef STARTUP_SONG
+#define STARTUP_SONG SONG(MARIO_THEME)
+#define GOODBYE_SONG SONG(MARIO_GAMEOVER)
+#define CG_SWAP_SONG SONG(ONE_UP_SOUND)
+#define CG_NORM_SONG SONG(COIN_SOUND)

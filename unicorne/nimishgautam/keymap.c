@@ -25,50 +25,68 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 }
 
 #if defined(RGB_LIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
-// yeah, should be layer_state_set_user but that one doesn't update the mods
+// feels like it should be layer_state_set_user but that one doesn't update the mods
+uint8_t no_mouse_rgb_mode = RGB_MATRIX_SOLID_SPLASH;
+
 void set_lighting_user(void) {
-//layer_state_t layer_state_set_user(layer_state_t state){
     uint8_t layer = get_highest_layer(layer_state);
     switch(layer){
         case _BASE:
-            rgblight_sethsv_noeeprom(HSV_WHITE);
+            if((rgb_matrix_get_mode() == RGB_MOUSE_MODE) && (no_mouse_rgb_mode != RGB_MOUSE_MODE)){
+                rgb_matrix_mode_noeeprom(no_mouse_rgb_mode);
+            }
+            if(rgb_matrix_get_hue() != 0){ // getting hsv returns a weird non-object thing that has to be initialized etc.
+                rgb_matrix_sethsv_noeeprom(HSV_WHITE);
+            }
             led_t led_state = host_keyboard_led_state();
             if(led_state.caps_lock){
-                rgblight_sethsv_noeeprom(HSV_RED);
+                rgb_matrix_sethsv_noeeprom(HSV_RED);
             }
             //rgblight_sethsv(HSV_OFF);
         break;
         case _NUMS:
-            rgblight_sethsv_noeeprom(HSV_GREEN);
+            rgb_matrix_sethsv_noeeprom(HSV_GREEN);
         break;
         case _TERMINAL:
-            rgblight_sethsv_noeeprom(HSV_PINK);
+            rgb_matrix_sethsv_noeeprom(HSV_PINK);
         break;
         case _TEXT_NAV:
-            rgblight_sethsv_noeeprom(HSV_BLUE);
+            rgb_matrix_sethsv_noeeprom(HSV_BLUE);
         break;
         case _ADJUST:
-            rgblight_sethsv_noeeprom(HSV_ORANGE);
+            rgb_matrix_sethsv_noeeprom(HSV_ORANGE);
         break;
         case _FN_KEYS:
-            rgblight_sethsv_noeeprom(HSV_PURPLE);
+            rgb_matrix_sethsv_noeeprom(HSV_PURPLE);
         break;
+        #ifdef POINTING_DEVICE_ENABLE
+        case _MOUSE:
+            if(rgb_matrix_get_mode() != RGB_MOUSE_MODE){
+                no_mouse_rgb_mode = rgb_matrix_get_mode();
+
+                // fail-safe color in case animation doesn't work
+                // BUT ALSO, required to not have the animation be white (??)
+                rgb_matrix_sethsv_noeeprom(HSV_CHARTREUSE); 
+                rgb_matrix_mode_noeeprom(RGB_MOUSE_MODE);
+            }
+            break;
+        #endif
         default:
         break;
     }
     // override color with mods
 
     if(get_mods() & MOD_MASK_SHIFT){
-        rgblight_sethsv_noeeprom(HSV_RED);
+        rgb_matrix_sethsv_noeeprom(HSV_RED);
     }
     if(get_mods() & MOD_MASK_CTRL){
-        rgblight_sethsv_noeeprom(HSV_MAGENTA);
+        rgb_matrix_sethsv_noeeprom(HSV_MAGENTA);
     }
     if(get_mods() & MOD_MASK_ALT){
-        rgblight_sethsv_noeeprom(HSV_YELLOW);
+        rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
     }
     if(get_mods() & MOD_MASK_GUI){
-        rgblight_sethsv_noeeprom(HSV_TEAL);
+        rgb_matrix_sethsv_noeeprom(HSV_TEAL);
     }
     //return state;
 }
@@ -80,9 +98,6 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 bool oled_task_user(void){
-    #ifndef OLED_STUPID_WAY_AROUND
-    set_lighting_user();
-    #endif
 
     /* write OS */
     static const char PROGMEM apple_logo[] = {
@@ -126,6 +141,11 @@ bool oled_task_user(void){
         case _FN_KEYS:
             oled_write_ln_P(PSTR("  Fn"), false);
             break;
+        #ifdef POINTING_DEVICE_ENABLE
+        case _MOUSE:
+            oled_write_ln_P(PSTR("Mouse"), false);
+            break;
+        #endif
         default:
             break;
     }
@@ -340,6 +360,8 @@ void pointing_device_init_user(void) {
 
 
 #ifdef OLED_STUPID_WAY_AROUND
+// send a bunch of crap to the other side
+
 uint16_t keymap_config_transport  = 0;
 uint8_t magic_case_transport = 0;
 
@@ -389,12 +411,12 @@ void split_send_all_if_needed(void) {
 #endif
 
 void housekeeping_task_user(void) {
-#ifdef RGB_MATRIX_ENABLE
-    set_lighting_user();
-#endif
 
-    #ifdef OLED_STUPID_WAY_AROUND
     if (is_keyboard_master()) {
+        #ifdef RGB_MATRIX_ENABLE
+            set_lighting_user();
+        #endif
+        #ifdef OLED_STUPID_WAY_AROUND
         // update transport variables with current master values
         keymap_config_transport = keymap_config.raw;
         magic_case_transport = magic_case_state;
@@ -408,6 +430,7 @@ void housekeeping_task_user(void) {
             keymap_config.raw = keymap_config_transport;
         }
         magic_case_state = magic_case_transport;
+        #endif
     }
-    #endif
+
 }
