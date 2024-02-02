@@ -35,12 +35,8 @@ void set_lighting_user(void) {
             if((rgb_matrix_get_mode() == RGB_MOUSE_MODE) && (no_mouse_rgb_mode != RGB_MOUSE_MODE)){
                 rgb_matrix_mode_noeeprom(no_mouse_rgb_mode);
             }
-            if(rgb_matrix_get_hue() != 0){ // getting hsv returns a weird non-object thing that has to be initialized etc.
+            if(rgb_matrix_get_hue() != 0 && rgb_matrix_get_sat() != 0){ // getting hsv returns a weird non-object thing that has to be initialized etc.
                 rgb_matrix_sethsv_noeeprom(HSV_WHITE);
-            }
-            led_t led_state = host_keyboard_led_state();
-            if(led_state.caps_lock){
-                rgb_matrix_sethsv_noeeprom(HSV_RED);
             }
             //rgblight_sethsv(HSV_OFF);
         break;
@@ -76,7 +72,8 @@ void set_lighting_user(void) {
     }
     // override color with mods
 
-    if(get_mods() & MOD_MASK_SHIFT){
+    led_t led_state = host_keyboard_led_state();
+    if((get_mods() & MOD_MASK_SHIFT)  || led_state.caps_lock){
         rgb_matrix_sethsv_noeeprom(HSV_RED);
     }
     if(get_mods() & MOD_MASK_CTRL){
@@ -99,6 +96,9 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 
 bool oled_task_user(void){
 
+    //Layer
+    uint8_t layer = get_highest_layer(layer_state);
+
     /* write OS */
     static const char PROGMEM apple_logo[] = {
         32, 149,150,10,
@@ -110,21 +110,10 @@ bool oled_task_user(void){
         32, 185,186,0
     };
 
-    if(keymap_config.swap_lctl_lgui){
-        //oled_write_ln_P(PSTR("Linux"), false);
-        oled_write_ln_P(tux_logo, false);
-    }
-    else {
-        //oled_write_ln_P(PSTR("OSX"), false);
-        oled_write_ln_P(apple_logo, false);
-    }
 
-    //Layer
-    uint8_t layer = get_highest_layer(layer_state);
     switch (layer) {
         case _BASE:
             oled_write_ln_P(PSTR("  -  "), false);
-            //rgblight_sethsv(HSV_OFF);
             break;
         case _NUMS:
             oled_write_ln_P(PSTR(" Nums"), false);
@@ -136,6 +125,14 @@ bool oled_task_user(void){
             oled_write_ln_P(PSTR(" Txt"), false);
             break;
         case _ADJUST:
+            if(keymap_config.swap_lctl_lgui){
+                //oled_write_ln_P(PSTR("Linux"), false);
+                oled_write_ln_P(tux_logo, false);
+            }
+            else {
+                //oled_write_ln_P(PSTR("OSX"), false);
+                oled_write_ln_P(apple_logo, false);
+            }
             oled_write_ln_P(PSTR(" Adj"), false);
             break;
         case _FN_KEYS:
@@ -152,6 +149,7 @@ bool oled_task_user(void){
     oled_write_ln_P(PSTR(" "), false);
 
     /* write wpm */
+    oled_write_P(PSTR(" "), false);
     oled_write_ln(get_u8_str(get_current_wpm(), '0'), false);
 
     /* write magic */
@@ -162,8 +160,8 @@ bool oled_task_user(void){
     }
 
 
-    const char PROGMEM up_arrow[] = { 24, 10};
-    const char PROGMEM circle_symbol[] = { 15, 10};
+    const char PROGMEM up_arrow[] = { 24,};
+    const char PROGMEM circle_symbol[] = { 15,};
     oled_write_ln_P(PSTR(" "), false);
     // mods
     if(get_mods() & MOD_MASK_SHIFT){

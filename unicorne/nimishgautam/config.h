@@ -16,6 +16,10 @@
         { 27, 27 }
 #define SPLIT_TRANSPORT_MIRROR
 
+#ifndef OLED_FONT_H
+    #define OLED_FONT_H "users/nimishgautam/lib/glcdfont.c"
+#endif
+
 // oled the stupid way around, ie on the non-primary side
 #define OLED_STUPID_WAY_AROUND
 
@@ -194,7 +198,7 @@
     S__NOTE(_AS6), \
     S__NOTE(_F6 )
 
-#define MARIO_GAMEOVER \
+#define MARIO_GAMEOVER_U \
     HD_NOTE(_C5 ), \
     HD_NOTE(_G4 ), \
     H__NOTE(_E4 ), \
@@ -218,8 +222,15 @@
     E__NOTE(_A5  ),      \
     HD_NOTE(_E6  ),
 
+
+#define IMPERIAL_MARCH_U \
+  HD_NOTE(_A4), HD_NOTE(_A4), HD_NOTE(_A4), QD_NOTE(_F4), QD_NOTE(_C5), \
+  HD_NOTE(_A4), QD_NOTE(_F4),  QD_NOTE(_C5), WD_NOTE(_A4), \
+  HD_NOTE(_E5), HD_NOTE(_E5), HD_NOTE(_E5), QD_NOTE(_F5), QD_NOTE(_C5), \
+  HD_NOTE(_A4), QD_NOTE(_F4),  QD_NOTE(_C5), WD_NOTE(_A4)
+
 #undef STARTUP_SONG
-#define STARTUP_SONG SONG(MARIO_THEME)
-#define GOODBYE_SONG SONG(MARIO_GAMEOVER)
+#define STARTUP_SONG SONG(IMPERIAL_MARCH_U)
+#define GOODBYE_SONG SONG(MARIO_GAMEOVER_U)
 #define CG_SWAP_SONG SONG(ONE_UP_SOUND)
 #define CG_NORM_SONG SONG(COIN_SOUND)

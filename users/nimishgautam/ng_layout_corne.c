@@ -125,18 +125,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #endif
 
 #ifdef POINTING_DEVICE_ENABLE
-   [_MOUSE] = LAYOUT_split_3x6_3( //fn keys,
+   [_MOUSE] = LAYOUT_split_3x6_3( // mouse keys
    /**
-    * Left hand pressing the inner key, left modifiers active, right FN keys
-    * Also scroll lock and printscreen in here
+    * Left hand has the actual pointer and primary click, along with the mouse TG layer (in auto mouse mode this means the layer locks until it's pushed again)
     * 
    */
   //,-----------------------------------------------------.                                                                   ,-----------------------------------------------------.
-     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                           KC_TRANSPARENT, KC_TRANSPARENT,    KC_TRANSPARENT,    KC_TRANSPARENT,    KC_TRANSPARENT, KC_TRANSPARENT,
+     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, TG(_MOUSE),                           KC_BTN6, KC_WH_U,    KC_TRANSPARENT,    KC_TRANSPARENT,    KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                           KC_TRANSPARENT, KC_BTN4,    KC_BTN5,    KC_TRANSPARENT,    KC_TRANSPARENT, KC_TRANSPARENT,
+     TO(_BASE), KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                           KC_BTN7, KC_BTN4,    KC_BTN5,    KC_TRANSPARENT,    KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                         KC_TRANSPARENT, KC_TRANSPARENT,    KC_TRANSPARENT,    KC_TRANSPARENT,    KC_TRANSPARENT, KC_TRANSPARENT,
+      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                         KC_BTN8, KC_WH_D,    KC_WH_L,    KC_WH_R,    KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------+--------|                                                   |--------+--------+--------+--------+--------+--------+--------|
                                           KC_TRANSPARENT, KC_TRANSPARENT, KC_BTN1 ,                             KC_BTN2  ,  KC_BTN3, KC_TRANSPARENT
                                       //`--------------------------'                                                   `--------------------------'
