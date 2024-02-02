@@ -8,4 +8,8 @@ enum custom_layers {
     _TERMINAL, // triggered by the right hand inner button
 
     _ADJUST, // triggered from series of keys to avoid accidentally getting to it
+
+    #ifdef POINTING_DEVICE_ENABLE
+    _MOUSE, // mouse layer
+    #endif
 };
