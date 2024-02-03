@@ -10,6 +10,7 @@ SPLIT_KEYBOARD = yes
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = analog_joystick
 AUDIO_ENABLE = yes
+OS_DETECTION_ENABLE = yes
 #CAPS_WORD_ENABLE = yes # if you hold down both shifts, you get lshift enabled for 1 word, but only works with KC shift, not MOD shift :(
 #AUTO_SHIFT_ENABLE = yes
 #UNICODE_ENABLE = yes     # enable unicode

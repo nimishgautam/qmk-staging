@@ -3,6 +3,7 @@
 
 #include QMK_KEYBOARD_H
 #include "transactions.h"
+#include "os_detection.h"
 
 #include "ng_key_definitions.h"
 #include "ng_tapdances_corne.c"
@@ -11,6 +12,40 @@
 #include "ng_layout_corne.c"
 #include "ng_process_keycodes_corne.c"
 
+
+#ifdef OS_DETECTION_ENABLE
+void os_detect(void) {
+    os_variant_t host_os = detected_host_os();
+    #ifdef AUDIO_ENABLE
+    float cg_norm_song[][2] = CG_NORM_SONG;
+    float cg_swap_song[][2] = CG_SWAP_SONG;
+    #endif
+    if (host_os) {
+        switch (host_os) {
+            case OS_MACOS:
+            case OS_IOS:
+                //check
+                if( keymap_config.swap_lctl_lgui){
+                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = false;
+                    #ifdef AUDIO_ENABLE
+                    PLAY_SONG(cg_norm_song);
+                    #endif
+                }
+
+            break;
+            default: //Linux, but also windows etc with swapped ctl/gui
+                if( !keymap_config.swap_lctl_lgui){
+                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = true;
+                    #ifdef AUDIO_ENABLE
+                    PLAY_SONG(cg_swap_song);
+                    #endif
+                }
+            break;
+        }
+
+    }
+}
+#endif
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -24,45 +59,86 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-#if defined(RGB_LIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
-// feels like it should be layer_state_set_user but that one doesn't update the mods
-uint8_t no_mouse_rgb_mode = RGB_MATRIX_SOLID_SPLASH;
+#ifdef RGB_MATRIX_ENABLE
+// base rgb mode, some sensible default if undefined
+uint8_t base_rgb_mode = RGB_MATRIX_SPLASH;
+HSV base_HSV = {HSV_CYAN};
+uint8_t prev_layer = _BASE;
 
 void set_lighting_user(void) {
-    uint8_t layer = get_highest_layer(layer_state);
+
+ uint8_t layer = get_highest_layer(layer_state);
+    if (layer != _ADJUST){
+    // check if mods are set. If so, no need to check layers
+    led_t led_state = host_keyboard_led_state();
+        if(get_mods() || led_state.caps_lock){
+            if((get_mods() & MOD_MASK_SHIFT)  || led_state.caps_lock){
+                rgb_matrix_sethsv_noeeprom(HSV_RED);
+            }
+            if(get_mods() & MOD_MASK_CTRL){
+                rgb_matrix_sethsv_noeeprom(HSV_MAGENTA);
+            }
+            if(get_mods() & MOD_MASK_ALT){
+                rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
+            }
+            if(get_mods() & MOD_MASK_GUI){
+                rgb_matrix_sethsv_noeeprom(HSV_TEAL);
+            }
+            if( rgb_matrix_get_mode() != RGB_MODS_MODE){
+                rgb_matrix_mode_noeeprom(RGB_MODS_MODE);
+            }
+            return;
+        }
+    }
+
+    // otherwise some layer coloring and stuff
     switch(layer){
         case _BASE:
-            if((rgb_matrix_get_mode() == RGB_MOUSE_MODE) && (no_mouse_rgb_mode != RGB_MOUSE_MODE)){
-                rgb_matrix_mode_noeeprom(no_mouse_rgb_mode);
+            if(prev_layer == _ADJUST){
+                base_HSV = rgb_matrix_get_hsv();
+                base_rgb_mode = rgb_matrix_get_mode();
             }
-            if(rgb_matrix_get_hue() != 0 && rgb_matrix_get_sat() != 0){ // getting hsv returns a weird non-object thing that has to be initialized etc.
-                rgb_matrix_sethsv_noeeprom(HSV_WHITE);
+            rgb_matrix_sethsv_noeeprom(base_HSV.h, base_HSV.s, base_HSV.v);
+            if(rgb_matrix_get_mode() != base_rgb_mode){
+                //could be we change from a different base OR from mods
+                rgb_matrix_mode_noeeprom(base_rgb_mode);
             }
-            //rgblight_sethsv(HSV_OFF);
         break;
         case _NUMS:
-            rgb_matrix_sethsv_noeeprom(HSV_GREEN);
+            rgb_matrix_sethsv_noeeprom(HSV_GREEN); 
+            if(rgb_matrix_get_mode() != RGB_NUMS_MODE){
+                rgb_matrix_mode_noeeprom(RGB_NUMS_MODE);
+            }
         break;
         case _TERMINAL:
             rgb_matrix_sethsv_noeeprom(HSV_PINK);
+            if(rgb_matrix_get_mode() != RGB_TERM_MODE){
+                rgb_matrix_mode_noeeprom(RGB_TERM_MODE);
+            }
         break;
         case _TEXT_NAV:
-            rgb_matrix_sethsv_noeeprom(HSV_BLUE);
+            rgb_matrix_sethsv_noeeprom(HSV_BLUE); 
+            if(rgb_matrix_get_mode() != RGB_TXT_MODE){
+                rgb_matrix_mode_noeeprom(RGB_TXT_MODE);
+            } 
         break;
         case _ADJUST:
-            rgb_matrix_sethsv_noeeprom(HSV_ORANGE);
+            if(prev_layer != _ADJUST){
+                rgb_matrix_sethsv_noeeprom(HSV_CYAN);
+                rgb_matrix_mode_noeeprom(base_rgb_mode);
+            }
+            // adjust, and any adjustments will be saved to base layer
         break;
         case _FN_KEYS:
-            rgb_matrix_sethsv_noeeprom(HSV_PURPLE);
+            rgb_matrix_sethsv_noeeprom(HSV_PURPLE); 
+            if(rgb_matrix_get_mode() != RGB_FN_MODE){
+                rgb_matrix_mode_noeeprom(RGB_FN_MODE);
+            }             
         break;
         #ifdef POINTING_DEVICE_ENABLE
         case _MOUSE:
             if(rgb_matrix_get_mode() != RGB_MOUSE_MODE){
-                no_mouse_rgb_mode = rgb_matrix_get_mode();
-
-                // fail-safe color in case animation doesn't work
-                // BUT ALSO, required to not have the animation be white (??)
-                rgb_matrix_sethsv_noeeprom(HSV_CHARTREUSE); 
+                rgb_matrix_sethsv_noeeprom(HSV_CHARTREUSE); // color not needed for swirly animations
                 rgb_matrix_mode_noeeprom(RGB_MOUSE_MODE);
             }
             break;
@@ -70,31 +146,73 @@ void set_lighting_user(void) {
         default:
         break;
     }
-    // override color with mods
-
-    led_t led_state = host_keyboard_led_state();
-    if((get_mods() & MOD_MASK_SHIFT)  || led_state.caps_lock){
-        rgb_matrix_sethsv_noeeprom(HSV_RED);
-    }
-    if(get_mods() & MOD_MASK_CTRL){
-        rgb_matrix_sethsv_noeeprom(HSV_MAGENTA);
-    }
-    if(get_mods() & MOD_MASK_ALT){
-        rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
-    }
-    if(get_mods() & MOD_MASK_GUI){
-        rgb_matrix_sethsv_noeeprom(HSV_TEAL);
-    }
+    prev_layer = layer;
     //return state;
 }
 #endif
 
 #ifdef OLED_ENABLE
+
+#ifdef OLED_STUPID_WAY_AROUND
+// send a bunch of crap to the other side
+
+uint16_t keymap_config_transport  = 0;
+uint8_t magic_case_transport = 0;
+
+uint32_t last_sync = 0;
+
+void magic_case_sync(uint8_t initiator2target_buffer_size, const void* initiator2target_buffer,
+                     uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
+    if (initiator2target_buffer_size == sizeof(magic_case_transport)) {
+        memcpy(&magic_case_transport, initiator2target_buffer, initiator2target_buffer_size);
+    }
+}
+
+void keymap_sync(uint8_t initiator2target_buffer_size, const void* initiator2target_buffer,
+                     uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
+    if (initiator2target_buffer_size == sizeof(keymap_config_transport)) {
+        memcpy(&keymap_config_transport, initiator2target_buffer, initiator2target_buffer_size);
+    }
+}
+
+void split_send_all_if_needed(void) {
+    //static uint16_t last_keymap = 0;
+    //uint8_t last_magic_case = 0;
+    bool needs_sync = false;
+
+    // Send every 500ms regardless of state change
+    if (timer_elapsed32(last_sync) > 2000) {
+        needs_sync = true;
+    }
+
+    /* can check if the vars have changed here */
+
+    if (needs_sync) {
+        if (
+            transaction_rpc_send(SYNC_MAGIC_CASE, sizeof(magic_case_transport), &magic_case_transport)
+        &&   transaction_rpc_send(SYNC_KEYMAP, sizeof(keymap_config_transport), &keymap_config_transport))
+            {
+                last_sync = timer_read32();
+            }
+    }
+}
+#endif
+
+
+
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   return OLED_ROTATION_270;
 }
 
 bool oled_task_user(void){
+
+    // sneaky way to pass in bootloader info :)
+    if(magic_case_state == 99){
+        oled_clear();
+        oled_write_P(PSTR("BOOT!"), false);
+        oled_render_dirty(true);
+        return false;
+    }
 
     //Layer
     uint8_t layer = get_highest_layer(layer_state);
@@ -217,11 +335,19 @@ void oled_render_boot(bool bootloader) {
 }
 
 bool shutdown_user(bool jump_to_bootloader) {
+    #ifdef OLED_STUPID_WAY_AROUND
+    magic_case_state = 99;
+    magic_case_transport = 99;
+    transaction_rpc_send(SYNC_MAGIC_CASE, sizeof(magic_case_transport), &magic_case_transport);
+    #else
     oled_render_boot(jump_to_bootloader);
+    #endif
+
     return jump_to_bootloader;
 }
-
 #endif
+
+
 
 #ifndef SCROLLING_LAYER
     #define SCROLLING_LAYER _TEXT_NAV
@@ -307,7 +433,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 
     if (cursor_mode) {
         mouse_report.x = CURSOR_SPEED * mouse_report.x/100;
-        mouse_report.y = CURSOR_SPEED * mouse_report.y/100;
+        mouse_report.y = CURSOR_SPEED * mouse_report.y/100;      
     }
     if (scrolling_mode) {
         mouse_report.h = SCROLL_SPEED * mouse_report.x/100;
@@ -357,56 +483,17 @@ void pointing_device_init_user(void) {
 }
 
 
-#ifdef OLED_STUPID_WAY_AROUND
-// send a bunch of crap to the other side
-
-uint16_t keymap_config_transport  = 0;
-uint8_t magic_case_transport = 0;
-
-uint32_t last_sync = 0;
-
-void magic_case_sync(uint8_t initiator2target_buffer_size, const void* initiator2target_buffer,
-                     uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
-    if (initiator2target_buffer_size == sizeof(magic_case_transport)) {
-        memcpy(&magic_case_transport, initiator2target_buffer, initiator2target_buffer_size);
-    }
-}
-
-void keymap_sync(uint8_t initiator2target_buffer_size, const void* initiator2target_buffer,
-                     uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
-    if (initiator2target_buffer_size == sizeof(keymap_config_transport)) {
-        memcpy(&keymap_config_transport, initiator2target_buffer, initiator2target_buffer_size);
-    }
-}
-
-
 void keyboard_post_init_user(void) {
+    #ifdef OLED_STUPID_WAY_AROUND
     transaction_register_rpc(SYNC_KEYMAP, keymap_sync);
     transaction_register_rpc(SYNC_MAGIC_CASE, magic_case_sync);
-}
-
-void split_send_all_if_needed(void) {
-    //static uint16_t last_keymap = 0;
-    //uint8_t last_magic_case = 0;
-    bool needs_sync = false;
-
-    // Send every 500ms regardless of state change
-    if (timer_elapsed32(last_sync) > 2000) {
-        needs_sync = true;
+    #endif
+    #ifdef OS_DETECTION_ENABLE
+    if (is_keyboard_master()) {
+        os_detect();
     }
-
-    /* can check if the vars have changed here */
-
-    if (needs_sync) {
-        if (
-            transaction_rpc_send(SYNC_MAGIC_CASE, sizeof(magic_case_transport), &magic_case_transport)
-        &&   transaction_rpc_send(SYNC_KEYMAP, sizeof(keymap_config_transport), &keymap_config_transport))
-            {
-                last_sync = timer_read32();
-            }
-    }
-}
 #endif
+}
 
 void housekeeping_task_user(void) {
 
@@ -432,3 +519,4 @@ void housekeeping_task_user(void) {
     }
 
 }
+

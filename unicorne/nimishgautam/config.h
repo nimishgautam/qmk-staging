@@ -54,13 +54,12 @@
 #undef LOCKING_RESYNC_ENABLE
 #define LAYER_STATE_8BIT  //8 layers max
 
-
 // which lighting effects to include (less saves memory)
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
     #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-    #define RGBLIGHT_EFFECT_SNAKE
+    #define RGBLIGHT_EFFECT_SNAKE   #define RGBLIGHT_DISABLE_KEYCODES
     #define RGBLIGHT_EFFECT_KNIGHT
     #define RGBLIGHT_EFFECT_CHRISTMAS
     #define RGBLIGHT_EFFECT_STATIC_GRADIENT
@@ -73,6 +72,9 @@
     #define RGBLIGHT_VAL_STEP 17
 
 #endif
+
+// set things matrix-centric
+#define RGBLIGHT_DISABLE_KEYCODES
 
 // rgb matrix, cooler effects than lighting above
 #ifdef RGB_MATRIX_ENABLE
@@ -103,6 +105,12 @@
 
     // Really pretty single-color going off randomly like a river
     #define ENABLE_RGB_MATRIX_RIVERFLOW
+
+    #define ENABLE_RGB_MATRIX_HUE_PENDULUM
+
+    #define ENABLE_RGB_MATRIX_HUE_BREATHING
+
+    #define ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
 
     // heatmap of typing
     #define ENABLE_RGB_MATRIX_TYPING_HEATMAP
@@ -142,7 +150,14 @@
 #define MK_KINETIC_SPEED
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 
+#ifdef RGB_MATRIX_ENABLE
 #define RGB_MOUSE_MODE RGB_MATRIX_RAINBOW_PINWHEELS
+#define RGB_MODS_MODE RGB_MATRIX_RIVERFLOW
+#define RGB_TXT_MODE RGB_MATRIX_HUE_PENDULUM
+#define RGB_NUMS_MODE RGB_MATRIX_HUE_BREATHING
+#define RGB_FN_MODE RGB_MATRIX_PIXEL_FRACTAL
+#define RGB_TERM_MODE RGB_MATRIX_BAND_SPIRAL_SAT
+#endif
 
 // If I have a keypress in my defines, I want it to consistently send what it says
 // eg #define END_PROCESS C(KC_C) should sent ctl-c and NOT G(KC_C) even when ctl and gui are swapped
@@ -162,7 +177,7 @@
   QD_NOTE(_F4  ), \
   M__NOTE(_BF4, 128),
 
-#define MARIO_THEME \
+#define MARIO_THEME_U \
     Q__NOTE(_E5), \
     H__NOTE(_E5), \
     H__NOTE(_E5), \
@@ -230,7 +245,7 @@
   HD_NOTE(_A4), QD_NOTE(_F4),  QD_NOTE(_C5), WD_NOTE(_A4)
 
 #undef STARTUP_SONG
-#define STARTUP_SONG SONG(IMPERIAL_MARCH_U)
+#define STARTUP_SONG SONG(NO_SOUND)
 #define GOODBYE_SONG SONG(MARIO_GAMEOVER_U)
 #define CG_SWAP_SONG SONG(ONE_UP_SOUND)
 #define CG_NORM_SONG SONG(COIN_SOUND)
