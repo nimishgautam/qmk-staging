@@ -3,7 +3,7 @@
 
 #pragma once
 
-// Pindefs for v2.0.0
+// Pindefs for v1.0.0
 // https://megamind4089.github.io/STeMCell/pinout/
 
 // Left side (front)
