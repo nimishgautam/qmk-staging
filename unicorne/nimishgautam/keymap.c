@@ -31,6 +31,7 @@ void os_detect(void) {
                     #ifdef AUDIO_ENABLE
                     PLAY_SONG(cg_norm_song);
                     #endif
+                    eeconfig_update_keymap(keymap_config.raw);
                 }
 
             break;
@@ -40,6 +41,7 @@ void os_detect(void) {
                     #ifdef AUDIO_ENABLE
                     PLAY_SONG(cg_swap_song);
                     #endif
+                    eeconfig_update_keymap(keymap_config.raw);
                 }
             break;
         }
@@ -159,6 +161,7 @@ void set_lighting_user(void) {
 
 uint16_t keymap_config_transport  = 0;
 uint8_t magic_case_transport = 0;
+bool auto_mouse_state_transport = false;
 
 uint32_t last_sync = 0;
 
@@ -166,6 +169,13 @@ void magic_case_sync(uint8_t initiator2target_buffer_size, const void* initiator
                      uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
     if (initiator2target_buffer_size == sizeof(magic_case_transport)) {
         memcpy(&magic_case_transport, initiator2target_buffer, initiator2target_buffer_size);
+    }
+}
+
+void auto_mouse_sync(uint8_t initiator2target_buffer_size, const void* initiator2target_buffer,
+                     uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
+    if (initiator2target_buffer_size == sizeof(auto_mouse_state_transport)) {
+        memcpy(&auto_mouse_state_transport, initiator2target_buffer, initiator2target_buffer_size);
     }
 }
 
@@ -191,7 +201,8 @@ void split_send_all_if_needed(void) {
     if (needs_sync) {
         if (
             transaction_rpc_send(SYNC_MAGIC_CASE, sizeof(magic_case_transport), &magic_case_transport)
-        &&   transaction_rpc_send(SYNC_KEYMAP, sizeof(keymap_config_transport), &keymap_config_transport))
+        &&   transaction_rpc_send(SYNC_KEYMAP, sizeof(keymap_config_transport), &keymap_config_transport)
+        && transaction_rpc_send(SYNC_AUTO_MOUSE, sizeof(auto_mouse_state_transport), &auto_mouse_state_transport))
             {
                 last_sync = timer_read32();
             }
@@ -217,6 +228,12 @@ bool oled_task_user(void){
 
     //Layer
     uint8_t layer = get_highest_layer(layer_state);
+
+#if defined (OLED_STUPID_WAY_AROUND) && defined(POINTING_DEVICE_AUTO_MOUSE_ENABLE)
+    if(auto_mouse_state_transport && layer < _MOUSE){
+        layer = _MOUSE;
+    }
+#endif
 
     /* write OS */
     static const char PROGMEM apple_logo[] = {
@@ -246,7 +263,7 @@ bool oled_task_user(void){
             oled_write_ln_P(PSTR(" Term"), false);
             break;
         case _TEXT_NAV:
-            oled_write_ln_P(PSTR(" Txt"), false);
+            oled_write_ln_P(PSTR(" Txt "), false);
             break;
         case _ADJUST:
             if(keymap_config.swap_lctl_lgui){
@@ -257,10 +274,10 @@ bool oled_task_user(void){
                 //oled_write_ln_P(PSTR("OSX"), false);
                 oled_write_ln_P(apple_logo, false);
             }
-            oled_write_ln_P(PSTR(" Adj"), false);
+            oled_write_ln_P(PSTR(" Adj "), false);
             break;
         case _FN_KEYS:
-            oled_write_ln_P(PSTR("  Fn"), false);
+            oled_write_ln_P(PSTR("  Fn "), false);
             break;
         case _MOUSE:
             oled_write_ln_P(PSTR("Mouse"), false);
@@ -352,22 +369,6 @@ bool shutdown_user(bool jump_to_bootloader) {
 
 
 
-#define POINTING_DEVICE_ACCEL_CURVE_A 9 // steepness of accel curve
-#define POINTING_DEVICE_ACCEL_CURVE_B 0.5 // X-offset of accel curve
-#define POINTING_DEVICE_ACCEL_CURVE_C 0.5 // Y-offset of accel curve
-#define POINTING_DEVICE_ACCEL_CURVE_D .5 // speed scaling factor
-#define POINTING_DEVICE_ACCEL_HISTORY_TIME 100 // milliseconds of history to keep
-#define POINTING_DEVICE_ACCEL_ACCUM
-
-static uint32_t maccel_timer;
-
-static float maccel_a = POINTING_DEVICE_ACCEL_CURVE_A;
-static float maccel_b = POINTING_DEVICE_ACCEL_CURVE_B;
-static float maccel_c = POINTING_DEVICE_ACCEL_CURVE_C;
-static float maccel_d = POINTING_DEVICE_ACCEL_CURVE_D;
-
-static float maccel_accum_x = 0;
-static float maccel_accum_y = 0;
 #ifndef SCROLLING_LAYER
     #define SCROLLING_LAYER _TEXT_NAV
 #endif
@@ -455,45 +456,14 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
         mouse_report.x = CURSOR_SPEED * mouse_report.x/100;
         mouse_report.y = CURSOR_SPEED * mouse_report.y/100;
         */
-            if (!(mouse_report.x == 0 && mouse_report.y == 0) ) {
-            const float speed = maccel_d * (sqrtf(mouse_report.x * mouse_report.x + mouse_report.y * mouse_report.y)) /
-                                timer_elapsed32(maccel_timer);
-            float scale_factor = 1 - (1 - maccel_c) * expf(-1 * (speed - maccel_b) * maccel_a);
-            if (speed <= maccel_b) {
-                scale_factor = maccel_c;
-            }
-            const float x = (mouse_report.x * scale_factor);
-            const float y = (mouse_report.y * scale_factor);
-            maccel_timer  = timer_read32();
-
-    #ifdef POINTING_DEVICE_ACCEL_ACCUM
-            // report the integer part
-            mouse_report.x = (mouse_xy_report_t)x;
-            mouse_report.y = (mouse_xy_report_t)y;
-
-            // accumulate remaining fraction
-            maccel_accum_x += (x - mouse_report.x);
-            maccel_accum_y += (y - mouse_report.y);
-
-            // pay out accumulated fraction once it's whole
-            if (maccel_accum_x >= 1) {
-                mouse_report.x += 1;
-                maccel_accum_x -= 1;
-            } else if (maccel_accum_x <= -1) {
-                mouse_report.x -= 1;
-                maccel_accum_x += 1;
-            }
-            if (maccel_accum_y >= 1) {
-                mouse_report.y += 1;
-                maccel_accum_y -= 1;
-            } else if (maccel_accum_y <= -1) {
-                mouse_report.y -= 1;
-                maccel_accum_y += 1;
-            }
-    #endif // MACCEL_ACCUM
-            mouse_report.x = x;
-            mouse_report.y = y;
-        }     
+            float magnitude = sqrtf( mouse_report.x * mouse_report.x + mouse_report.y * mouse_report.y );
+            float adjusted_magnitude = powf(magnitude, 0.2f);
+            mouse_report.x = (mouse_report.x * adjusted_magnitude);
+            if(mouse_report.x > 127){mouse_report.x = 127;}
+            if(mouse_report.x < -127){mouse_report.x = -127;}
+            mouse_report.y = (mouse_report.y * adjusted_magnitude); 
+             if(mouse_report.y > 127){mouse_report.y = 127;}
+            if(mouse_report.y < -127){mouse_report.y = -127;}   
     }
     if (scrolling_mode) {
         mouse_report.h = SCROLL_SPEED * mouse_report.x/100;
@@ -547,6 +517,7 @@ void keyboard_post_init_user(void) {
     #ifdef OLED_STUPID_WAY_AROUND
     transaction_register_rpc(SYNC_KEYMAP, keymap_sync);
     transaction_register_rpc(SYNC_MAGIC_CASE, magic_case_sync);
+    transaction_register_rpc(SYNC_AUTO_MOUSE, auto_mouse_sync);
     #endif
     #ifdef OS_DETECTION_ENABLE
     if (is_keyboard_master()) {
@@ -565,7 +536,7 @@ void housekeeping_task_user(void) {
         // update transport variables with current master values
         keymap_config_transport = keymap_config.raw;
         magic_case_transport = magic_case_state;
-
+        auto_mouse_state_transport = is_auto_mouse_active();
         // send over if needed
         split_send_all_if_needed();
     } else { //else we're on the secondary side, set our vars to whatever is around

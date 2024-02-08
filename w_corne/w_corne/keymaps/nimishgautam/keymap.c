@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 
 #include "w_corne.h"
+#include "os_detection.h"
 
 #include "ng_key_definitions.h"
 #include "ng_tapdances_corne.c"
@@ -14,6 +15,28 @@
 
 #include "ng_process_keycodes_corne.c"
 
+void os_detect(void) {
+    os_variant_t host_os = detected_host_os();
+    if (host_os) {
+        switch (host_os) {
+            case OS_MACOS:
+            case OS_IOS:
+                //check
+                if( keymap_config.swap_lctl_lgui){
+                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = false;
+                    eeconfig_update_keymap(keymap_config.raw);
+                }
+            break;
+            default: //Linux, but also windows etc with swapped ctl/gui
+                if( !keymap_config.swap_lctl_lgui){
+                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = true;
+                    eeconfig_update_keymap(keymap_config.raw);
+                }
+            break;
+        }
+
+    }
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT(  //basic -- RIGHT HAND BACKWARDS!!!
@@ -193,3 +216,9 @@ led_config_t g_led_config = { {
         1, 1, 1, 1
     }
 };
+
+void keyboard_post_init_user(void) {
+    if (is_keyboard_master()) {
+        os_detect();
+    }
+}

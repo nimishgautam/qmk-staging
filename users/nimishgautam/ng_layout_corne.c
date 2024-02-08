@@ -90,16 +90,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #if defined(RGB_LIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
 //RGB EXISTS
-
 #ifdef POINTING_DEVICE_ENABLE
-#define MOUSE_OR_NOT TO(_MOUSE)
-#else
-#define MOUSE_OR_NOT XXXXXXX
+#define TO_MOUSE TO(_MOUSE)
+#else 
+#define TO_MOUSE XXXXXXX
 #endif
 
       [_ADJUST] = LAYOUT_split_3x6_3( // adjust things
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-     EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MOUSE_OR_NOT,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+     EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO_MOUSE,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       TO(_BASE), RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -129,7 +128,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  
 
 #endif
-
 #ifdef POINTING_DEVICE_ENABLE
    [_MOUSE] = LAYOUT_split_3x6_3( // mouse keys
    /**
@@ -146,6 +144,5 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           KC_TRANSPARENT, KC_TRANSPARENT, KC_BTN1 ,                             KC_BTN2  ,  KC_BTN3, KC_TRANSPARENT
                                       //`--------------------------'                                                   `--------------------------'
   ),
-
 #endif
 };

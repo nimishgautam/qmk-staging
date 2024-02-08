@@ -153,7 +153,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case THUMBS_UP:
 
         if(record->event.pressed) {
-            keymap_config.raw = eeconfig_read_keymap();
             switch (keycode){
                 case DEL_WORD:
                     if(keymap_config.swap_lctl_lgui){ //Linux

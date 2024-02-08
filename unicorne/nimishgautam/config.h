@@ -29,7 +29,7 @@
 #define SPLIT_LED_STATE_ENABLE
 #define SPLIT_MODS_ENABLE
 #define SPLIT_WPM_ENABLE
-#define SPLIT_TRANSACTION_IDS_USER SYNC_KEYMAP, SYNC_MAGIC_CASE
+#define SPLIT_TRANSACTION_IDS_USER SYNC_KEYMAP, SYNC_MAGIC_CASE, SYNC_AUTO_MOUSE
 #endif
 
 //for audio
@@ -52,7 +52,7 @@
 //#define NO_ACTION_ONESHOT
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
-#define LAYER_STATE_8BIT  //8 layers max
+//#define LAYER_STATE_8BIT  //8 layers max
 
 // which lighting effects to include (less saves memory)
 #ifdef RGBLIGHT_ENABLE
