@@ -16,9 +16,8 @@
         { 27, 27 }
 #define SPLIT_TRANSPORT_MIRROR
 
-#ifndef OLED_FONT_H
-    #define OLED_FONT_H "users/nimishgautam/lib/glcdfont.c"
-#endif
+
+#define OLED_FONT_H "users/nimishgautam/lib/no-logo-2x-symb.c"
 #define OLED_FONT_SUPER_DIGG
 
 // oled the stupid way around, ie on the non-primary side

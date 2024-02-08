@@ -63,7 +63,7 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 #ifdef RGB_MATRIX_ENABLE
 // base rgb mode, some sensible default if undefined
 uint8_t base_rgb_mode = RGB_MATRIX_SPLASH;
-HSV base_HSV = {HSV_CYAN};
+HSV base_HSV = {HSV_PINK};
 uint8_t prev_layer = _BASE;
 
 void set_lighting_user(void) {
@@ -112,7 +112,7 @@ void set_lighting_user(void) {
             }
         break;
         case _TERMINAL:
-            rgb_matrix_sethsv_noeeprom(HSV_PINK);
+            rgb_matrix_sethsv_noeeprom(HSV_CYAN);
             if(rgb_matrix_get_mode() != RGB_TERM_MODE){
                 rgb_matrix_mode_noeeprom(RGB_TERM_MODE);
             }
@@ -229,16 +229,15 @@ bool oled_task_user(void){
         32, 185,186,0
     };
 
-    static const char PROGMEM lower_layer_raw[] = {
-        { 0x00, 0x00, 0x00, 0x80, 0x80, 0x40, 0x40, 0x20, 0x20, 0x10, 0x10, 0x08, 0x08, 0x10, 0x10, 0x20, 0x20, 0x40, 0x40, 0x80, 0x80, 0x00, 0x00, 0x00 },
-        { 0x00, 0x00, 0x00, 0x88, 0x88, 0xD5, 0xD5, 0xE2, 0xE2, 0xC4, 0xC4, 0x88, 0x88, 0xC4, 0xC4, 0xE2, 0xE2, 0xD5, 0xD5, 0x88, 0x88, 0x00, 0x00, 0x00 },
-        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x03, 0x03, 0x07, 0x07, 0x0F, 0x0F, 0x07, 0x07, 0x03, 0x03, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 }
+    static const char PROGMEM lower_layer[] = {
+        145,146,147,148,10,
+        177,178,179,180,0
     };
 
     switch (layer) {
         case _BASE:
             //oled_write_ln_P(PSTR("  -  "), false);
-            oled_write_raw_P(lower_layer_raw, sizeof(lower_layer_raw));
+            oled_write_ln_P(lower_layer, false);
             break;
         case _NUMS:
             oled_write_ln_P(PSTR(" Nums"), false);
@@ -263,11 +262,9 @@ bool oled_task_user(void){
         case _FN_KEYS:
             oled_write_ln_P(PSTR("  Fn"), false);
             break;
-        #ifdef POINTING_DEVICE_ENABLE
         case _MOUSE:
             oled_write_ln_P(PSTR("Mouse"), false);
             break;
-        #endif
         default:
             break;
     }
@@ -285,10 +282,10 @@ bool oled_task_user(void){
     }
 
 
-    const char PROGMEM gui_symbol[] = { 236, 237};
-    const char PROGMEM ctrl_symbol[] = { 228, 229};
-    const char PROGMEM alt_symbol[] = { 230, 231};
-    const char PROGMEM shift_symbol[] = { 232, 233};
+    const char PROGMEM gui_symbol[] = { 130, 131, 0};
+    const char PROGMEM ctrl_symbol[] = { 128, 129,0};
+    const char PROGMEM alt_symbol[] = { 192, 193,0};
+    const char PROGMEM shift_symbol[] = { 160, 161,0};
     oled_write_ln_P(PSTR(" "), false);
     // mods
     if(get_mods() & MOD_MASK_SHIFT){
@@ -355,10 +352,10 @@ bool shutdown_user(bool jump_to_bootloader) {
 
 
 
-#define POINTING_DEVICE_ACCEL_CURVE_A 7 // steepness of accel curve
-#define POINTING_DEVICE_ACCEL_CURVE_B 0.05 // X-offset of accel curve
-#define POINTING_DEVICE_ACCEL_CURVE_C 0.3 // Y-offset of accel curve
-#define POINTING_DEVICE_ACCEL_CURVE_D .1 // speed scaling factor
+#define POINTING_DEVICE_ACCEL_CURVE_A 9 // steepness of accel curve
+#define POINTING_DEVICE_ACCEL_CURVE_B 0.5 // X-offset of accel curve
+#define POINTING_DEVICE_ACCEL_CURVE_C 0.5 // Y-offset of accel curve
+#define POINTING_DEVICE_ACCEL_CURVE_D .5 // speed scaling factor
 #define POINTING_DEVICE_ACCEL_HISTORY_TIME 100 // milliseconds of history to keep
 #define POINTING_DEVICE_ACCEL_ACCUM
 
@@ -381,7 +378,7 @@ static float maccel_accum_y = 0;
     #define CURSOR_SPEED 70
 #endif
 #ifndef SCROLL_SPEED
-    #define SCROLL_SPEED 45
+    #define SCROLL_SPEED 35
 #endif
 #ifndef SCROLL_DELAY_MS
     #define SCROLL_DELAY_MS 70
@@ -458,7 +455,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
         mouse_report.x = CURSOR_SPEED * mouse_report.x/100;
         mouse_report.y = CURSOR_SPEED * mouse_report.y/100;
         */
-            if (!(mouse_report.x == 0 && mouse_report.y == 0) && (timer_elapsed(mouse_debounce_timer) > TAP_CHECK)) {
+            if (!(mouse_report.x == 0 && mouse_report.y == 0) ) {
             const float speed = maccel_d * (sqrtf(mouse_report.x * mouse_report.x + mouse_report.y * mouse_report.y)) /
                                 timer_elapsed32(maccel_timer);
             float scale_factor = 1 - (1 - maccel_c) * expf(-1 * (speed - maccel_b) * maccel_a);

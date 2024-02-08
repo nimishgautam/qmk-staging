@@ -9,7 +9,6 @@ enum custom_layers {
 
     _ADJUST, // triggered from series of keys to avoid accidentally getting to it
 
-    #ifdef POINTING_DEVICE_ENABLE
     _MOUSE, // mouse layer
-    #endif
+
 };
