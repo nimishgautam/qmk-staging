@@ -19,6 +19,7 @@
 #ifndef OLED_FONT_H
     #define OLED_FONT_H "users/nimishgautam/lib/glcdfont.c"
 #endif
+#define OLED_FONT_SUPER_DIGG
 
 // oled the stupid way around, ie on the non-primary side
 #define OLED_STUPID_WAY_AROUND

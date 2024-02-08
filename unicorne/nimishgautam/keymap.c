@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 #include "transactions.h"
 #include "os_detection.h"
+#include "math.h"
 
 #include "ng_key_definitions.h"
 #include "ng_tapdances_corne.c"
@@ -228,10 +229,16 @@ bool oled_task_user(void){
         32, 185,186,0
     };
 
+    static const char PROGMEM lower_layer_raw[] = {
+        { 0x00, 0x00, 0x00, 0x80, 0x80, 0x40, 0x40, 0x20, 0x20, 0x10, 0x10, 0x08, 0x08, 0x10, 0x10, 0x20, 0x20, 0x40, 0x40, 0x80, 0x80, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0x00, 0x88, 0x88, 0xD5, 0xD5, 0xE2, 0xE2, 0xC4, 0xC4, 0x88, 0x88, 0xC4, 0xC4, 0xE2, 0xE2, 0xD5, 0xD5, 0x88, 0x88, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x03, 0x03, 0x07, 0x07, 0x0F, 0x0F, 0x07, 0x07, 0x03, 0x03, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 }
+    };
 
     switch (layer) {
         case _BASE:
-            oled_write_ln_P(PSTR("  -  "), false);
+            //oled_write_ln_P(PSTR("  -  "), false);
+            oled_write_raw_P(lower_layer_raw, sizeof(lower_layer_raw));
             break;
         case _NUMS:
             oled_write_ln_P(PSTR(" Nums"), false);
@@ -278,25 +285,26 @@ bool oled_task_user(void){
     }
 
 
-    const char PROGMEM up_arrow[] = { 24,};
-    const char PROGMEM circle_symbol[] = { 15,};
+    const char PROGMEM gui_symbol[] = { 236, 237};
+    const char PROGMEM ctrl_symbol[] = { 228, 229};
+    const char PROGMEM alt_symbol[] = { 230, 231};
+    const char PROGMEM shift_symbol[] = { 232, 233};
     oled_write_ln_P(PSTR(" "), false);
     // mods
     if(get_mods() & MOD_MASK_SHIFT){
-        oled_write_P(up_arrow, false);
+        oled_write_P(shift_symbol, false);
     }
     if(get_mods() & MOD_MASK_CTRL){
-        oled_write_P(PSTR("^"), false);
+        oled_write_P(ctrl_symbol, false);
     }
+    oled_write_ln_P(PSTR(" "), false);
     if(get_mods() & MOD_MASK_ALT){
-        oled_write_P(PSTR("/"), false);
+        oled_write_P(alt_symbol, false);
     }
     if(get_mods() & MOD_MASK_GUI){ //ln here
-        oled_write_ln_P(circle_symbol, false);
-    } else {
-        oled_write_ln_P(PSTR(" "), false);
-    }
-    
+        oled_write_P(gui_symbol, false);
+    } 
+    oled_write_ln_P(PSTR(" "), false);
     //led state
     led_t led_state = host_keyboard_led_state();
     if(led_state.caps_lock){
@@ -339,16 +347,30 @@ bool shutdown_user(bool jump_to_bootloader) {
     magic_case_state = 99;
     magic_case_transport = 99;
     transaction_rpc_send(SYNC_MAGIC_CASE, sizeof(magic_case_transport), &magic_case_transport);
-    #else
-    oled_render_boot(jump_to_bootloader);
     #endif
-
+    oled_render_boot(jump_to_bootloader);
     return jump_to_bootloader;
 }
 #endif
 
 
 
+#define POINTING_DEVICE_ACCEL_CURVE_A 7 // steepness of accel curve
+#define POINTING_DEVICE_ACCEL_CURVE_B 0.05 // X-offset of accel curve
+#define POINTING_DEVICE_ACCEL_CURVE_C 0.3 // Y-offset of accel curve
+#define POINTING_DEVICE_ACCEL_CURVE_D .1 // speed scaling factor
+#define POINTING_DEVICE_ACCEL_HISTORY_TIME 100 // milliseconds of history to keep
+#define POINTING_DEVICE_ACCEL_ACCUM
+
+static uint32_t maccel_timer;
+
+static float maccel_a = POINTING_DEVICE_ACCEL_CURVE_A;
+static float maccel_b = POINTING_DEVICE_ACCEL_CURVE_B;
+static float maccel_c = POINTING_DEVICE_ACCEL_CURVE_C;
+static float maccel_d = POINTING_DEVICE_ACCEL_CURVE_D;
+
+static float maccel_accum_x = 0;
+static float maccel_accum_y = 0;
 #ifndef SCROLLING_LAYER
     #define SCROLLING_LAYER _TEXT_NAV
 #endif
@@ -432,8 +454,49 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 
     if (cursor_mode) {
+        /*
         mouse_report.x = CURSOR_SPEED * mouse_report.x/100;
-        mouse_report.y = CURSOR_SPEED * mouse_report.y/100;      
+        mouse_report.y = CURSOR_SPEED * mouse_report.y/100;
+        */
+            if (!(mouse_report.x == 0 && mouse_report.y == 0) && (timer_elapsed(mouse_debounce_timer) > TAP_CHECK)) {
+            const float speed = maccel_d * (sqrtf(mouse_report.x * mouse_report.x + mouse_report.y * mouse_report.y)) /
+                                timer_elapsed32(maccel_timer);
+            float scale_factor = 1 - (1 - maccel_c) * expf(-1 * (speed - maccel_b) * maccel_a);
+            if (speed <= maccel_b) {
+                scale_factor = maccel_c;
+            }
+            const float x = (mouse_report.x * scale_factor);
+            const float y = (mouse_report.y * scale_factor);
+            maccel_timer  = timer_read32();
+
+    #ifdef POINTING_DEVICE_ACCEL_ACCUM
+            // report the integer part
+            mouse_report.x = (mouse_xy_report_t)x;
+            mouse_report.y = (mouse_xy_report_t)y;
+
+            // accumulate remaining fraction
+            maccel_accum_x += (x - mouse_report.x);
+            maccel_accum_y += (y - mouse_report.y);
+
+            // pay out accumulated fraction once it's whole
+            if (maccel_accum_x >= 1) {
+                mouse_report.x += 1;
+                maccel_accum_x -= 1;
+            } else if (maccel_accum_x <= -1) {
+                mouse_report.x -= 1;
+                maccel_accum_x += 1;
+            }
+            if (maccel_accum_y >= 1) {
+                mouse_report.y += 1;
+                maccel_accum_y -= 1;
+            } else if (maccel_accum_y <= -1) {
+                mouse_report.y -= 1;
+                maccel_accum_y += 1;
+            }
+    #endif // MACCEL_ACCUM
+            mouse_report.x = x;
+            mouse_report.y = y;
+        }     
     }
     if (scrolling_mode) {
         mouse_report.h = SCROLL_SPEED * mouse_report.x/100;
