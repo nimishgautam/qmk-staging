@@ -40,6 +40,7 @@
 #define EXTRA_SHORT_COMBOS
 #define COMBO_TERM 30
 #define COMBO_STRICT_TIMER
+//#define COMBO_TERM_PER_COMBO
 
 
 //Tapping values
@@ -102,6 +103,9 @@
 
     // multicolor 'splash' (simpler)
     #define ENABLE_RGB_MATRIX_SPLASH 
+    #define ENABLE_RGB_MATRIX_MULTISPLASH 
+
+    #define ENABLE_RGB_MATRIX_SOLID_REACTIVE_CROSS
 
     // Really pretty single-color going off randomly like a river
     #define ENABLE_RGB_MATRIX_RIVERFLOW
@@ -233,9 +237,9 @@
     Q__NOTE(_D7  ),  \
     Q__NOTE(_G7  ),
 
-#define COIN_SOUND \
-    E__NOTE(_A5  ),      \
-    HD_NOTE(_E6  ),
+#define MARIO_CAVE E__NOTE(_C5), E__NOTE(_REST), E__NOTE(_C5), E__NOTE(_REST), E__NOTE(_A4), E__NOTE(_REST), E__NOTE(_A4), \
+        E__NOTE(_REST), E__NOTE(_AS4), E__NOTE(_REST), E__NOTE(_AS4), E__NOTE(_REST)
+
 
 
 #define IMPERIAL_MARCH_U \
@@ -248,4 +252,4 @@
 #define STARTUP_SONG SONG(NO_SOUND)
 #define GOODBYE_SONG SONG(MARIO_GAMEOVER_U)
 #define CG_SWAP_SONG SONG(ONE_UP_SOUND)
-#define CG_NORM_SONG SONG(COIN_SOUND)
+#define CG_NORM_SONG SONG(MARIO_CAVE)

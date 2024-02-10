@@ -96,6 +96,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define TO_MOUSE XXXXXXX
 #endif
 
+#ifdef AUDIO_ENABLE
+#define MTOG MU_TOGG
+#else
+#define MTOG XXXXXXX
+#endif
+
       [_ADJUST] = LAYOUT_split_3x6_3( // adjust things
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
      EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO_MOUSE,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -104,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT, RGB_MOD, RGB_RMOD, RGB_TOG, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          SHOW_OS, XXXXXXX, CG_TOGG ,     XXXXXXX, XXXXXXX, XXXXXXX
+                                          SHOW_OS, MTOG, CG_TOGG ,     XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ), // CG_TOGG toggles gui and Ctrl (switching from mac to windows/linux)
     // the RGB buttons go backwards if shift is held when they're pressed, so shift is included
