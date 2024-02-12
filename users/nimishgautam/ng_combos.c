@@ -58,6 +58,9 @@ const uint16_t PROGMEM smiley_combo[] = {KC_R, KC_U ,COMBO_END};
 //combo - thumbs up 👍️
 const uint16_t PROGMEM thumbsup_combo[] = {KC_W, KC_O ,COMBO_END};
 
+//combo - power button
+const uint16_t PROGMEM power_button_combo[] = {LT(0, NUMERIC_WIN_RIGHT), KC_MINUS, COMBO_END};
+
 combo_t key_combos[] = {
     COMBO(compose_combo, COMPOSE_MACRO),
     COMBO(search_combo, FINDER),
@@ -80,5 +83,19 @@ combo_t key_combos[] = {
     COMBO(scrolldown_combo, KC_MS_WH_DOWN),
     COMBO(scrollup_combo, KC_MS_WH_UP),
     COMBO(smiley_combo, SMILEY),
-    COMBO(thumbsup_combo, THUMBS_UP)
+    COMBO(thumbsup_combo, THUMBS_UP),
+    COMBO(power_button_combo, KC_PWR)
 };
+
+bool get_combo_must_hold(uint16_t index, combo_t *combo) {
+    // decide by keycode, the combo index, or by the keys in the chord.
+
+    switch (combo->keycode) {
+        case SMILEY:
+        case THUMBS_UP:
+        case EMOJI_KBD:
+            return true;
+    }
+
+    return false;
+}
