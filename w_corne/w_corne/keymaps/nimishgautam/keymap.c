@@ -70,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                   |--------+--------+--------+--------+--------+--------|
       TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                           KC_CAPS,      KC_BSLS,  KC_6,  KC_5,  KC_4,    KC_ENTER,
   //|--------+--------+--------+--------+--------+--------|                                                    |--------+--------+--------+--------+--------+--------|
-      LOCK_SCREEN, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,           KC_TRANSPARENT, KC_SLASH,  KC_3,  KC_2, KC_1, TD(TD_PERIOD_COMMA),
+      KC_SLEP, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, LOCK_SCREEN,           KC_TRANSPARENT, KC_SLASH,  KC_3,  KC_2, KC_1, TD(TD_PERIOD_COMMA),
   //|--------+--------+--------+--------+--------+--------+--------|                                    |--------+--------+--------+--------+-C```-------+--------+--------|
                                           KC_BRID, KC_BRIU, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
                                       //`--------------------------'                                      `--------------------------'

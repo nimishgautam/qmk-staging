@@ -16,9 +16,9 @@
 //#define UNICODE_SELECTED_MODES UNICODE_MODE_MACOS
 
 // combo
-#define EXTRA_SHORT_COMBOS
 #define COMBO_TERM 30
 #define COMBO_STRICT_TIMER
+#define COMBO_MUST_HOLD_PER_COMBO
 
 
 //Tapping values
