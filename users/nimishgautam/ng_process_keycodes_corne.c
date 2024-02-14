@@ -131,166 +131,224 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     /* OS-DEPENDENT FUNCTIONS */
 
-    //only read the keymap config if it's one of the below cases (instead of every time)
     case DEL_WORD:
-    case SELECT_LEFT_WD:
-    case SELECT_RIGHT_WD:
-    case SELECT_LEFT_LINE:
-    case SELECT_RIGHT_LINE:
-    case MOVE_LEFT_WD:
-    case MOVE_RIGHT_WD:
-    case MOVE_LEFT_LINE:
-    case MOVE_RIGHT_LINE:
-    case PASTE_NOSTYLE:
-    case ACIRCLE:
-    case ADOT:
-    case ODOT:
-    case COMPOSE_MACRO:
-    case SCREENSHOT:
-    case OPEN_TERMINAL_HERE:
-    case SHOW_OS:
-    case SMILEY:
-    case THUMBS_UP:
-
         if(record->event.pressed) {
-            switch (keycode){
-                case DEL_WORD:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(LCTL(KC_BSPC));
-                    } else { //osx
-                        tap_code16(LALT(KC_BSPC));
-                    }
-                break;
-                case SELECT_LEFT_WD:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(RSFT(LCTL(KC_LEFT)));
-                    } else { //osx
-                        tap_code16(RSFT(LALT(KC_LEFT)));
-                    }
-                break;
-                case SELECT_RIGHT_WD:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(RSFT(LCTL(KC_RIGHT)));
-                    } else { //osx
-                        tap_code16(RSFT(LALT(KC_RIGHT)));
-                    }
-                break;
-                case SELECT_LEFT_LINE:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(RSFT(KC_HOME));
-                    } else { //osx
-                        tap_code16(RSFT(LCTL(KC_LEFT)));
-                    }
-                break;
-                case SELECT_RIGHT_LINE:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(RSFT(KC_END));
-                    } else { //osx
-                        tap_code16(RSFT(LCTL(KC_RIGHT)));
-                    }
-                break;
-                case MOVE_LEFT_WD:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(LCTL(KC_LEFT));
-                    } else { //osx
-                        tap_code16(LALT(KC_LEFT));
-                    }
-                break;
-                case MOVE_RIGHT_WD:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(LCTL(KC_RIGHT));
-                    } else { //osx
-                        tap_code16(LALT(KC_RIGHT));
-                    }
-                break;
-                case MOVE_LEFT_LINE:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(KC_HOME);
-                    } else { //osx
-                        tap_code16(LGUI(KC_LEFT)); //GUI for move, shift-ctl for highlight... thanks mac!
-                    }
-                break;
-                case MOVE_RIGHT_LINE:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(KC_END);
-                    } else { //osx
-                        tap_code16(LGUI(KC_RIGHT)); //GUI for move, shift-ctl for highlight... thanks mac!
-                    }
-                break;
-                case PASTE_NOSTYLE:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(LCTL(RSFT(KC_V)));
-                    } else { //osx
-                        tap_code16(LGUI(LALT(LSFT(KC_V))));
-                    }
-                break;
-                case ACIRCLE: // å
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        SEND_STRING(SS_TAP(X_COMPOSE_KEY)"aa");
-                    } else { //osx
-                        tap_code16(LALT(KC_A));
-                    }
-                break;
-                case ADOT: // ä
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        SEND_STRING(SS_TAP(X_COMPOSE_KEY)"a\"");
-                    } else { //osx
-                        SEND_STRING(SS_LALT("u")"a");
-                    }
-                break;
-                case ODOT: // ö
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        SEND_STRING(SS_TAP(X_COMPOSE_KEY)"o\"");
-                    } else { //osx
-                        SEND_STRING(SS_LALT("u")"o");
-                    }
-                break;
-                case COMPOSE_MACRO:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(COMPOSE_KEY);
-                    } else { //osx
-                        tap_code16(COMPOSE_MAC);
-                    }
-                break;
-                case SCREENSHOT:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(KC_PSCR);
-                    } else { //osx
-                        tap_code16(LGUI(LSFT(KC_4)));
-                    }
-                break;
-                case OPEN_TERMINAL_HERE:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        tap_code16(LSFT(KC_F10));
-                        tap_code16(KC_E);
-                    } else { //osx
-                        tap_code16(LCTL(KC_F10));
-                    }
-                break;
-                case SHOW_OS:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        SEND_STRING("Lx");
-                    } else { //osx
-                        SEND_STRING("Mac");
-                    }
-                break;
-                case SMILEY:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        SEND_STRING(SS_TAP(X_COMPOSE_KEY)":)");
-                    } else { //osx
-                        SEND_STRING(SS_TAP(X_COMPOSE_MAC)":)");
-                    }
-                break;
-                case THUMBS_UP:
-                    if(keymap_config.swap_lctl_lgui){ //Linux
-                        SEND_STRING(SS_TAP(X_COMPOSE_KEY)":+");
-                    } else { //osx
-                        SEND_STRING(SS_TAP(X_COMPOSE_MAC)":+");
-                    }
-                break;
-
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(LCTL(KC_BSPC));
+            } else { //osx
+                register_code16(LALT(KC_BSPC));
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(LCTL(KC_BSPC));
+            } else { //osx
+                unregister_code16(LALT(KC_BSPC));
             }
         }
+        break;
+    case SELECT_LEFT_WD:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(RSFT(LCTL(KC_LEFT)));
+            } else { //osx
+                register_code16(RSFT(LALT(KC_LEFT)));
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(RSFT(LCTL(KC_LEFT)));
+            } else { //osx
+                unregister_code16(RSFT(LALT(KC_LEFT)));
+            }
+        }
+        break;
+    case SELECT_RIGHT_WD:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(RSFT(LCTL(KC_RIGHT)));
+            } else { //osx
+                register_code16(RSFT(LALT(KC_RIGHT)));
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(RSFT(LCTL(KC_RIGHT)));
+            } else { //osx
+                unregister_code16(RSFT(LALT(KC_RIGHT)));
+            }
+        }
+        break;
+    case SELECT_LEFT_LINE: // not register because doesn't make sense to repeat
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(RSFT(KC_HOME));
+            } else { //osx
+                tap_code16(RSFT(LCTL(KC_LEFT)));
+            }
+        }
+        break;
+    case SELECT_RIGHT_LINE: // not register because doesn't make sense to repeat
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(RSFT(KC_END));
+            } else { //osx
+                tap_code16(RSFT(LCTL(KC_RIGHT)));
+            }
+        }
+        break;
+                
+    case MOVE_LEFT_WD:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(LCTL(KC_LEFT));
+            } else { //osx
+                register_code16(LALT(KC_LEFT));
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(LCTL(KC_LEFT));
+            } else { //osx
+                unregister_code16(LALT(KC_LEFT));
+            }
+        }
+        break;
+    case MOVE_RIGHT_WD:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(LCTL(KC_RIGHT));
+            } else { //osx
+                register_code16(LALT(KC_RIGHT));
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(LCTL(KC_RIGHT));
+            } else { //osx
+                unregister_code16(LALT(KC_RIGHT));
+            }
+        }
+        break;
+    case MOVE_LEFT_LINE:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(KC_HOME);
+            } else { //osx
+                tap_code16(LGUI(KC_LEFT)); //GUI for move, shift-ctl for highlight... thanks mac!
+            }
+        }
+        break;
+    case MOVE_RIGHT_LINE:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(KC_END);
+            } else { //osx
+                tap_code16(LGUI(KC_RIGHT)); //GUI for move, shift-ctl for highlight... thanks mac!
+            }
+        }
+        break;
+    case PASTE_NOSTYLE:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(LCTL(RSFT(KC_V)));
+            } else { //osx
+                tap_code16(LGUI(LALT(LSFT(KC_V))));
+            }
+        }
+        break;
+    case ACIRCLE: // å
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                SEND_STRING(SS_TAP(X_COMPOSE_KEY)"aa");
+            } else { //osx
+                tap_code16(LALT(KC_A));
+            }
+        }
+        break;
+    case ADOT: // ä
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                SEND_STRING(SS_TAP(X_COMPOSE_KEY)"a\"");
+            } else { //osx
+                SEND_STRING(SS_LALT("u")"a");
+            }
+        }
+        break;
+    case ODOT: // ö
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                SEND_STRING(SS_TAP(X_COMPOSE_KEY)"o\"");
+            } else { //osx
+                SEND_STRING(SS_LALT("u")"o");
+            }
+        }
+        break;
+    case COMPOSE_MACRO:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(COMPOSE_KEY);
+            } else { //osx
+                tap_code16(COMPOSE_MAC);
+            }
+        }
+        break;
+    case SCREENSHOT:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(KC_PSCR);
+            } else { //osx
+                tap_code16(LGUI(LSFT(KC_4)));
+            }
+        }
+        break;
+    case OPEN_TERMINAL_HERE:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(LSFT(KC_F10));
+                tap_code16(KC_E);
+            } else { //osx
+                tap_code16(LCTL(KC_F10));
+            }
+        }
+        break;
+    case SHOW_OS:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                SEND_STRING("Lx");
+            } else { //osx
+                SEND_STRING("Mac");
+            }
+        }
+        break;
+    case SMILEY:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                SEND_STRING(SS_TAP(X_COMPOSE_KEY)":)");
+            } else { //osx
+                SEND_STRING(SS_TAP(X_COMPOSE_MAC)":)");
+            }
+        }
+        break;
+    case THUMBS_UP:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                SEND_STRING(SS_TAP(X_COMPOSE_KEY)":+");
+            } else { //osx
+                SEND_STRING(SS_TAP(X_COMPOSE_MAC)":+");
+            }
+        }
+        break;
+    case FORCE_QUIT:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(RALT(RCTL(KC_PSCR)));
+            } else { //osx
+                tap_code16(LGUI(LALT(KC_ESCAPE)));
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(RALT(RCTL(KC_PSCR)));
+            } else { //osx
+                // nothing to unregister
+            }
+        }
+        break;
 
     return false;
     //break;

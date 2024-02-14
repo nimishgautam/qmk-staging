@@ -72,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                    |--------+--------+--------+--------+--------+--------|
       LOCK_SCREEN, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,           KC_TRANSPARENT, KC_SLASH,  KC_3,  KC_2, KC_1, TD(TD_PERIOD_COMMA),
   //|--------+--------+--------+--------+--------+--------+--------|                                    |--------+--------+--------+--------+-C```-------+--------+--------|
-                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
+                                          KC_BRID, KC_BRIU, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
                                       //`--------------------------'                                      `--------------------------'
   ),
 
@@ -89,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       KC_INSERT, KC_DELETE, KC_TILD, KC_GRAVE, PASTE_NOSTYLE, KC_HOME,                                 TO(_ADJUST), KC_TRANSPARENT, KC_TRANSPARENT, KC_MS_WH_RIGHT, KC_MS_WH_LEFT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_PAGE_UP,  DEL_WORD, KC_PAGE_DOWN ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
+                                          KC_PAGE_UP,  DEL_WORD, KC_PAGE_DOWN ,                                  KC_VOLU  ,  KC_VOLD, KC_TRANSPARENT
                                       //`--------------------------'                                              `--------------------------'
   ),
 
@@ -102,9 +102,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                                                                   ,-----------------------------------------------------.
      KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, TOG_WINDOW_STATE, KC_TRANSPARENT, KC_TRANSPARENT,                           KC_PSCR, KC_F11,    KC_F9,    KC_F8,    KC_F7, TD(TD_MOVE_END_LINE),
   //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                                          KC_SCRL, KC_F12,    KC_F6,  KC_F5,  KC_F4, MAX_VERTICAL,
+      TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                                          KC_SCRL, KC_F12,    KC_F6,  TD(TD_F5_CONSOLE),  KC_F4, MAX_VERTICAL,
   //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                         SEND_WINDOW_RIGHT, KC_TRANSPARENT,    KC_F3,  KC_F2, KC_F1, MAX_HORIZONTAL,
+      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                         SEND_WINDOW_RIGHT, KC_TRANSPARENT,    KC_F3,  TD(TD_F2_CONSOLE), KC_F1, MAX_HORIZONTAL,
   //|--------+--------+--------+--------+--------+--------+--------|                                                   |--------+--------+--------+--------+--------+--------+--------|
                                           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT ,                             KC_F10  ,  ZOOM_OUT, ZOOM_IN
                                       //`--------------------------'                                                   `--------------------------'
@@ -121,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       TO(_BASE), SELECT_LEFT_WD, MOVE_LEFT_TERMINAL, MOVE_END_LINE_TERMINAL, MOVE_RIGHT_TERMINAL,SELECT_RIGHT_WD,                                            KC_TRANSPARENT, KC_RCTL, KC_RALT, KC_RSFT,KC_RGUI, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      SEND_WINDOW_LEFT, KC_TRANSPARENT, TMUX_SPLIT_VERT, TMUX_CLOSE_PANE, TMUX_SPLIT_HORIZ, KC_TRANSPARENT,                                       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT,
+      SEND_WINDOW_LEFT, KC_TRANSPARENT, TMUX_SPLIT_VERT, TMUX_CLOSE_PANE, TMUX_SPLIT_HORIZ, KC_BRK,                                       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
                                           DEL_TO_END_TERMINAL,  DEL_WORD_TERMINAL, KC_TRANSPARENT ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
                                       //`--------------------------'                                              `--------------------------'

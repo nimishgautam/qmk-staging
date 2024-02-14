@@ -86,5 +86,7 @@ enum custom_key_codes {
     /* emojis (via Xcompose and not unicode) */
     SMILEY,
     THUMBS_UP,
+    /* sys req and force quits */
+    FORCE_QUIT,
 };
 

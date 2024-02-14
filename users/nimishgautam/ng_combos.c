@@ -61,6 +61,12 @@ const uint16_t PROGMEM thumbsup_combo[] = {KC_W, KC_O ,COMBO_END};
 //combo - power button
 const uint16_t PROGMEM power_button_combo[] = {LT(0, NUMERIC_WIN_RIGHT), KC_MINUS, COMBO_END};
 
+//combo - sysreq or command opt esc
+const uint16_t PROGMEM force_quit_combo[] = {MAGIC_CASING, LT(0, SHOW_WIN_LEFT), COMBO_END};
+
+//combo - mute
+const uint16_t PROGMEM mute_combo[] = {KC_Y, KC_T, COMBO_END};
+
 combo_t key_combos[] = {
     COMBO(compose_combo, COMPOSE_MACRO),
     COMBO(search_combo, FINDER),
@@ -84,7 +90,9 @@ combo_t key_combos[] = {
     COMBO(scrollup_combo, KC_MS_WH_UP),
     COMBO(smiley_combo, SMILEY),
     COMBO(thumbsup_combo, THUMBS_UP),
-    COMBO(power_button_combo, KC_PWR)
+    COMBO(power_button_combo, KC_PWR),
+    COMBO(force_quit_combo, FORCE_QUIT),
+    COMBO(mute_combo, KC_MUTE)
 };
 
 bool get_combo_must_hold(uint16_t index, combo_t *combo) {
