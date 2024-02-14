@@ -349,7 +349,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
-
+    case BRIGHT_DOWN:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(KC_BRID);
+            } else { //osx
+                register_code16(KC_BRMD);
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(KC_BRID);
+            } else { //osx
+                unregister_code16(KC_BRMD);
+            }
+        }
+        break;
+    case BRIGHT_UP:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_code16(KC_BRIU);
+            } else { //osx
+                register_code16(KC_BRMU);
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_code16(KC_BRIU);
+            } else { //osx
+                unregister_code16(KC_BRMU);
+            }
+        }
+        break;
     return false;
     //break;
   }

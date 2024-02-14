@@ -67,6 +67,9 @@ const uint16_t PROGMEM force_quit_combo[] = {MAGIC_CASING, LT(0, SHOW_WIN_LEFT),
 //combo - mute
 const uint16_t PROGMEM mute_combo[] = {KC_Y, KC_T, COMBO_END};
 
+//combo - play/pause
+const uint16_t PROGMEM pauseplay_combo[] = {KC_B, KC_N, COMBO_END};
+
 combo_t key_combos[] = {
     COMBO(compose_combo, COMPOSE_MACRO),
     COMBO(search_combo, FINDER),
@@ -92,7 +95,8 @@ combo_t key_combos[] = {
     COMBO(thumbsup_combo, THUMBS_UP),
     COMBO(power_button_combo, KC_PWR),
     COMBO(force_quit_combo, FORCE_QUIT),
-    COMBO(mute_combo, KC_MUTE)
+    COMBO(mute_combo, KC_MUTE),
+    COMBO(pauseplay_combo, KC_MPLY)
 };
 
 bool get_combo_must_hold(uint16_t index, combo_t *combo) {

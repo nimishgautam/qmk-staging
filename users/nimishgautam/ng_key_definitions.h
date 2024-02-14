@@ -3,9 +3,9 @@
 // I've changed Linux to accept these defaults
 
 #define FINDER         LGUI(LALT(KC_SPACE)) //open the search bar for finding apps, docs in-computer, etc
-#define COMPOSE_KEY    KC_SCRL //manually set on linux, to create chars via .Xcompose ()
+#define COMPOSE_KEY    KC_APP //manually set on linux, to create chars via .Xcompose ()
 #define COMPOSE_MAC    KC_F13 //manually set on mac using some tricks
-#define X_COMPOSE_KEY  X_SCROLL_LOCK //for use with macros
+#define X_COMPOSE_KEY  X_APPLICATION //for use with macros
 #define X_COMPOSE_MAC  X_F13 // for use with macros
 #define SHOW_WINDOWS   LCTL(KC_UP) //'Expose' on Mac, overview on linux. Just all the windows
 #define WINDOW_LEFT    LCTL(LGUI(LSFT(KC_LEFT))) //custom shortcut for this feature -- make window take up 50% left screen (using gui and ctl to make it os agnostic)
@@ -88,5 +88,8 @@ enum custom_key_codes {
     THUMBS_UP,
     /* sys req and force quits */
     FORCE_QUIT,
+    /* os-specific media*/
+    BRIGHT_UP,
+    BRIGHT_DOWN
 };
 

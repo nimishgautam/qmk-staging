@@ -72,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                    |--------+--------+--------+--------+--------+--------|
       KC_SLEP, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, LOCK_SCREEN,           KC_TRANSPARENT, KC_SLASH,  KC_3,  KC_2, KC_1, TD(TD_PERIOD_COMMA),
   //|--------+--------+--------+--------+--------+--------+--------|                                    |--------+--------+--------+--------+-C```-------+--------+--------|
-                                          KC_BRID, KC_BRIU, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
+                                          BRIGHT_DOWN, BRIGHT_UP, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
                                       //`--------------------------'                                      `--------------------------'
   ),
 
