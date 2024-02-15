@@ -5,7 +5,7 @@
     #define TAPPING_LAYER _TERMINAL
 #endif
 #ifndef CURSOR_SPEED
-    #define CURSOR_SPEED 70
+    #define CURSOR_SPEED 30
 #endif
 #ifndef SCROLL_SPEED
     #define SCROLL_SPEED 35
@@ -81,18 +81,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 
     if (cursor_mode) {
-        /*
+        
         mouse_report.x = CURSOR_SPEED * mouse_report.x/100;
         mouse_report.y = CURSOR_SPEED * mouse_report.y/100;
-        */
-            float magnitude = sqrtf( mouse_report.x * mouse_report.x + mouse_report.y * mouse_report.y );
+            /* float magnitude = sqrtf( mouse_report.x * mouse_report.x + mouse_report.y * mouse_report.y );
             float adjusted_magnitude = powf(magnitude, 0.2f);
             mouse_report.x = (mouse_report.x * adjusted_magnitude);
             if(mouse_report.x > 127){mouse_report.x = 127;}
             if(mouse_report.x < -127){mouse_report.x = -127;}
             mouse_report.y = (mouse_report.y * adjusted_magnitude); 
              if(mouse_report.y > 127){mouse_report.y = 127;}
-            if(mouse_report.y < -127){mouse_report.y = -127;}   
+            if(mouse_report.y < -127){mouse_report.y = -127;} */  
     }
     if (scrolling_mode) {
         mouse_report.h = SCROLL_SPEED * mouse_report.x/100;

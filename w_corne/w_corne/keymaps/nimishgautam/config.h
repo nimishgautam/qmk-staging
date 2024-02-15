@@ -62,16 +62,64 @@
     #define RGB_MATRIX_VAL_STEP 8
     #define RGB_MATRIX_SPD_STEP 10
     #define RGB_DISABLE_WHEN_USB_SUSPENDED // turn off effects when suspended
-    #define RGB_MATRIX_LED_PROCESS_LIMIT (RGB_MATRIX_LED_COUNT + 4) / 5 // limits the number of LEDs to process in an animation per task run (increases keyboard responsiveness)
     #define RGB_MATRIX_LED_FLUSH_LIMIT 16 // limits in milliseconds how frequently an animation will update the LEDs. 16 (16ms) is equivalent to limiting to 60fps (increases keyboard responsiveness)
 
-    #define ENABLE_RGB_MATRIX_SOLID_SPLASH
+    // look like The Matrix (white and green) colors randomly dropping
+    #define ENABLE_RGB_MATRIX_DIGITAL_RAIN 
 
-    // NOTE: the below effects are super cool but they go absolutely nuts if you manually set hsv colors (eg with layers)
+    // solid color splashing out from a central area
+    // eg if the background color is blue, blue colors 'splashing' out from center
+    // this variant only supports 1*color at a time
+    #define ENABLE_RGB_MATRIX_SOLID_SPLASH 
 
-    //#define ENABLE_RGB_MATRIX_TYPING_HEATMAP
-    //#define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
-    //#define ENABLE_RGB_MATRIX_SOLID_REACTIVE
+    // same as above but multiple splashes can be happening at the same time
+    #define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
+
+    // multicolor 'splash' (simpler)
+    #define ENABLE_RGB_MATRIX_SPLASH 
+    #define ENABLE_RGB_MATRIX_MULTISPLASH 
+
+    #define ENABLE_RGB_MATRIX_SOLID_REACTIVE_CROSS
+
+    // Really pretty single-color going off randomly like a river
+    #define ENABLE_RGB_MATRIX_RIVERFLOW
+
+    #define ENABLE_RGB_MATRIX_HUE_PENDULUM
+
+    #define ENABLE_RGB_MATRIX_HUE_BREATHING
+
+    #define ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
+
+    // heatmap of typing
+    #define ENABLE_RGB_MATRIX_TYPING_HEATMAP
+
+    // Fractal patterns going out from the middle
+    #define ENABLE_RGB_MATRIX_PIXEL_FRACTAL
+
+    // patterns moving along the LED wire line
+    #define ENABLE_RGB_MATRIX_PIXEL_FLOW
+
+    // radiating rainbow pinwheel
+    #define ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
+
+    // randomly twinkle (vary brightness) but vary hue (actual color) as well
+    #define ENABLE_RGB_MATRIX_STARLIGHT_DUAL_HUE
+
+    // randomly twinkle (vary brightness) but vary saturation (how strong that color is) as well
+    #define ENABLE_RGB_MATRIX_STARLIGHT_DUAL_SAT
+
+    // (single) keypress goes out in saturation and value on a nexus
+    #define ENABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS
+#endif
+
+
+#ifdef RGB_MATRIX_ENABLE
+#define RGB_MOUSE_MODE RGB_MATRIX_RAINBOW_PINWHEELS
+#define RGB_MODS_MODE RGB_MATRIX_RIVERFLOW
+#define RGB_TXT_MODE RGB_MATRIX_HUE_PENDULUM
+#define RGB_NUMS_MODE RGB_MATRIX_HUE_BREATHING
+#define RGB_FN_MODE RGB_MATRIX_PIXEL_FRACTAL
+#define RGB_TERM_MODE RGB_MATRIX_BAND_SPIRAL_SAT
 #endif
 
 

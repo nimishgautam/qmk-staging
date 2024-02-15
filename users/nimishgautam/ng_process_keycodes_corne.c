@@ -129,6 +129,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //break;
 
 
+/* LINUX ONLY*/
+
+    case MAGIC_SYSRQ:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                register_mods(MOD_LALT);
+                tap_code16(KC_PSCR);
+            } else { //osx
+                //no equivalent
+            }
+        } else {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                unregister_mods(MOD_LALT);
+            } else { //osx
+                // nothing to unregister
+            }
+        }
+        break;
+
     /* OS-DEPENDENT FUNCTIONS */
 
     case DEL_WORD:
@@ -337,15 +356,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case FORCE_QUIT:
         if(record->event.pressed) {
             if(keymap_config.swap_lctl_lgui){ //Linux
-                register_code16(RALT(RCTL(KC_PSCR)));
+                tap_code16(XKILL_SHORTCUT);
             } else { //osx
                 tap_code16(LGUI(LALT(KC_ESCAPE)));
-            }
-        } else {
-            if(keymap_config.swap_lctl_lgui){ //Linux
-                unregister_code16(RALT(RCTL(KC_PSCR)));
-            } else { //osx
-                // nothing to unregister
             }
         }
         break;
@@ -379,6 +392,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
+    case MOUSE_WARP_GRID:
+        if(record->event.pressed) {
+            if(keymap_config.swap_lctl_lgui){ //Linux
+                tap_code16(LALT(LGUI(KC_X)));
+            } else { //osx
+                tap_code16(LALT(KC_SPACE));
+            }
+        }
+        break;
+
+    // End custom code case statements
     return false;
     //break;
   }

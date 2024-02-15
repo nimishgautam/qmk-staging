@@ -3,7 +3,7 @@ RGBLIGHT_ENABLE = no
 OLED_ENABLE     = no
 COMBO_ENABLE = yes
 TAP_DANCE_ENABLE = yes  # enable tap dance features
-EXTRAKEY_ENABLE = no
+EXTRAKEY_ENABLE = yes
 GRAVE_ESC_ENABLE = no
 SPACE_CADET_ENABLE = no
 

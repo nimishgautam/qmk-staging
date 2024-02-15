@@ -53,6 +53,9 @@
 #define MAX_HORIZONTAL LCTL(LGUI(RSFT(KC_F6)))
 #define TOG_WINDOW_STATE LALT(KC_F10)
 
+// random shortcut for xkill
+#define XKILL_SHORTCUT LCTL(LGUI(RSFT(KC_F23)))
+
 enum custom_key_codes {
     RGB_SLD = SAFE_RANGE,
     SHOW_WIN_LEFT, // show windows on tap, move active window left on hold
@@ -88,8 +91,11 @@ enum custom_key_codes {
     THUMBS_UP,
     /* sys req and force quits */
     FORCE_QUIT,
+    MAGIC_SYSRQ,
     /* os-specific media*/
     BRIGHT_UP,
-    BRIGHT_DOWN
+    BRIGHT_DOWN,
+    /* mouse assist grids (either warpd for linux or Shortcat on mac)*/
+    MOUSE_WARP_GRID,
 };
 

@@ -131,9 +131,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
      EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      TO(_BASE), RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_LSFT, RGB_MOD, RGB_RMOD, RGB_TOG, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           SHOW_OS, XXXXXXX, CG_TOGG ,     XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
@@ -156,52 +156,98 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-// yeah, should be layer_state_set_user but that one doesn't update the mods
+
+#ifdef RGB_MATRIX_ENABLE
+// base rgb mode, some sensible default if undefined
+uint8_t base_rgb_mode = RGB_MATRIX_SPLASH;
+HSV base_HSV = {HSV_PINK};
+uint8_t prev_layer = _BASE;
+
 void set_lighting_user(void) {
-    uint8_t layer = get_highest_layer(layer_state);
+
+ uint8_t layer = get_highest_layer(layer_state);
+    if (layer != _ADJUST){
+    // check if mods are set. If so, no need to check layers
+    led_t led_state = host_keyboard_led_state();
+        if(get_mods() || led_state.caps_lock){
+            if((get_mods() & MOD_MASK_SHIFT)  || led_state.caps_lock){
+                rgb_matrix_sethsv_noeeprom(HSV_RED);
+            }
+            if(get_mods() & MOD_MASK_CTRL){
+                rgb_matrix_sethsv_noeeprom(HSV_MAGENTA);
+            }
+            if(get_mods() & MOD_MASK_ALT){
+                rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
+            }
+            if(get_mods() & MOD_MASK_GUI){
+                rgb_matrix_sethsv_noeeprom(HSV_TEAL);
+            }
+            if( rgb_matrix_get_mode() != RGB_MODS_MODE){
+                rgb_matrix_mode_noeeprom(RGB_MODS_MODE);
+            }
+            return;
+        }
+    }
+
+    // otherwise some layer coloring and stuff
     switch(layer){
         case _BASE:
-            rgblight_sethsv_noeeprom(HSV_WHITE);
-            led_t led_state = host_keyboard_led_state();
-            if(led_state.caps_lock){
-                rgblight_sethsv_noeeprom(HSV_RED);
+            if(prev_layer == _ADJUST){
+                base_HSV = rgb_matrix_get_hsv();
+                base_rgb_mode = rgb_matrix_get_mode();
             }
-            //rgblight_sethsv(HSV_OFF);
+            rgb_matrix_sethsv_noeeprom(base_HSV.h, base_HSV.s, base_HSV.v);
+            if(rgb_matrix_get_mode() != base_rgb_mode){
+                //could be we change from a different base OR from mods
+                rgb_matrix_mode_noeeprom(base_rgb_mode);
+            }
         break;
         case _NUMS:
-            rgblight_sethsv_noeeprom(HSV_GREEN);
+            rgb_matrix_sethsv_noeeprom(HSV_GREEN); 
+            if(rgb_matrix_get_mode() != RGB_NUMS_MODE){
+                rgb_matrix_mode_noeeprom(RGB_NUMS_MODE);
+            }
         break;
         case _TERMINAL:
-            rgblight_sethsv_noeeprom(HSV_PINK);
+            rgb_matrix_sethsv_noeeprom(HSV_CYAN);
+            if(rgb_matrix_get_mode() != RGB_TERM_MODE){
+                rgb_matrix_mode_noeeprom(RGB_TERM_MODE);
+            }
         break;
         case _TEXT_NAV:
-            rgblight_sethsv_noeeprom(HSV_BLUE);
+            rgb_matrix_sethsv_noeeprom(HSV_BLUE); 
+            if(rgb_matrix_get_mode() != RGB_TXT_MODE){
+                rgb_matrix_mode_noeeprom(RGB_TXT_MODE);
+            } 
         break;
         case _ADJUST:
-            rgblight_sethsv_noeeprom(HSV_ORANGE);
+            if(prev_layer != _ADJUST){
+                rgb_matrix_sethsv_noeeprom(HSV_CYAN);
+                rgb_matrix_mode_noeeprom(base_rgb_mode);
+            }
+            // adjust, and any adjustments will be saved to base layer
         break;
         case _FN_KEYS:
-            rgblight_sethsv_noeeprom(HSV_PURPLE);
+            rgb_matrix_sethsv_noeeprom(HSV_PURPLE); 
+            if(rgb_matrix_get_mode() != RGB_FN_MODE){
+                rgb_matrix_mode_noeeprom(RGB_FN_MODE);
+            }             
         break;
+        #ifdef POINTING_DEVICE_ENABLE
+        case _MOUSE:
+            if(rgb_matrix_get_mode() != RGB_MOUSE_MODE){
+                rgb_matrix_sethsv_noeeprom(HSV_CHARTREUSE); // color not needed for swirly animations
+                rgb_matrix_mode_noeeprom(RGB_MOUSE_MODE);
+            }
+            break;
+        #endif
         default:
         break;
     }
-    // override color with mods
-
-    if(get_mods() & MOD_MASK_SHIFT){
-        rgblight_sethsv_noeeprom(HSV_RED);
-    }
-    if(get_mods() & MOD_MASK_CTRL){
-        rgblight_sethsv_noeeprom(HSV_MAGENTA);
-    }
-    if(get_mods() & MOD_MASK_ALT){
-        rgblight_sethsv_noeeprom(HSV_YELLOW);
-    }
-    if(get_mods() & MOD_MASK_GUI){
-        rgblight_sethsv_noeeprom(HSV_TEAL);
-    }
-    // return state;
+    prev_layer = layer;
+    //return state;
 }
+#endif
 
 led_config_t g_led_config = { {
         {0, 1, 2, 3}
@@ -221,4 +267,11 @@ void keyboard_post_init_user(void) {
     if (is_keyboard_master()) {
         os_detect();
     }
+}
+
+void housekeeping_task_user(void) {
+
+        #ifdef RGB_MATRIX_ENABLE
+            set_lighting_user();
+        #endif
 }

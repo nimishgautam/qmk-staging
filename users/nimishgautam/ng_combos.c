@@ -61,14 +61,20 @@ const uint16_t PROGMEM thumbsup_combo[] = {KC_W, KC_O ,COMBO_END};
 //combo - power button
 const uint16_t PROGMEM power_button_combo[] = {LT(0, NUMERIC_WIN_RIGHT), KC_MINUS, COMBO_END};
 
-//combo - sysreq or command opt esc
+//combo - xkill or command opt esc
 const uint16_t PROGMEM force_quit_combo[] = {MAGIC_CASING, LT(0, SHOW_WIN_LEFT), COMBO_END};
+
+//combo - magic sysrq
+const uint16_t PROGMEM magic_sysrq_combo[] = {LT(0, SHOW_WIN_LEFT), LT(0, NUMERIC_WIN_RIGHT), COMBO_END};
 
 //combo - mute
 const uint16_t PROGMEM mute_combo[] = {KC_Y, KC_T, COMBO_END};
 
 //combo - play/pause
 const uint16_t PROGMEM pauseplay_combo[] = {KC_B, KC_N, COMBO_END};
+
+//combo - mouse warp grid (from warpd or shortcat)
+const uint16_t PROGMEM mouse_warp_grid_combo[] = {KC_COMM, KC_M, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(compose_combo, COMPOSE_MACRO),
@@ -95,8 +101,10 @@ combo_t key_combos[] = {
     COMBO(thumbsup_combo, THUMBS_UP),
     COMBO(power_button_combo, KC_PWR),
     COMBO(force_quit_combo, FORCE_QUIT),
+    COMBO(magic_sysrq_combo, MAGIC_SYSRQ),
     COMBO(mute_combo, KC_MUTE),
-    COMBO(pauseplay_combo, KC_MPLY)
+    COMBO(pauseplay_combo, KC_MPLY),
+    COMBO(mouse_warp_grid_combo, MOUSE_WARP_GRID),
 };
 
 bool get_combo_must_hold(uint16_t index, combo_t *combo) {
