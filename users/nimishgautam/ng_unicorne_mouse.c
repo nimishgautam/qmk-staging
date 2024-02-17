@@ -4,6 +4,9 @@
 #ifndef TAPPING_LAYER
     #define TAPPING_LAYER _TERMINAL
 #endif
+#ifndef BASE_CURSOR_LAYER
+    #define BASE_CURSOR_LAYER _BASE
+#endif
 #ifndef CURSOR_SPEED
     #define CURSOR_SPEED 30
 #endif
@@ -21,9 +24,7 @@
 
 // Thumbstick code, no customisation needed
 
-bool cursor_mode = false;
-bool scrolling_mode = false;
-bool tapping_mode = false;
+uint16_t mouse_mode = SCROLLING_LAYER;
 
 // tracks if thumbstick was released
 bool returned_to_zero = true;
@@ -33,41 +34,22 @@ uint16_t zero_reads = 0;
 
 // set mode depending on layer
 layer_state_t layer_state_set_user(layer_state_t state) {
-    
     switch (get_highest_layer(state)) {
         case SCROLLING_LAYER:
-            if (scrolling_mode == false) {
-            scrolling_mode = true;
-            set_auto_mouse_enable(false);
-            }
-            if (tapping_mode) {
-                tapping_mode = false;
-            }
-            if (cursor_mode) {
-                cursor_mode = false;
+            if (mouse_mode != SCROLLING_LAYER) {
+                mouse_mode = SCROLLING_LAYER;
+                set_auto_mouse_enable(false);
             }
             break;
         case TAPPING_LAYER:
-            if (tapping_mode == false) {
-                tapping_mode = true;
+            if (mouse_mode != TAPPING_LAYER) {
+                mouse_mode = TAPPING_LAYER;
                 set_auto_mouse_enable(false);
-            }
-            if (cursor_mode) {
-                cursor_mode = false;
-            }
-            if (scrolling_mode) {
-                scrolling_mode = false;
             }
             break;
         default:
-            if (scrolling_mode) {
-                scrolling_mode = false;
-            }
-            if (tapping_mode) {
-                tapping_mode = false;
-            }
-            if (cursor_mode == false) {
-                cursor_mode = true;
+            if (mouse_mode != BASE_CURSOR_LAYER){
+                mouse_mode = BASE_CURSOR_LAYER;
             }
             if (!get_auto_mouse_enable()){
                 set_auto_mouse_enable(true);
@@ -80,7 +62,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // manipulate mouse report based on current mode
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 
-    if (cursor_mode) {
+    if (mouse_mode == BASE_CURSOR_LAYER) {
         
         mouse_report.x = CURSOR_SPEED * mouse_report.x/100;
         mouse_report.y = CURSOR_SPEED * mouse_report.y/100;
@@ -93,7 +75,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
              if(mouse_report.y > 127){mouse_report.y = 127;}
             if(mouse_report.y < -127){mouse_report.y = -127;} */  
     }
-    if (scrolling_mode) {
+    if (mouse_mode == SCROLLING_LAYER) {
         mouse_report.h = SCROLL_SPEED * mouse_report.x/100;
         mouse_report.v = -1 * SCROLL_SPEED * mouse_report.y/100;
         mouse_report.x = 0;
@@ -102,7 +84,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
             wait_ms(SCROLL_DELAY_MS);
         }
 
-    } else if (tapping_mode) {
+    } else if (mouse_mode == TAPPING_LAYER) {
         if ((mouse_report.x || mouse_report.y) != 0) {
             if (returned_to_zero) {
                 if (mouse_report.x > 0) {
