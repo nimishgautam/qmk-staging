@@ -128,6 +128,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     //break;
 
+/* AUTO MOUSE */
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+case KC_MS_WH_UP:
+case KC_MS_WH_DOWN:
+    if(record->event.pressed){
+        set_auto_mouse_enable(false);
+    }
+    else {
+        set_auto_mouse_enable(true);
+    }
+    return true;
+#endif
 
 /* LINUX ONLY*/
 
