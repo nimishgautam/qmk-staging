@@ -18,6 +18,7 @@
 
 
 #ifdef OS_DETECTION_ENABLE
+#define OS_DETECTION_KEYBOARD_RESET
 void os_detect(void) {
     os_variant_t host_os = detected_host_os();
     #ifdef AUDIO_ENABLE
