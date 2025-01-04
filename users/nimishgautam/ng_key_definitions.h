@@ -53,8 +53,8 @@
 #define MAX_HORIZONTAL LCTL(LGUI(RSFT(KC_F6)))
 #define TOG_WINDOW_STATE LALT(KC_F10)
 
-// random shortcut for xkill
-#define XKILL_SHORTCUT LCTL(LGUI(RSFT(KC_F23)))
+// custom shortcut for xkill conveniently wrapped to windows shortcut
+#define XKILL_SHORTCUT LCTL(LALT(KC_DELETE))
 
 enum custom_key_codes {
     RGB_SLD = SAFE_RANGE,

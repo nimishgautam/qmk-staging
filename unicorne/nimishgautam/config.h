@@ -171,17 +171,9 @@
 
 // music
 
-#define TO_BOLDLY_GO \
-  W__NOTE(_BF3 ), \
-  Q__NOTE(_EF4 ), \
-  WD_NOTE(_AF4 ), \
-  W__NOTE(_REST), \
-  H__NOTE(_G4  ), \
-  Q__NOTE(_EF4 ), \
-  H__NOTE(_C4  ), \
-  W__NOTE(_REST), \
-  QD_NOTE(_F4  ), \
-  M__NOTE(_BF4, 128),
+#define MARIO_CAVE_1                                                                                        \
+    E__NOTE(_C5), E__NOTE(_REST), E__NOTE(_C5), E__NOTE(_REST), E__NOTE(_A4), E__NOTE(_REST), E__NOTE(_A4), \
+        E__NOTE(_REST), E__NOTE(_AS4), E__NOTE(_REST), E__NOTE(_AS4), E__NOTE(_REST)
 
 #define MARIO_THEME_U \
     Q__NOTE(_E5), \
@@ -191,33 +183,6 @@
     H__NOTE(_E5), \
     W__NOTE(_G5), \
     Q__NOTE(_G4),
-
-#define MARIO_MUSHROOM \
-    S__NOTE(_C5 ), \
-    S__NOTE(_G4 ), \
-    S__NOTE(_C5 ), \
-    S__NOTE(_E5 ), \
-    S__NOTE(_G5 ), \
-    S__NOTE(_C6 ), \
-    S__NOTE(_G5 ), \
-    S__NOTE(_GS4), \
-    S__NOTE(_C5 ), \
-    S__NOTE(_DS5), \
-    S__NOTE(_GS5), \
-    S__NOTE(_DS5), \
-    S__NOTE(_GS5), \
-    S__NOTE(_C6 ), \
-    S__NOTE(_DS6), \
-    S__NOTE(_GS6), \
-    S__NOTE(_DS6), \
-    S__NOTE(_AS4), \
-    S__NOTE(_D5 ), \
-    S__NOTE(_F5 ), \
-    S__NOTE(_AS5), \
-    S__NOTE(_D6 ), \
-    S__NOTE(_F6 ), \
-    S__NOTE(_AS6), \
-    S__NOTE(_F6 )
 
 #define MARIO_GAMEOVER_U \
     HD_NOTE(_C5 ), \
@@ -231,18 +196,13 @@
     H__NOTE(_AF4), \
     WD_NOTE(_G4 ),
 
-#define ONE_UP_SOUND \
+#define ONE_UP_SOUND_U \
     Q__NOTE(_E6  ),  \
     Q__NOTE(_G6  ),  \
     Q__NOTE(_E7  ),  \
     Q__NOTE(_C7  ),  \
     Q__NOTE(_D7  ),  \
     Q__NOTE(_G7  ),
-
-#define MARIO_CAVE E__NOTE(_C5), E__NOTE(_REST), E__NOTE(_C5), E__NOTE(_REST), E__NOTE(_A4), E__NOTE(_REST), E__NOTE(_A4), \
-        E__NOTE(_REST), E__NOTE(_AS4), E__NOTE(_REST), E__NOTE(_AS4), E__NOTE(_REST)
-
-
 
 #define IMPERIAL_MARCH_U \
   HD_NOTE(_A4), HD_NOTE(_A4), HD_NOTE(_A4), QD_NOTE(_F4), QD_NOTE(_C5), \
@@ -253,5 +213,5 @@
 #undef STARTUP_SONG
 #define STARTUP_SONG SONG(NO_SOUND)
 #define GOODBYE_SONG SONG(MARIO_GAMEOVER_U)
-#define CG_SWAP_SONG SONG(ONE_UP_SOUND)
-#define CG_NORM_SONG SONG(MARIO_CAVE)
+#define CG_SWAP_SONG SONG(ONE_UP_SOUND_U)
+#define CG_NORM_SONG SONG(MARIO_CAVE_1)
