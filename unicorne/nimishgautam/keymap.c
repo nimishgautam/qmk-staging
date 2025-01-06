@@ -2,9 +2,58 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+#include "quantum.h"
 #include "transactions.h"
 #include "os_detection.h"
 #include "math.h"
+
+
+#ifdef KBD_AUTH
+#include "raw_hid.h"
+#include "secrets.h"
+
+#define SECURITY_CHALLENGE_SIZE 32
+#define SECURITY_RESPONSE_SIZE 32
+#define CMD_AUTH_START 0x01
+#define CMD_CHALLENGE  0x02
+#define CMD_RESPONSE   0x03
+
+uint8_t last_challenge[SECURITY_CHALLENGE_SIZE];
+bool challenge_received = false;
+
+void raw_hid_receive(uint8_t *data, uint8_t length) {
+    if (data[0] == CMD_CHALLENGE) {
+        // Store the challenge
+        memcpy(last_challenge, &data[1], SECURITY_CHALLENGE_SIZE);
+        challenge_received = true;
+        // Don't generate response yet - wait for button press
+    }
+}
+
+void send_auth_response(void) {
+    if (!challenge_received) {
+        // First, request a challenge
+        uint8_t start[32] = {CMD_AUTH_START};
+        raw_hid_send(start, sizeof(start));
+        // Wait a bit for the challenge to arrive
+        wait_ms(100);
+    }
+    
+    if (challenge_received) {
+        // Generate and send response
+        uint8_t response[32] = {CMD_RESPONSE};
+        for(int i = 0; i < (SECURITY_CHALLENGE_SIZE - 1); i++) {
+            response[i + 1] = last_challenge[i] ^ AUTH_KEY[i % sizeof(AUTH_KEY)];
+        }
+        raw_hid_send(response, sizeof(response));
+        // Reset for next auth attempt
+        challenge_received = false;
+    }
+}
+
+#endif
+
+
 
 #include "ng_key_definitions.h"
 #include "ng_tapdances_corne.c"
@@ -73,6 +122,14 @@ HSV base_HSV = {HSV_PINK};
 uint8_t prev_layer = _BASE;
 
 void set_lighting_user(void) {
+
+#ifdef KBD_AUTH
+// if in auth mode, most important to know that
+if (challenge_received) {
+    rgb_matrix_mode_noeeprom(RGB_AUTH_MODE);
+    return;
+}
+#endif
 
  uint8_t layer = get_highest_layer(layer_state);
     if (layer != _ADJUST){
@@ -221,7 +278,6 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 bool oled_task_user(void){
-
     // sneaky way to pass in bootloader info :)
     if(magic_case_state == 99){
         oled_clear();
@@ -409,4 +465,3 @@ void housekeeping_task_user(void) {
     }
 
 }
-

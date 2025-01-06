@@ -48,7 +48,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true; // just return out otherwise
     //break;
 
-
+    case KEYBOARD_SEND_AUTH:
+      if (record->event.pressed) {
+#ifdef KBD_AUTH
+            send_auth_response(); 
+#endif
+            return false;
+        }
+    break;
+    
     /* LAYER TAPS */
 
     // as of this writing, you can't do a layer tap (LT)

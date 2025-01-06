@@ -163,6 +163,7 @@
 #define RGB_NUMS_MODE RGB_MATRIX_HUE_BREATHING
 #define RGB_FN_MODE RGB_MATRIX_PIXEL_FRACTAL
 #define RGB_TERM_MODE RGB_MATRIX_BAND_SPIRAL_SAT
+#define RGB_AUTH_MODE RGB_MATRIX_RAINBOW_PINWHEELS
 #endif
 
 // If I have a keypress in my defines, I want it to consistently send what it says
@@ -215,3 +216,7 @@
 #define GOODBYE_SONG SONG(MARIO_GAMEOVER_U)
 #define CG_SWAP_SONG SONG(ONE_UP_SOUND_U)
 #define CG_NORM_SONG SONG(MARIO_CAVE_1)
+
+#define KBD_AUTH
+#define RAW_USAGE_PAGE 0xFF60
+#define RAW_USAGE_ID 0x61

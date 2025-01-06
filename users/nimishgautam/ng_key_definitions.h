@@ -97,5 +97,6 @@ enum custom_key_codes {
     BRIGHT_DOWN,
     /* mouse assist grids (either warpd for linux or Shortcat on mac)*/
     MOUSE_WARP_GRID,
+    KEYBOARD_SEND_AUTH,
 };
 
