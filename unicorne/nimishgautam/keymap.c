@@ -9,6 +9,7 @@
 
 
 #ifdef KBD_AUTH
+#define RAW_EPSIZE 32
 #include "raw_hid.h"
 #include "secrets.h"
 
@@ -22,12 +23,19 @@ uint8_t last_challenge[SECURITY_CHALLENGE_SIZE];
 bool challenge_received = false;
 
 void raw_hid_receive(uint8_t *data, uint8_t length) {
+    #ifdef AUDIO_ENABLE
+    float mario_song[][2] = SONG(MARIO_THEME_U);
+    #endif
     if (data[0] == CMD_CHALLENGE) {
         // Store the challenge
         memcpy(last_challenge, &data[1], SECURITY_CHALLENGE_SIZE);
         challenge_received = true;
         // Don't generate response yet - wait for button press
+        #ifdef AUDIO_ENABLE
+        PLAY_SONG(mario_song);
+        #endif
     }
+    
 }
 
 void send_auth_response(void) {
@@ -81,20 +89,22 @@ void os_detect(void) {
                 //check
                 if( keymap_config.swap_lctl_lgui){
                     keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = false;
+                    eeconfig_update_keymap(keymap_config.raw);
+
                     #ifdef AUDIO_ENABLE
                     PLAY_SONG(cg_norm_song);
                     #endif
-                    eeconfig_update_keymap(keymap_config.raw);
                 }
 
             break;
             default: //Linux, but also windows etc with swapped ctl/gui
                 if( !keymap_config.swap_lctl_lgui){
                     keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = true;
+                    eeconfig_update_keymap(keymap_config.raw);
+                    
                     #ifdef AUDIO_ENABLE
                     PLAY_SONG(cg_swap_song);
                     #endif
-                    eeconfig_update_keymap(keymap_config.raw);
                 }
             break;
         }
@@ -127,6 +137,7 @@ void set_lighting_user(void) {
 // if in auth mode, most important to know that
 if (challenge_received) {
     rgb_matrix_mode_noeeprom(RGB_AUTH_MODE);
+    rgb_matrix_sethsv_noeeprom(HSV_GREEN);
     return;
 }
 #endif

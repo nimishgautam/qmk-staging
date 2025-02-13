@@ -62,6 +62,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // manipulate mouse report based on current mode
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 
+    if (!is_keyboard_master()) {
+        // If we're on right side, zero out all values and return
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+        mouse_report.h = 0;
+        mouse_report.v = 0;
+        mouse_report.buttons = 0;
+        return mouse_report;
+    }
+    
     if (mouse_mode == BASE_CURSOR_LAYER) {
         
         mouse_report.x = CURSOR_SPEED * mouse_report.x/100;
@@ -118,6 +128,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 }
 
 void pointing_device_init_user(void) {
+    if (!is_keyboard_master()) { return;}
     set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
 }
