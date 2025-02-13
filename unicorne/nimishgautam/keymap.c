@@ -412,7 +412,10 @@ bool oled_task_user(void){
     } else {
         oled_write_ln_P(PSTR(" "), false);
     }
-
+    /* sometimes the lines get pushed around, clear any straggling lines*/
+    oled_write_ln_P(PSTR(" "), false);
+    oled_write_ln_P(PSTR(" "), false);
+    oled_write_ln_P(PSTR(" "), false);
     return false;
 
 }

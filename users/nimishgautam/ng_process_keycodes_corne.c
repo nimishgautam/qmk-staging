@@ -1,12 +1,20 @@
 uint8_t magic_case_state = 0;
+uint8_t whine_state = 0;
 
 #define MAGIC_CASE_OFF 0
 #define MAGIC_CASE_SNAKE 1
 #define MAGIC_CASE_CAMEL 2
-#define MAGIC_CASE_KEBAB 3 
+#define MAGIC_CASE_KEBAB 3
+#define MAGIC_CASE_WHINE 4
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
+  if (magic_case_state == MAGIC_CASE_WHINE && record->event.pressed){
+    if(whine_state){
+        add_oneshot_mods(MOD_LSFT);
+    }
+    whine_state = !whine_state;
+  }
   switch (keycode) {
     /* MAGIC CASING */
     case MAGIC_CASING:
@@ -14,11 +22,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if(magic_case_state ){
                 // was on, turned it off
                 magic_case_state = MAGIC_CASE_OFF;
+                // in case in camel or whine state
+                del_oneshot_mods(MOD_LSFT);
             }
             else {
                 //pressed, set case
                 if(get_mods() == 0){
-                    magic_case_state = MAGIC_CASE_SNAKE;
+                    magic_case_state = MAGIC_CASE_WHINE;
                 }
                 if(get_mods() & MOD_MASK_SHIFT){
                     magic_case_state = MAGIC_CASE_CAMEL;
@@ -26,12 +36,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (get_mods() & MOD_MASK_ALT){
                     magic_case_state = MAGIC_CASE_KEBAB;
                 }
+                if (get_mods() & MOD_MASK_CTRL){
+                    magic_case_state = MAGIC_CASE_SNAKE;
+                }
             }
         }
         return false;
     break;
     case KC_SPACE:
-        if(magic_case_state){
+        if(magic_case_state && magic_case_state != MAGIC_CASE_WHINE){
             if(record->event.pressed){
                 if (magic_case_state == MAGIC_CASE_SNAKE){
                     tap_code16(KC_UNDS);
