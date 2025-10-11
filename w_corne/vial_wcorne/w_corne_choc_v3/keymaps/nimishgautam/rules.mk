@@ -1,20 +1,22 @@
 RGB_MATRIX_ENABLE = yes
-OLED_ENABLE     = yes
+RGBLIGHT_ENABLE = no
+OLED_ENABLE     = no
 COMBO_ENABLE = yes
 TAP_DANCE_ENABLE = yes  # enable tap dance features
-EXTRAKEY_ENABLE = yes
+EXTRAKEY_ENABLE = no
 GRAVE_ESC_ENABLE = no
 SPACE_CADET_ENABLE = no
-WPM_ENABLE = yes
-SPLIT_KEYBOARD = yes
-POINTING_DEVICE_ENABLE = yes
-POINTING_DEVICE_DRIVER = analog_joystick
-AUDIO_ENABLE = yes
 OS_DETECTION_ENABLE = yes
-RAW_ENABLE = yes
-WS2812_DRIVER = vendor      # RP2040 uses the PIO “vendor” driver
-RGB_MATRIX_DRIVER = ws2812
-#CONSOLE_ENABLE = yes
+
+BLUETOOTH_ENABLE = no
+
+#VIAL_INSECURE = yes
+
+#VIALRGB_ENABLE = yes
+#VIA_ENABLE = yes
+#VIAL_ENABLE = yes
+
+#WPM_ENABLE = yes
 #CAPS_WORD_ENABLE = yes # if you hold down both shifts, you get lshift enabled for 1 word, but only works with KC shift, not MOD shift :(
 #AUTO_SHIFT_ENABLE = yes
 #UNICODE_ENABLE = yes     # enable unicode

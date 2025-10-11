@@ -3,7 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
-#include "w_corne.h"
+#include "w_corne_choc_v3.h"
+
 #include "os_detection.h"
 
 #include "ng_key_definitions.h"
@@ -11,32 +12,6 @@
 #include "ng_layer_definitions.h"
 #include "ng_combos.c"
 
-// layout not included because layout is backwards here and uses a different structure
-
-#include "ng_process_keycodes_corne.c"
-
-void os_detect(void) {
-    os_variant_t host_os = detected_host_os();
-    if (host_os) {
-        switch (host_os) {
-            case OS_MACOS:
-            case OS_IOS:
-                //check
-                if( keymap_config.swap_lctl_lgui){
-                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = false;
-                    eeconfig_update_keymap(keymap_config.raw);
-                }
-            break;
-            default: //Linux, but also windows etc with swapped ctl/gui
-                if( !keymap_config.swap_lctl_lgui){
-                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = true;
-                    eeconfig_update_keymap(keymap_config.raw);
-                }
-            break;
-        }
-
-    }
-}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT(  //basic -- RIGHT HAND BACKWARDS!!!
@@ -70,9 +45,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                   |--------+--------+--------+--------+--------+--------|
       TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                           KC_CAPS,      KC_BSLS,  KC_6,  KC_5,  KC_4,    KC_ENTER,
   //|--------+--------+--------+--------+--------+--------|                                                    |--------+--------+--------+--------+--------+--------|
-      KC_SLEP, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, LOCK_SCREEN,           KC_TRANSPARENT, KC_SLASH,  KC_3,  KC_2, KC_1, TD(TD_PERIOD_COMMA),
+      LOCK_SCREEN, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,           KC_TRANSPARENT, KC_SLASH,  KC_3,  KC_2, KC_1, TD(TD_PERIOD_COMMA),
   //|--------+--------+--------+--------+--------+--------+--------|                                    |--------+--------+--------+--------+-C```-------+--------+--------|
-                                          BRIGHT_DOWN, BRIGHT_UP, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
+                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
                                       //`--------------------------'                                      `--------------------------'
   ),
 
@@ -87,9 +62,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       TO(_BASE), SELECT_LEFT_LINE, KC_LEFT, KC_DOWN, KC_RIGHT,KC_END,                                            KC_NUM, KC_RCTL, KC_RALT, KC_RSFT,KC_RGUI, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      KC_INSERT, KC_DELETE, KC_TILD, KC_GRAVE, PASTE_NOSTYLE, KC_HOME,                                 TO(_ADJUST), KC_TRANSPARENT, KC_TRANSPARENT, KC_MS_WH_RIGHT, KC_MS_WH_LEFT, KC_TRANSPARENT,
+      KC_INSERT, KC_DELETE, KC_TILD, KC_GRAVE, PASTE_NOSTYLE, KC_HOME,                                 TO(_ADJUST), KC_TRANSPARENT, KC_TRANSPARENT, MS_WHLR, MS_WHLL, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_PAGE_UP,  DEL_WORD, KC_PAGE_DOWN ,                                  KC_VOLU  ,  KC_VOLD, KC_TRANSPARENT
+                                          KC_PAGE_UP,  DEL_WORD, KC_PAGE_DOWN ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
                                       //`--------------------------'                                              `--------------------------'
   ),
 
@@ -121,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
       TO(_BASE), SELECT_LEFT_WD, MOVE_LEFT_TERMINAL, MOVE_END_LINE_TERMINAL, MOVE_RIGHT_TERMINAL,SELECT_RIGHT_WD,                                            KC_TRANSPARENT, KC_RCTL, KC_RALT, KC_RSFT,KC_RGUI, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      SEND_WINDOW_LEFT, KC_TRANSPARENT, TMUX_SPLIT_VERT, TMUX_CLOSE_PANE, TMUX_SPLIT_HORIZ, KC_BRK,                                       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT,
+      SEND_WINDOW_LEFT, KC_TRANSPARENT, TMUX_SPLIT_VERT, TMUX_CLOSE_PANE, TMUX_SPLIT_HORIZ, KC_TRANSPARENT,                                       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT,
   //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
                                           DEL_TO_END_TERMINAL,  DEL_WORD_TERMINAL, KC_TRANSPARENT ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
                                       //`--------------------------'                                              `--------------------------'
@@ -129,11 +104,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
       [_ADJUST] = LAYOUT( // adjust things
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-     EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      TO(_BASE), UG_HUEU, UG_SATU, UG_VALU, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, RGB_MOD, RGB_RMOD, RGB_TOG, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_LSFT, UG_NEXT, UG_PREV, UG_TOGG, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           SHOW_OS, XXXXXXX, CG_TOGG ,     XXXXXXX, XXXXXXX, XXXXXXX
                                       //`--------------------------'  `--------------------------'
@@ -143,6 +118,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // right side mostly no-op so I can play with the visualization
 };
 
+#include "ng_process_keycodes_corne.c"
+
+
+void os_detect(void) {
+    os_variant_t host_os = detected_host_os();
+    if (host_os) {
+        switch (host_os) {
+            case OS_MACOS:
+            case OS_IOS:
+                //check
+                if( keymap_config.swap_lctl_lgui){
+                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = false;
+                    eeconfig_update_keymap(&keymap_config);
+                }
+            break;
+            default: //Linux, but also windows etc with swapped ctl/gui
+                if( !keymap_config.swap_lctl_lgui){
+                    keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = true;
+                    eeconfig_update_keymap(&keymap_config);
+                }
+            break;
+        }
+
+    }
+}
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -156,10 +156,13 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+void keyboard_post_init_user(void) {
+    os_detect();
+}
 
 #ifdef RGB_MATRIX_ENABLE
 // base rgb mode, some sensible default if undefined
-uint8_t base_rgb_mode = RGB_MATRIX_SPLASH;
+uint8_t base_rgb_mode = RGB_MATRIX_SOLID_SPLASH;
 HSV base_HSV = {HSV_PINK};
 uint8_t prev_layer = _BASE;
 
@@ -262,16 +265,3 @@ led_config_t g_led_config = { {
         1, 1, 1, 1
     }
 };
-
-void keyboard_post_init_user(void) {
-    if (is_keyboard_master()) {
-        os_detect();
-    }
-}
-
-void housekeeping_task_user(void) {
-
-        #ifdef RGB_MATRIX_ENABLE
-            set_lighting_user();
-        #endif
-}

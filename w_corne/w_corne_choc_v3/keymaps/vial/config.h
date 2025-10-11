@@ -10,6 +10,8 @@
 #define VIAL_COMBO_ENTRIES 8           /* Combo 的个数，默认值为 8 */ 
 #define VIAL_KEY_OVERRIDE_ENTRIES 4
 
+#define DYNAMIC_KEYMAP_LAYER_COUNT  8
+
 //   use timer2 ch1 pwm output, dma1_ch5, PA15
 //or use timer2 ch2 pwm output, dma1_ch7, PB3
 #define WS2812_PWM_DRIVER PWMD2

@@ -1,20 +1,17 @@
-# keyclicks/w_corne
+# keyclicks w-corne-choc-v3
 
-![keyclicks/w_corne](imgur.com image replace me!)
+![keyclicks](imgur.com image replace me!)
 
 *A short description of the keyboard/project*
 
-* Keyboard Maintainer: [schrock000](https://github.com/schrock000)
+* Keyboard Maintainer: keyclicks
 * Hardware Supported: *The PCBs, controllers supported*
 * Hardware Availability: *Links to where you can find this hardware*
 
 Make example for this keyboard (after setting up your build environment):
 
-    make keyclicks/w_corne:default
+    make keyclicks/w_corne_choc_v3:vial
 
-Flashing example for this keyboard:
-
-    make keyclicks/w_corne:default:flash
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
 

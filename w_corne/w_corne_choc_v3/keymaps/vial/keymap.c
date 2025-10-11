@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-#include "w_corne.h"
+#include "w_corne_choc_v3.h"
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
@@ -11,11 +11,22 @@
 
 #define _BASE 0
 #define _FN 1
-
+#define _LAYER_2 2
+#define _LAYER_3 3
+#define _LAYER_4 4
+#define _LAYER_5 5
+#define _LAYER_6 6
+#define _LAYER_7 7
 
 enum custom_keycodes {
   BASE = SAFE_RANGE,
   FN,
+  LAYER_2,
+  LAYER_3,
+  LAYER_4,
+  LAYER_5,
+  LAYER_6,
+  LAYER_7
 };
 
 // Shortcut to make keymap more readable
@@ -56,6 +67,42 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+    [_LAYER_2] = LAYOUT(
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+    [_LAYER_3] = LAYOUT(
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+    [_LAYER_4] = LAYOUT(
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+    [_LAYER_5] = LAYOUT(
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+    [_LAYER_6] = LAYOUT(
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
+    [_LAYER_7] = LAYOUT(
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+      KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
     )
 };
 
@@ -65,25 +112,41 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
         case _FN:
             break;
+        case _LAYER_2:
+            break;
+        case _LAYER_3:
+            break;
+        case _LAYER_4:
+            break;
+
+        case _LAYER_5:
+            break;
+
+        case _LAYER_6:
+            break;
+
+        case _LAYER_7:
+            break;
+
         default:
             break;
     }
   return state;
 }
 
-led_config_t g_led_config = { {
-        {0, 1, 2, 3}
-    }, {
-        // LED 对应到物理位置，可以参考下面这个公式
-        // x = 224 / (NUMBER_OF_COLS - 1) * COL_POSITION
-        // y = 64 / (NUMBER_OF_ROWS - 1) * ROW_POSITION
-        {0, 0}, {75, 0}, {149, 0}, {224, 0}
+// led_config_t g_led_config = { {
+//         {0, 1, 2, 3}
+//     }, {
+//         // LED 对应到物理位置，可以参考下面这个公式
+//         // x = 224 / (NUMBER_OF_COLS - 1) * COL_POSITION
+//         // y = 64 / (NUMBER_OF_ROWS - 1) * ROW_POSITION
+//         {0, 0}, {75, 0}, {149, 0}, {224, 0}
 
-    }, {
-        // 分组，如果没有自己做灯光的需求用处其实不大
-        1, 1, 1, 1
-    }
-};
+//     }, {
+//         // 分组，如果没有自己做灯光的需求用处其实不大
+//         1, 1, 1, 1
+//     }
+// };
 
 void keyboard_post_init_user(void) {
   // Customise these values to desired behaviour

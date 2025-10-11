@@ -15,18 +15,14 @@
  */
 #pragma once
 
-// #define STM32_PWM_USE_TIM1 TRUE
+// #define HAL_USE_DAC TRUE
+// #define HAL_USE_PWM     TRUE
 
-#undef STM32_HSE_ENABLED
-#define STM32_HSE_ENABLED TRUE
 
-#undef STM32_HSECLK
-#define STM32_HSECLK 8000000
 
-#include_next <mcuconf.h>
+#define HAL_USE_SERIAL TRUE
 
-#undef STM32_SERIAL_USE_USART2
-#define STM32_SERIAL_USE_USART2 TRUE
+#include_next <halconf.h>
 
-// #undef STM32_I2C_USE_I2C1
-// #define STM32_I2C_USE_I2C1 TRUE
+//oled 使用i2c
+// #define HAL_USE_I2C TRUE

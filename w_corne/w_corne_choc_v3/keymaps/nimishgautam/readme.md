@@ -47,6 +47,3 @@ Next, run vial. If it opens and you see the key layout, you can go to the 'firmw
 
 If you get an error like this: `error: 'A9' undeclared` while it's building `chibios`, this is because of missing header files. You can add `#include "quantum.h"` at the top of `platforms/chibios/drivers/uart.c` and it should work.
 
-### issues with mousekeys
-
-If you get an error relating to mousekeys, copy `quantum/mousekey.c` and `quantum/mousekey.h` from an updated QMK repo

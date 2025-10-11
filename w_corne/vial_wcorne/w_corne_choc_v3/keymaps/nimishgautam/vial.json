@@ -216,7 +216,6 @@
       ]
   },
   "vial": {
-      "vibl": true,
-      "midi": "advanced"
+      "vibl": true
   }
 }

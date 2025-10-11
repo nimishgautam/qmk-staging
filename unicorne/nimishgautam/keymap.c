@@ -89,7 +89,7 @@ void os_detect(void) {
                 //check
                 if( keymap_config.swap_lctl_lgui){
                     keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = false;
-                    eeconfig_update_keymap(keymap_config.raw);
+                    eeconfig_update_keymap(&keymap_config);
 
                     #ifdef AUDIO_ENABLE
                     PLAY_SONG(cg_norm_song);
@@ -100,7 +100,7 @@ void os_detect(void) {
             default: //Linux, but also windows etc with swapped ctl/gui
                 if( !keymap_config.swap_lctl_lgui){
                     keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = true;
-                    eeconfig_update_keymap(keymap_config.raw);
+                    eeconfig_update_keymap(&keymap_config);
                     
                     #ifdef AUDIO_ENABLE
                     PLAY_SONG(cg_swap_song);

@@ -3,6 +3,11 @@
 
 #pragma once
 
+#define VENDOR_ID 0xFEED
+#define PRODUCT_ID 0x0007
+#define DEVICE_VER 0x0100
+#define MANUFACTURER "keyclicks"
+#define PRODUCT "w-corne-choc"
 /*
  * Feature disable options
  *  These options are also useful to firmware size reduction.
@@ -23,31 +28,25 @@
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 14
 
-//#define ONESHOT_TIMEOUT 500
+#define ONESHOT_TIMEOUT 500
 
 #define SERIAL_USART_DRIVER SD2
 #define SERIAL_DRIVER       SD2
+#define UART_DRIVER SD2
 
-
-#define SERIAL_USART_FULL_DUPLEX   // Enable full duplex operation mode.
-#define SERIAL_USART_TX_PIN A9     // USART TX pin
-#define SERIAL_USART_RX_PIN A10     // USART RX pin
+// #define SERIAL_USART_FULL_DUPLEX   // Enable full duplex operation mode.
+// #define SERIAL_USART_TX_PIN A9     // USART TX pin
+// #define SERIAL_USART_RX_PIN A10     // USART RX pin
 
 #define SERIAL_DEBUG
 #define DEBUG_MATRIX_SCAN_RATE
-#define SERIAL_USART_TX_PAL_MODE 7
+// #define SERIAL_USART_TX_PAL_MODE 7
 
-#define WS2812_DI_PIN B3
-#define RGB_MATRIX_LED_COUNT 4
-#define DRIVER_LED_TOTAL 4 //一共有多少个灯，64+12个底灯
-#define RGBLED_NUM DRIVER_LED_TOTAL
-
-/*
 #ifdef RGB_MATRIX_ENABLE
-
-#define RGB_MATRIX_LED_COUNT 4
+#define WS2812_DI_PIN B3
 #define DRIVER_LED_TOTAL 4 //一共有多少个灯，64+12个底灯
-#define RGBLED_NUM DRIVER_LED_TOTAL
+#define RGBLED_NUM  DRIVER_LED_TOTAL
+#define RGB_MATRIX_LED_COUNT RGBLED_NUM
 
 #define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 #define RGB_MATRIX_KEYPRESSES
@@ -91,9 +90,8 @@
 #define RGBLIGHT_HUE_STEP 8
 #define RGBLIGHT_SAT_STEP 8
 #define RGBLIGHT_VAL_STEP 8
-//#define RGBLIGHT_ANIMATIONS
+// #define RGBLIGHT_ANIMATIONS
 #endif
-*/
 
 
 

@@ -1,13 +1,13 @@
 {
 	"manufacturer": "keyclicks",
-    "keyboard_name": "w-corne(STM32)",
+    "keyboard_name": "w-corne-choc(STM32)",
     "maintainer": "keyclicks",
     "diode_direction": "COL2ROW",
     "processor": "STM32F103",
     "url": "",
     "usb": {
         "device_version": "1.0.0",
-        "pid": "0x0002",
+        "pid": "0x0007",
         "vid": "0xFEED"
     },
 	"layouts": {
