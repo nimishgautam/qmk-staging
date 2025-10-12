@@ -1,0 +1,171 @@
+# parsed and then tweaked from https://github.com/LOWPROKB/zmk-config-zen-2/blob/main/config/corneish_zen.keymap
+layout:
+  zmk_keyboard: corneish_zen
+  layout_name: foostan_corne_6col_layout
+layers:
+  Base:
+    - ["CaPs!", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "-"]
+    - ["Esc", {t: "A", h: "$$phosphor:light/command$$"}, {t: "S", h: "$$phosphor:light/option$$"}, {t: "D", h: "$$phosphor:light/arrow-fat-up$$"}, {t: "F", h: "$$phosphor:light/control$$"}, 
+      "G", "H", {t: "J", h: "$$phosphor:light/control$$"}, {t: "K", h: "$$phosphor:light/arrow-fat-up$$" }, {t: "L", h: "$$phosphor:light/option$$" }, {t: ";", h: "$$phosphor:light/command$$" }, "❞"]
+    - [{t: "$$phosphor:light/browsers$$", h: "$$phosphor:light/caret-double-left$$"}, "Z", "X", "C", "V", "B", "N", "M", "❟", "•", "/", {t: "Nums", h: "$$phosphor:light/caret-double-right$$"}]
+    - [{t: "(", h: "Fns"}, "Backsp", {t: "Enter", h: "Nums"}, {t: "Tab", h: "Text"}, "【】", {t: ")", h: "Term"}]
+  Combos:
+    - [null, null, null, null, null, null, null, null, null, null, null, null]
+    - [null, null, null, null, null, null, null, null, null, null, null, null]
+    - [null, null, null, null, null, null, null, null, null, null, null, null]
+    - [null, null, null, null, null, null]
+  Numbers:
+    - ["BOOT", null, "[", "]", null, null, "^", "7", "8", "9", null, "|"]
+    - ["to (BASE)", "$$phosphor:light/command$$", "$$phosphor:light/option$$", "$$phosphor:light/arrow-fat-up$$", "$$phosphor:light/control$$", null, 
+      "Enter", "4", "5", "6", "\\", "CAPS"]
+    - ["Sleep", null, null, null, null, "Lock Scr", "❟/•", "1", "2", "3", "/", {type: held}]
+    - ["$$phosphor:light/sun-dim$$", "$$phosphor:light/sun$$", {t: "Enter", type: held}, "#", "*", "0"]
+  TextNav:
+    - ["$$phosphor:light/camera$$", "!", "@", "$$phosphor:light/arrow-up$$", "$", "%", null, null, "{", "}", null, "BOOT"]
+    - ["to (BASE)", "sel ⭅", "$$phosphor:light/arrow-left$$", "$$phosphor:light/arrow-down$$", "$$phosphor:light/arrow-right$$", "End", 
+      null, "$$phosphor:light/control$$", "$$phosphor:light/arrow-fat-up$$", "$$phosphor:light/option$$", "$$phosphor:light/command$$", "NumLk"]
+    - ["Ins", "Del", "~", "`", "Paste ⓧ", "Home", null, "🖱🠤", "🖱🠆", null, null, to (ADJ)]
+    - ["PgUp", "DelWd 🡄", "PgDn", {type: held}, "$$phosphor:light/speaker-high$$", "$$phosphor:light/speaker-low$$"]
+  Function:
+    - [null, null, null, "$$phosphor:light/arrows-out$$", null, null, {t: "mov ⭆", h: "$"}, "F7", "F8", "F9", "F11", "PrtScr"]
+    - ["to (BASE)", "$$phosphor:light/command$$", "$$phosphor:light/option$$", "$$phosphor:light/arrow-fat-up$$", "$$phosphor:light/control$$", null, 
+      "max 🡙", "F4", {t: "F5", h: "$$phosphor:light/images$$"}, "F6", "F12", "ScrlLk"]
+    - [null, null, null, null, null, null, "max 🡘", "F1", {t: "F2", h: "$$phosphor:light/terminal-window$$"}, "F3", null, "⍈"]
+    - [{type: held}, null, null, "$$phosphor:light/magnifying-glass-plus$$", "$$phosphor:light/magnifying-glass-minus$$", "F10"]
+  Terminal:
+    - [null, null, "tmux ⍇", "term ⭅", "tmux ⍈", {t: "mov ⭅", h: "^"}, null, null, "$$phosphor:light/terminal$$", null, null, null]
+    - ["to (BASE)", "selWd 🡄", "term 🠤", "term ⭆", "term 🠆", "selWd 🡆", 
+      null, "$$phosphor:light/control$$", "$$phosphor:light/arrow-fat-up$$", "$$phosphor:light/option$$", "$$phosphor:light/command$$", null]
+    - ["⍇", null, "tmux s🡙", "tmux ⓧ", "tmux s🡘", "Break", null, null, null, null, "B", "$$phosphor:light/lock-key-open$$"]
+    - ["del t ⭅", "del t 🡄", null, null, null ,{type: held}]
+  Adjustment:
+    - ["EE_CLR", "◦", "◦", "◦", "◦", "to  🖱", "◦", "◦", "◦", "◦", "◦", "◦"]
+    - ["to (BASE)", "hue u", "sat u", "val u", "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦"]
+    - ["LShft", "next fx", "prev fx", "rgb tog", "◦", "◦", "◦", "◦", "◦", "◦", "◦", "◦"]
+    - ["ShowOs", "AudTog", "OsTog", "◦", "◦", "◦"]
+  Mouse:
+    - [null, null, null, null, null, "🖱 lock", "b6", "🖱⬆", null, null, null, null]
+    - ["to (BASE)", null, null, null, null, null, "b7", "b4", "b5", null, null, null]
+    - [null, null, null, null, null, null, "b8", "🖱⬇", "🖱🠤", "🖱🠆", null, null]
+    - [null, null, "b1", "b2", "b3", null]
+
+combos:
+  # straightforward adjacent ones first
+  - {p: [7,8], k: "+", l: ['Combos']}
+  - {p: [8,9], k: "=", l: ['Combos']}
+  - {p: [2,3], k: "$$phosphor:light/arrow-up$$", l: ['Combos']}
+  - {p: [26,27], k: "$$phosphor:light/arrow-down$$", l: ['Combos']}
+  - {p: [14,15], k: "$$phosphor:light/arrow-left$$", l: ['Combos']}
+  - {p: [15,16], k: "$$phosphor:light/arrow-right$$", l: ['Combos']}
+  - {p: [32,33], k: "vim paste", l: ['Combos']}
+  # 'mouse warp' grid -- I don't know if I'm going to use it so much, have hardly used it so far but it's in here
+  - {p: [31,32], k: "mouse warp", l: ['Combos']}
+  # 'adjacent' down the middle
+  - {p: [17,18], k: "&", l: ['Combos'], a: bottom, offset: -0.1}
+  - {p: [5,6], k: "$$phosphor:light/speaker-x$$", l: ['Combos'], a: top, offset: -0.3}
+  - {p: [29,30], k: "$$phosphor:light/play-pause$$", l: ['Combos']}
+  # 'finder'
+  - {p: [38,39], k: "$$phosphor:light/magnifying-glass$$", l: ['Combos']}
+  # left and right extremes
+  - {p: [0,24], k: "xkill", l: ['Combos'], a: left, offset: 0.1}
+  - {p: [11,35], k: "$$phosphor:light/power$$", l: ['Combos'], a: right, offset: 0.1}
+  # emoji row
+  - {p: [4,7], k: "🙂", l: ['Combos'], a: top, offset: 0.1, draw_separate: true}
+  - {p: [3,8], k: "emojis", l: ['Combos'], a: top, offset: 0.6, draw_separate: true}
+  - {p: [2,9], k: "👍🏽", l: ['Combos'], a: top, offset: 1.4, draw_separate: true}
+  # bottom row
+  - {p: [37,40], k: "$$phosphor:light/translate$$",a: bottom, l: ['Combos'], offset: 0.3}
+  - {p: [36,41], k: "$$phosphor:light/calculator$$",a: bottom, l: ['Combos'], offset: 1}
+  # scroll up/down
+  - {p: [16,19], k: "🖱⬇", l: ['Combos'], draw_separate: true}
+  - {p: [15,20], k: "🖱⬆", l: ['Combos'], a: top, offset: -0.1, draw_separate: true}
+  - {p: [24,35], k: "LxSysR", l: ['Combos'], a: bottom, draw_separate: true}
+    # misc
+  - {p: [20,40], k: "_", l: ['Combos'], a: right, slide: 0.8, draw_separate: true}
+  - {p: [37,13], k: "å", l: ['Combos'], a: bottom, draw_separate: true}
+  - {p: [40,21], k: "ä", l: ['Combos'], a: bottom, offset: 0.3, draw_separate: true}
+  - {p: [40,22 ], k: "ö", l: ['Combos'], a: bottom, draw_separate: true}
+
+draw_config:
+  draw_key_sides: true
+  key_side_pars:
+    rel_w: 3
+    rel_h: 2
+    rx: 3
+    ry: 3
+  svg_extra_style: >
+    svg.keymap { font-family: 'DejaVu Sans'; 
+    font-weight: 200;}
+    .hold {y: 7;}
+    
+    .phosphor\:light\/command { color: #2a7a7f;}
+    .phosphor\:light\/option { color: #777716;}
+    .phosphor\:light\/arrow-fat-up { color: #b90f0f;}
+    .phosphor\:light\/control { color: #910fb9;}
+
+    /* base layer */
+    /* the lock-to-nums-layer key, same color as nums layer key */
+    .layer-Base .keypos-35 rect.key {fill:#58cf76;}
+    /* move to nums text */
+    .layer-Base .keypos-38 text.hold { transform: translateY(-16px); stroke: #58cf76;}
+    /* move to textnav */
+    .layer-Base .keypos-39 text.hold { transform: translateY(-16px); stroke: #589acf96;}
+    /* move to fns */
+    .layer-Base .keypos-36 text.hold { transform: translateY(-8px); stroke: #ba58cf;}
+    /* move to terminal */
+    .layer-Base .keypos-41 text.hold { transform: translateY(-8px); stroke: #58c6cf9e;}
+    
+    /* num layer  */
+    /* return to base, different color */
+    .layer-Numbers .keypos-12 rect.key {fill: #dcdedf;}
+    /* default all keys are a little green */
+    .layer-Numbers rect.key { fill: #f6faf7;}
+    /* hold for 'layer color' */
+    .layer-Numbers rect.key.held { fill: #58cf76;}
+
+    /* text nav */
+    /* return to base, different color */
+    .layer-TextNav .keypos-12 rect.key {fill: #dcdedf;}
+    /* default all keys are a little blue */
+    .layer-TextNav rect.key { fill: #f6f8fa;}
+    /* hold for 'layer color' */
+    .layer-TextNav rect.key.held { fill: #589acf96;}
+    /* go to adjust */
+    .layer-TextNav .keypos-35 rect.key { fill: #cfc958;}
+
+
+    /* function */
+    /* return to base, different color */
+    .layer-Function .keypos-12 rect.key {fill: #dcdedf;}
+    /* default all keys are a little purple */
+    .layer-Function rect.key { fill: #f9f6fa;}
+    /* hold for 'layer color' */
+    .layer-Function rect.key.held { fill: #ba58cf;}
+
+    /* terminal */
+    /* return to base, different color */
+    .layer-Terminal .keypos-12 rect.key {fill: #dcdedf;}
+    /* default all keys are a little turquoise */
+    .layer-Terminal rect.key { fill: #f6fafa;}
+    /* hold for 'layer color' */
+    .layer-Terminal rect.key.held { fill: #58c6cf9e;}
+
+    /* adjust */
+    /* return to base, different color */
+    .layer-Adjustment .keypos-12 rect.key {fill: #dcdedf;}
+    /* default all keys are a little orange */
+    .layer-Adjustment rect.key { fill: #faf9f6;}
+    /* go to mouse */
+    .layer-Adjustment .keypos-5 rect.key { fill: #cfc958;}
+
+    /* mouse */
+    /* return to base, different color */
+    .layer-Mouse .keypos-12 rect.key {fill: #dcdedf;}
+    /* default all keys are a little orange */
+    .layer-Mouse rect.key { fill: #faf9f6;}
+    /* mouse lock */
+    .layer-Mouse .keypos-5 rect.key { fill: #cfc958;}
+
+
+
+
