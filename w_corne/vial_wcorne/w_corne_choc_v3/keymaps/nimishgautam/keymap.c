@@ -11,115 +11,10 @@
 #include "ng_tapdances_corne.c"
 #include "ng_layer_definitions.h"
 #include "ng_combos.c"
-
-
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [_BASE] = LAYOUT(  //basic -- RIGHT HAND BACKWARDS!!!
-    //,-------------------------------------------------------------------------.                    ,-------------------------------------------------------------------------.
-      MAGIC_CASING,    KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                      KC_MINUS, KC_P,         KC_O,         KC_I,         KC_U,             KC_Y,
-  //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
-      KC_ESCAPE, LCTL_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LGUI_T(KC_F), KC_G,                      KC_QUOT, RCTL_T(KC_SCLN), RALT_T(KC_L), RSFT_T(KC_K), RGUI_T(KC_J), KC_H,
-  //|-----------+-------------+-------------+------------+-------------+------|                    |-----+------------+-------------+-------------+-----------------+--------|
-      LT(0, SHOW_WIN_LEFT),  KC_Z, KC_X,     KC_C,        KC_V,          KC_B,                      LT(0, NUMERIC_WIN_RIGHT), KC_SLASH,     KC_DOT, KC_COMM,     KC_M,  KC_N,
-  //|-----------------------+-----+---------+------------+-------------+------|                    |-----+------------+--------+--------+----------+-------------------------|
-                                LT(_FN_KEYS,KC_LPRN),     KC_BSPC,       LT(_NUMS, KC_ENTER),       LT(_TERMINAL,KC_RPRN) , KC_SPACE, LT(_TEXT_NAV, KC_TAB)
-                               //`--------------------------------------------------------------'   `----------------------------------------------------------'
-
-  ),
-
-  [_NUMS] = LAYOUT( //numbers on the right, left mostly free -- RIGHT HAND BACKWARDS!!!
-  /**
-   * The left outer key is probably pressed here (enter) so it's probably being used as a numpad. All the numpad stuff is on the right
-   * However, this is also the place for the | and \ symbols (and ^ since that's where I'd naturally reach for it)
-   * slash falls to slash in the lower layer but I wanted to make it explicit here.
-   * Also the numlock is here.
-   * 
-   * On the left, QKBOOT so you can reset one-handed if needed. Also [] for ease, all the left-hand mods
-   * 
-   * The right thumb should be enter, but I use the key for hash already since I make markup/bullet lists quite a bit to use that symbol
-   * 
-   * Lock screen here since it's hard to accidentally trigger also
-  */
-  //,-----------------------------------------------------.                                                   ,-----------------------------------------------------.
-     QK_BOOT, KC_TRANSPARENT,KC_LBRC, KC_RBRC, KC_TRANSPARENT,KC_TRANSPARENT,                                 KC_PIPE, KC_TRANSPARENT,  KC_9,  KC_8,  KC_7, KC_CIRCUMFLEX,
-  //|--------+--------+--------+--------+--------+--------|                                                   |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                           KC_CAPS,      KC_BSLS,  KC_6,  KC_5,  KC_4,    KC_ENTER,
-  //|--------+--------+--------+--------+--------+--------|                                                    |--------+--------+--------+--------+--------+--------|
-      LOCK_SCREEN, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,           KC_TRANSPARENT, KC_SLASH,  KC_3,  KC_2, KC_1, TD(TD_PERIOD_COMMA),
-  //|--------+--------+--------+--------+--------+--------+--------|                                    |--------+--------+--------+--------+-C```-------+--------+--------|
-                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_ENTER                 , KC_0  ,  KC_ASTR, KC_HASH
-                                      //`--------------------------'                                      `--------------------------'
-  ),
-
-  [_TEXT_NAV] = LAYOUT( //nav on the left, right mostly free -- RIGHT HAND BACKWARDS!!!
-  /**
-   * Right hand is pressing the thumb key, so all modifiers on the right. Left hand mostly free.
-   * Screenshot here, feels right
-   * Curly braces on same hand
-  */
-  //,-----------------------------------------------------.                                                           ,-----------------------------------------------------.
-      SCREENSHOT, KC_EXCLAIM, KC_AT, KC_UP, KC_DOLLAR, KC_PERCENT,                                                     QK_BOOT, KC_TRANSPARENT, KC_RCBR, KC_LCBR, KC_TRANSPARENT, KC_TRANSPARENT,
-  //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), SELECT_LEFT_LINE, KC_LEFT, KC_DOWN, KC_RIGHT,KC_END,                                            KC_NUM, KC_RCTL, KC_RALT, KC_RSFT,KC_RGUI, KC_TRANSPARENT,
-  //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      KC_INSERT, KC_DELETE, KC_TILD, KC_GRAVE, PASTE_NOSTYLE, KC_HOME,                                 TO(_ADJUST), KC_TRANSPARENT, KC_TRANSPARENT, MS_WHLR, MS_WHLL, KC_TRANSPARENT,
-  //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_PAGE_UP,  DEL_WORD, KC_PAGE_DOWN ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
-                                      //`--------------------------'                                              `--------------------------'
-  ),
-
-   [_FN_KEYS] = LAYOUT( //fn keys -- RIGHT HAND BACKWARDS!!!
-   /**
-    * Left hand pressing the inner key, left modifiers active, right FN keys
-    * Also scroll lock and printscreen in here
-    * 
-   */
-  //,-----------------------------------------------------.                                                                   ,-----------------------------------------------------.
-     KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, TOG_WINDOW_STATE, KC_TRANSPARENT, KC_TRANSPARENT,                           KC_PSCR, KC_F11,    KC_F9,    KC_F8,    KC_F7, TD(TD_MOVE_END_LINE),
-  //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI, KC_TRANSPARENT,                                                          KC_SCRL, KC_F12,    KC_F6,  TD(TD_F5_CONSOLE),  KC_F4, MAX_VERTICAL,
-  //|--------+--------+--------+--------+--------+--------|                                                                   |--------+--------+--------+--------+--------+--------|
-      KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                         SEND_WINDOW_RIGHT, KC_TRANSPARENT,    KC_F3,  TD(TD_F2_CONSOLE), KC_F1, MAX_HORIZONTAL,
-  //|--------+--------+--------+--------+--------+--------+--------|                                                   |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT ,                             KC_F10  ,  ZOOM_OUT, ZOOM_IN
-                                      //`--------------------------'                                                   `--------------------------'
-  ),
-
-    [_TERMINAL] = LAYOUT( //terminal movement on the left, right mostly free -- RIGHT HAND BACKWARDS!!!
-  /**
-   * Right hand is pressing the thumb key, so all modifiers on the right. Left hand mostly free.
-   * Screenshot here, feels right
-   * Curly braces on same hand
-  */
-  //,-----------------------------------------------------.                                                           ,-----------------------------------------------------.
-      KC_TRANSPARENT, KC_TRANSPARENT, TMUX_PREV_PANE, MOVE_BEGIN_LINE_TERMINAL, TMUX_NEXT_PANE, TD(TD_MOVE_BEGIN_LINE),                           KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, OPEN_TERMINAL_HERE,  KC_TRANSPARENT, KC_TRANSPARENT,
-  //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), SELECT_LEFT_WD, MOVE_LEFT_TERMINAL, MOVE_END_LINE_TERMINAL, MOVE_RIGHT_TERMINAL,SELECT_RIGHT_WD,                                            KC_TRANSPARENT, KC_RCTL, KC_RALT, KC_RSFT,KC_RGUI, KC_TRANSPARENT,
-  //|--------+--------+--------+--------+--------+--------|                                                           |--------+--------+--------+--------+--------+--------|
-      SEND_WINDOW_LEFT, KC_TRANSPARENT, TMUX_SPLIT_VERT, TMUX_CLOSE_PANE, TMUX_SPLIT_HORIZ, KC_TRANSPARENT,                                       KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,KC_TRANSPARENT, KC_TRANSPARENT,
-  //|--------+--------+--------+--------+--------+--------+--------|                                              |--------+--------+--------+--------+--------+--------+--------|
-                                          DEL_TO_END_TERMINAL,  DEL_WORD_TERMINAL, KC_TRANSPARENT ,                                  KC_TRANSPARENT  ,  KC_TRANSPARENT, KC_TRANSPARENT
-                                      //`--------------------------'                                              `--------------------------'
-  ),
-
-      [_ADJUST] = LAYOUT( // adjust things
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      TO(_BASE), UG_HUEU, UG_SATU, UG_VALU, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, UG_NEXT, UG_PREV, UG_TOGG, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          SHOW_OS, XXXXXXX, CG_TOGG ,     XXXXXXX, XXXXXXX, XXXXXXX
-                                      //`--------------------------'  `--------------------------'
-  ) // CG_TOGG toggles gui and Ctrl (switching from mac to windows/linux)
-    // the RGB buttons go backwards if shift is held when they're pressed, so shift is included
-    // RGB MOD changes the mode, it's the most important one
-    // right side mostly no-op so I can play with the visualization
-};
-
+// Note, the right hand is reversed!!!
+// Must regenerate reversed keymap after change
+#include "ng_layout_corne_reversed.c"
 #include "ng_process_keycodes_corne.c"
-
 
 void os_detect(void) {
     os_variant_t host_os = detected_host_os();
@@ -157,7 +52,9 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 }
 
 void keyboard_post_init_user(void) {
+    if (is_keyboard_master()) {
     os_detect();
+    }
 }
 
 #ifdef RGB_MATRIX_ENABLE
