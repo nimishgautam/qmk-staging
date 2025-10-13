@@ -14,3 +14,12 @@ You download the package and actually execute the *folder* because the folder ha
 ```bash
 python keymap_drawer draw ./examples/nimish_corne.yaml > nimish_corne.svg 
 ```
+
+## icons
+
+I used mostly phosphor: https://phosphoricons.com/?weight=light
+It supports a few icon packs directly, and supports many more indirectly via svg importing
+
+I also used some unicode from here:
+* https://www.copyandpastesymbols.net/arrow-symbols.html
+* https://www.compart.com/en/unicode/search?q=none

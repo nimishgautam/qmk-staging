@@ -10,10 +10,10 @@ layers:
     - [{t: "$$phosphor:light/browsers$$", h: "$$phosphor:light/caret-double-left$$"}, "Z", "X", "C", "V", "B", "N", "M", "❟", "•", "/", {t: "Nums", h: "$$phosphor:light/caret-double-right$$"}]
     - [{t: "(", h: "Fns"}, "Backsp", {t: "Enter", h: "Nums"}, {t: "Tab", h: "Text"}, "【】", {t: ")", h: "Term"}]
   Combos:
-    - [null, null,  "👍🏽", {s: "emoji"}, "🙂", "$$phosphor:light/speaker-x$$", "$$phosphor:light/speaker-x$$", "🙂", {s: "emoji"},  "👍🏽", null, null]
-    - [null, null, null, "🖱⬆", "🖱⬇", "&", "&", "🖱⬇", "🖱⬆", null, null, null]
-    - ["Linux SysR", null, null, null, null, "$$phosphor:light/play-pause$$", "$$phosphor:light/play-pause$$", null, null, null, null, "Linux SysR"]
-    - ["$$phosphor:light/calculator$$", "$$phosphor:light/translate$$", "$$phosphor:light/magnifying-glass$$", "$$phosphor:light/magnifying-glass$$", "$$phosphor:light/translate$$", "$$phosphor:light/calculator$$"]
+    - [null, null, null, null, null, null, null, null, null, null, null, null]
+    - [null, null, null, null, null, null, null, null, null, null, null, null]
+    - [null, null, null, null, null, null, null, null, null, null, null, null]
+    - [null, null, null, null, null, null]
   Numbers:
     - ["BOOT", null, "[", "]", null, null, "^", "7", "8", "9", null, "|"]
     - ["to (BASE)", "$$phosphor:light/command$$", "$$phosphor:light/option$$", "$$phosphor:light/arrow-fat-up$$", "$$phosphor:light/control$$", null, 
@@ -60,14 +60,31 @@ combos:
   - {p: [32,33], k: "vim paste", l: ['Combos']}
   # 'mouse warp' grid -- I don't know if I'm going to use it so much, have hardly used it so far but it's in here
   - {p: [31,32], k: "mouse warp", l: ['Combos']}
-   # left and right extremes
+  # 'adjacent' down the middle
+  - {p: [17,18], k: "&", l: ['Combos'], a: bottom, offset: -0.1}
+  - {p: [5,6], k: "$$phosphor:light/speaker-x$$", l: ['Combos'], a: top, offset: -0.3}
+  - {p: [29,30], k: "$$phosphor:light/play-pause$$", l: ['Combos']}
+  # 'finder'
+  - {p: [38,39], k: "$$phosphor:light/magnifying-glass$$", l: ['Combos']}
+  # left and right extremes
   - {p: [0,24], k: "xkill", l: ['Combos'], a: left, offset: 0.1}
   - {p: [11,35], k: "$$phosphor:light/power$$", l: ['Combos'], a: right, offset: 0.1}
+  # emoji row
+  - {p: [4,7], k: "🙂", l: ['Combos'], a: top, offset: 0.1, draw_separate: true}
+  - {p: [3,8], k: "emojis", l: ['Combos'], a: top, offset: 0.6, draw_separate: true}
+  - {p: [2,9], k: "👍🏽", l: ['Combos'], a: top, offset: 1.4, draw_separate: true}
+  # bottom row
+  - {p: [37,40], k: "$$phosphor:light/translate$$",a: bottom, l: ['Combos'], offset: 0.3}
+  - {p: [36,41], k: "$$phosphor:light/calculator$$",a: bottom, l: ['Combos'], offset: 1}
+  # scroll up/down
+  - {p: [16,19], k: "🖱⬇", l: ['Combos'], draw_separate: true}
+  - {p: [15,20], k: "🖱⬆", l: ['Combos'], a: top, offset: -0.1, draw_separate: true}
+  - {p: [24,35], k: "LxSysR", l: ['Combos'], a: bottom, draw_separate: true}
     # misc
-  - {p: [20,40], k: "_", l: ['Combos'], a: right, slide: -1, offset: -0.3}
-  - {p: [37,13], k: "å", l: ['Combos'], a: bottom, slide: -1}
-  - {p: [40,21], k: "ä", l: ['Combos'], a: bottom, slide: 1, offset: 0.3}
-  - {p: [40,22 ], k: "ö", l: ['Combos'], a: bottom, slide: 1}
+  - {p: [20,40], k: "_", l: ['Combos'], a: right, slide: 0.8, draw_separate: true}
+  - {p: [37,13], k: "å", l: ['Combos'], a: bottom, draw_separate: true}
+  - {p: [40,21], k: "ä", l: ['Combos'], a: bottom, offset: 0.3, draw_separate: true}
+  - {p: [40,22 ], k: "ö", l: ['Combos'], a: bottom, draw_separate: true}
 
 draw_config:
   draw_key_sides: true
