@@ -4,6 +4,8 @@ This was from keymap drawer, which exists as a web demo (https://github.com/ijpr
 
 It takes a YML file and outputs a SVG.
 
+The SVG isn't always rendered well outside a web browser, and is also huge for most image viewer files, so I also broke it down into several PNG files by doing a screenshot of my browser rendering the SVG
+
 ## Why
 
 This is a better way of showing 'layers' but also combos, and it has a lot of options that let you highlight aspects of your design how you wish. 
