@@ -16,7 +16,6 @@ void oled_render_general_state(void){
         185,186,0
     };
 
-    keymap_config.raw = eeconfig_read_keymap();
     if(keymap_config.swap_lctl_lgui){
         //oled_write_ln_P(PSTR("Linux"), false);
         oled_write_ln_P(tux_logo, false);

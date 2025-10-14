@@ -10,9 +10,6 @@
 #include "ng_layout_corne.c"
 #include "ng_process_keycodes_corne.c"
 
-#ifdef OLED_ENABLE
-#include "ng_double_oled.c"
-#endif
 
 // attempt to shrink firmware size -- this is for magic replacement of keys (not mods)
 uint16_t keycode_config(uint16_t keycode) {
@@ -125,5 +122,9 @@ void set_lighting_user(void) {
     }
     //return state;
 }
+#endif
+
+#ifdef OLED_ENABLE
+#include "ng_double_oled.c"
 #endif
 
