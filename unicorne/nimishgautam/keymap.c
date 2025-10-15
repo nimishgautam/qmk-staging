@@ -113,18 +113,6 @@ void os_detect(void) {
 }
 #endif
 
-bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LSFT_T(KC_D): // for modtap shift, otherwise lots of mis-firings
-        case RSFT_T(KC_K):
-            // Immediately select the hold action when another key is tapped.
-            return true;
-        default:
-            // Do not select the hold action when another key is tapped.
-            return false;
-    }
-}
-
 #ifdef RGB_MATRIX_ENABLE
 // base rgb mode, some sensible default if undefined
 uint8_t base_rgb_mode = RGB_MATRIX_SPLASH;

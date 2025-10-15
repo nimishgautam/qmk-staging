@@ -41,6 +41,7 @@
 #define COMBO_TERM 30
 #define COMBO_STRICT_TIMER
 #define COMBO_MUST_HOLD_PER_COMBO
+#define COMBO_HOLD_TERM 250
 //#define COMBO_TERM_PER_COMBO
 
 
@@ -48,6 +49,9 @@
 //#define QUICK_TAP_TERM 0
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD_PER_KEY
+
+//flow tap
+#define FLOW_TAP_TERM 150
 
 
 // Try to save some memory

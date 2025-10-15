@@ -19,13 +19,16 @@
 #define EXTRA_SHORT_COMBOS
 #define COMBO_TERM 30
 #define COMBO_STRICT_TIMER
-
+#define COMBO_MUST_HOLD_PER_COMBO
+#define COMBO_HOLD_TERM 250
 
 //Tapping values
 //#define QUICK_TAP_TERM 0
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD_PER_KEY
 
+//flow tap
+#define FLOW_TAP_TERM 150
 
 // Try to save some memory
 //#define NO_ACTION_ONESHOT
