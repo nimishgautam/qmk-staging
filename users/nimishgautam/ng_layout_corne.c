@@ -167,6 +167,27 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+bool is_flow_tap_key(uint16_t keycode) {
+    if ((get_mods() & MOD_MASK_CG ) != 0) {
+        // if ctrl or gui are held, might be doing a shortcut
+        switch (get_tap_keycode(keycode)) {
+            case KC_V: // pasting in the middle of typing shouldn't trigger flowtap
+                return false;
+            // otherwise just flow on down to the other stuff below
+        }
+    }
+    switch (get_tap_keycode(keycode)) {
+        case KC_SPC:
+        case KC_A ... KC_Z:
+        case KC_DOT:
+        case KC_COMM:
+        case KC_SCLN:
+        case KC_SLSH:
+            return true;
+    }
+    return false;
+}
+
 uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record, 
                            uint16_t prev_keycode) {
     if (is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode)) {

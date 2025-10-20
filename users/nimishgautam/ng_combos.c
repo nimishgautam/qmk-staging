@@ -1,3 +1,36 @@
+#include "action_tapping.h"
+
+enum combos {
+    COMPOSE_COMBO,
+    SEARCH_COMBO,
+    VIM_PASTE_COMBO,
+    CALCULATOR_COMBO,
+    ACIRCLE_COMBO,
+    ADOT_COMBO,
+    ODOT_COMBO,
+    PLUS_COMBO,
+    EQUALS_COMBO,
+    AMPERSAND_COMBO,
+    UNDERSCORE_COMBO,
+    UP_COMBO,
+    DOWN_COMBO,
+    LEFT_COMBO,
+    RIGHT_COMBO,
+    EMOJI_COMBO,
+    SCROLLDOWN_COMBO,
+    SCROLLUP_COMBO,
+    SMILEY_COMBO,
+    THUMBSUP_COMBO,
+    POWER_BUTTON_COMBO,
+    FORCE_QUIT_COMBO,
+    MAGIC_SYSRQ_COMBO,
+    MUTE_COMBO,
+    PAUSEPLAY_COMBO,
+    MOUSE_WARP_GRID_COMBO,
+};
+
+
+
 // combo - press space and backspace together to get 'scroll lock', used as the compose key on my custom linux
 const uint16_t PROGMEM compose_combo[] = {KC_BSPC, KC_SPACE, COMBO_END};
 
@@ -77,36 +110,35 @@ const uint16_t PROGMEM pauseplay_combo[] = {KC_B, KC_N, COMBO_END};
 const uint16_t PROGMEM mouse_warp_grid_combo[] = {KC_COMM, KC_M, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(compose_combo, COMPOSE_MACRO),
-    COMBO(search_combo, FINDER),
-    COMBO(calculator_combo, CALCULATOR),
-    /* macros */
-    COMBO(vim_paste_combo, PASTE_VIM),
-    COMBO(acircle_combo, ACIRCLE),
-    COMBO(adot_combo, ADOT),
-    COMBO(odot_combo, ODOT), 
-    /* defined keys */
-    COMBO(plus_combo, KC_PLUS),
-    COMBO(equals_combo, KC_EQL),
-    COMBO(ampersand_combo, KC_AMPERSAND),
-    COMBO(underscore_combo, KC_UNDS),
-    COMBO(up_combo, KC_UP),
-    COMBO(down_combo, KC_DOWN),
-    COMBO(left_combo, KC_LEFT),
-    COMBO(right_combo, KC_RIGHT),
-    COMBO(emoji_combo, EMOJI_KBD),
-    COMBO(scrolldown_combo, MS_WHLD),
-    COMBO(scrollup_combo, MS_WHLU),
-    COMBO(smiley_combo, SMILEY),
-    COMBO(thumbsup_combo, THUMBS_UP),
-    COMBO(power_button_combo, KC_PWR),
-    COMBO(force_quit_combo, FORCE_QUIT),
-    COMBO(magic_sysrq_combo, MAGIC_SYSRQ),
-    COMBO(mute_combo, KC_MUTE),
-    COMBO(pauseplay_combo, KC_MPLY),
-    COMBO(mouse_warp_grid_combo, MOUSE_WARP_GRID),
+    [COMPOSE_COMBO] = COMBO(compose_combo, COMPOSE_MACRO),
+    [SEARCH_COMBO] = COMBO(search_combo, FINDER),
+    [VIM_PASTE_COMBO] = COMBO(vim_paste_combo, PASTE_VIM),
+    [CALCULATOR_COMBO] = COMBO(calculator_combo, CALCULATOR),
+    [ACIRCLE_COMBO] = COMBO(acircle_combo, ACIRCLE),
+    [ADOT_COMBO] = COMBO(adot_combo, ADOT),
+    [ODOT_COMBO] = COMBO(odot_combo, ODOT),
+    [PLUS_COMBO] = COMBO(plus_combo, KC_PLUS),
+    [EQUALS_COMBO] = COMBO(equals_combo, KC_EQL),
+    [AMPERSAND_COMBO] = COMBO(ampersand_combo, KC_AMPERSAND),
+    [UNDERSCORE_COMBO] = COMBO(underscore_combo, KC_UNDS),
+    [UP_COMBO] = COMBO(up_combo, KC_UP),
+    [DOWN_COMBO] = COMBO(down_combo, KC_DOWN),
+    [LEFT_COMBO] = COMBO(left_combo, KC_LEFT),
+    [RIGHT_COMBO] = COMBO(right_combo, KC_RIGHT),
+    [EMOJI_COMBO] = COMBO(emoji_combo, EMOJI_KBD),
+    [SCROLLDOWN_COMBO] = COMBO(scrolldown_combo, MS_WHLD),
+    [SCROLLUP_COMBO] = COMBO(scrollup_combo, MS_WHLU),
+    [SMILEY_COMBO] = COMBO(smiley_combo, SMILEY),
+    [THUMBSUP_COMBO] = COMBO(thumbsup_combo, THUMBS_UP),
+    [POWER_BUTTON_COMBO] = COMBO(power_button_combo, KC_PWR),
+    [FORCE_QUIT_COMBO] = COMBO(force_quit_combo, FORCE_QUIT),
+    [MAGIC_SYSRQ_COMBO] = COMBO(magic_sysrq_combo, MAGIC_SYSRQ),
+    [MUTE_COMBO] = COMBO(mute_combo, KC_MUTE),
+    [PAUSEPLAY_COMBO] = COMBO(pauseplay_combo, KC_MPLY),
+    [MOUSE_WARP_GRID_COMBO] = COMBO(mouse_warp_grid_combo, MOUSE_WARP_GRID),
 };
 
+/* // These are probably no longer needed with the flow tap feature
 bool get_combo_must_hold(uint16_t index, combo_t *combo) {
     // decide by keycode, the combo index, or by the keys in the chord.
 
@@ -118,4 +150,24 @@ bool get_combo_must_hold(uint16_t index, combo_t *combo) {
     }
 
     return false;
+} */
+
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    /* These combos should only fire when not in flow tap*/
+    switch (combo_index) {
+        case PLUS_COMBO:
+        case EQUALS_COMBO:
+        case AMPERSAND_COMBO:
+        case UNDERSCORE_COMBO:
+        case UP_COMBO:
+        case DOWN_COMBO:
+        case LEFT_COMBO:
+        case RIGHT_COMBO:
+        case SMILEY_COMBO:
+        case THUMBSUP_COMBO:
+        case EMOJI_COMBO:
+            return !within_flow_tap_term(keycode, record);
+    }
+
+    return true;
 }

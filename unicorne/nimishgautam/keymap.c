@@ -7,7 +7,6 @@
 #include "os_detection.h"
 #include "math.h"
 
-
 #ifdef KBD_AUTH
 #define RAW_EPSIZE 32
 #include "raw_hid.h"
@@ -60,7 +59,6 @@ void send_auth_response(void) {
 }
 
 #endif
-
 
 
 #include "ng_key_definitions.h"
@@ -467,3 +465,4 @@ void housekeeping_task_user(void) {
     }
 
 }
+
