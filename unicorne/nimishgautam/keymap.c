@@ -6,6 +6,7 @@
 #include "transactions.h"
 #include "os_detection.h"
 #include "math.h"
+#include "synchronization_util.h"
 
 #ifdef KBD_AUTH
 #define RAW_EPSIZE 32
@@ -284,7 +285,19 @@ bool oled_task_user(void){
     }
 
     //Layer
-    uint8_t layer = get_highest_layer(layer_state);
+    uint8_t layer;
+    //uint8_t layer = get_highest_layer(layer_state);
+#ifdef OLED_STUPID_WAY_AROUND
+    // this is needed for layer 1 (NUMS) which is 0b10
+    // for some reason, the oled doesn't get the correct value when it's layer 1 (it reads as layer 0)
+    // this forces it
+    split_shared_memory_lock();
+    layer_state_t current_layer_state = split_shmem->layers.layer_state;
+    split_shared_memory_unlock();
+    layer = get_highest_layer(current_layer_state);
+#else
+    layer = get_highest_layer(layer_state);
+#endif
 
 #if defined (OLED_STUPID_WAY_AROUND) && defined(POINTING_DEVICE_AUTO_MOUSE_ENABLE)
     if(auto_mouse_state_transport && layer < _MOUSE){

@@ -106,7 +106,19 @@
     // (single) keypress goes out in saturation and value on a nexus
     #define ENABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS
 
+    // Additional modes for layer animations
+    #define ENABLE_RGB_MATRIX_HUE_PENDULUM
+    #define ENABLE_RGB_MATRIX_HUE_BREATHING
+    #define ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
 
+#endif
+
+#ifdef RGB_MATRIX_ENABLE
+#define RGB_MODS_MODE RGB_MATRIX_RIVERFLOW
+#define RGB_TXT_MODE RGB_MATRIX_HUE_PENDULUM
+#define RGB_NUMS_MODE RGB_MATRIX_HUE_BREATHING
+#define RGB_FN_MODE RGB_MATRIX_PIXEL_FRACTAL
+#define RGB_TERM_MODE RGB_MATRIX_BAND_SPIRAL_SAT
 #endif
 
 //autoshift
