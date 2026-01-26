@@ -10,7 +10,8 @@
 #define MASTER_LEFT
 //#define MASTER_RIGHT
 // #define EE_HANDS
-
+#define POINTING_DEVICE_LEFT
+#define SPLIT_POINTING_ENABLE
 //for split
 #define RGB_MATRIX_SPLIT \
         { 27, 27 }

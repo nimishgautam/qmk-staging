@@ -22,10 +22,11 @@
 uint8_t last_challenge[SECURITY_CHALLENGE_SIZE];
 bool challenge_received = false;
 
+#ifdef AUDIO_ENABLE
+static float mario_song[][2] = SONG(MARIO_THEME_U);
+#endif
+
 void raw_hid_receive(uint8_t *data, uint8_t length) {
-    #ifdef AUDIO_ENABLE
-    float mario_song[][2] = SONG(MARIO_THEME_U);
-    #endif
     if (data[0] == CMD_CHALLENGE) {
         // Store the challenge
         memcpy(last_challenge, &data[1], SECURITY_CHALLENGE_SIZE);
@@ -75,12 +76,14 @@ void send_auth_response(void) {
 
 #ifdef OS_DETECTION_ENABLE
 #define OS_DETECTION_KEYBOARD_RESET
+
+#ifdef AUDIO_ENABLE
+static float os_detect_norm_song[][2] = CG_NORM_SONG;
+static float os_detect_swap_song[][2] = CG_SWAP_SONG;
+#endif
+
 void os_detect(void) {
     os_variant_t host_os = detected_host_os();
-    #ifdef AUDIO_ENABLE
-    float cg_norm_song[][2] = CG_NORM_SONG;
-    float cg_swap_song[][2] = CG_SWAP_SONG;
-    #endif
     if (host_os) {
         switch (host_os) {
             case OS_MACOS:
@@ -91,7 +94,7 @@ void os_detect(void) {
                     eeconfig_update_keymap(&keymap_config);
 
                     #ifdef AUDIO_ENABLE
-                    PLAY_SONG(cg_norm_song);
+                    PLAY_SONG(os_detect_norm_song);
                     #endif
                 }
 
@@ -102,7 +105,7 @@ void os_detect(void) {
                     eeconfig_update_keymap(&keymap_config);
                     
                     #ifdef AUDIO_ENABLE
-                    PLAY_SONG(cg_swap_song);
+                    PLAY_SONG(os_detect_swap_song);
                     #endif
                 }
             break;
